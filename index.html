@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Hungry Squad">
+<meta name="apple-mobile-web-app-title" content="Mess Ledger">
 <meta name="theme-color" content="#5B4FE5">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Hungry Squad</title>
+<title>Mess Ledger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -693,7 +693,7 @@
     <div class="brandline">
       <div class="greet">
         <div class="greetdate" id="greetDate"></div>
-        <h1 id="appTitle">Hungry Squad</h1>
+        <h1 id="appTitle">Mess Ledger</h1>
       </div>
       <div class="hdright">
         <div class="status" id="saveStatus">&nbsp;</div>
@@ -758,8 +758,8 @@ function normaliseUrl(u){
    NEVER paste the "service_role" key here.
    =========================================================================== */
 var APP_CONFIG = {
-  supabaseUrl: "https://iqptxfgkrzecvrfzupsk.supabase.co",   // e.g. https://abcdefghijklmnop.supabase.co
-  anonKey:     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxcHR4ZmdrcnplY3ZyZnp1cHNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxODMyMDYsImV4cCI6MjEwMTc1OTIwNn0.dNuwMWuHi9mg3YLD0zzCH4IqntkZUPawqtEajpzu9fE",   // Supabase > Project Settings > API > "anon public"
+  supabaseUrl: "",   // e.g. https://abcdefghijklmnop.supabase.co
+  anonKey:     "",   // Supabase > Project Settings > API > "anon public"
   row:         "mess"
 };
 var DEFAULT_CLOUD = { url: APP_CONFIG.supabaseUrl, readKey: APP_CONFIG.anonKey, id: APP_CONFIG.row };
@@ -1061,7 +1061,7 @@ var STR = {
     badKey:"That is the secret service_role key. It must never go in the app. Use the anon public key.",
     badKeyBanner:"The key in this page is the secret service_role key. Remove it now.",
     dbOpenBanner:"Anyone can edit your data right now. Run supabase-lock.sql in Supabase.",
-    appTitle:"Hungry Squad", appSub:"Meal and money accounts",
+    appTitle:"Mess Ledger", appSub:"Meal and money accounts",
     messName:"Mess name", messNameHint:"Shown as the title at the top of every page.",
     tabSummary:"Summary", tabMeals:"Meals", tabMoney:"Transactions", tabMembers:"Members", tabSettings:"Settings",
     saved:"Saved \u2713", saveFailed:"Save failed",
