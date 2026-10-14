@@ -1145,10 +1145,15 @@ function canWrite(){
   return !!adminSession && isAdminUrl(); // otherwise: signed-in admin, on the admin address
 }
 
-var APP_VERSION = "12.5";
+var APP_VERSION = "12.7";
 
 var STR = {
   en:{
+    leaveQTitle:"Leave this phone?",
+    leaveQText:"{name} will be signed out on this phone. To ask to cook again, you will need your 6-digit code.",
+    leaveYes:"Leave",
+    leaveNo:"Stay",
+    confirmLeave:"Tap again to confirm \u2014 mark as left",
     wMemberTitle:"Are you a mess member?",
     wMemberText:"Open the link your mess admin sent you — it connects this phone to your mess. Or paste that link here:",
     wPastePh:"Paste your link",
@@ -1320,6 +1325,11 @@ var STR = {
     confirmRestore:"Confirm restore", cancel:"Cancel"
   },
   bn:{
+    leaveQTitle:"এই ফোন থেকে বের হবেন?",
+    leaveQText:"এই ফোনে {name} সাইন আউট হবেন। আবার রান্নার অনুরোধ করতে আপনার ৬ সংখ্যার কোড লাগবে।",
+    leaveYes:"বের হোন",
+    leaveNo:"থাকুন",
+    confirmLeave:"নিশ্চিত করতে আবার চাপুন \u2014 বের হয়েছেন",
     wMemberTitle:"আপনি কি মেসের সদস্য?",
     wMemberText:"অ্যাডমিনের পাঠানো লিংকটি খুলুন — এটি এই ফোনকে আপনার মেসের সাথে যুক্ত করে। অথবা লিংকটি এখানে পেস্ট করুন:",
     wPastePh:"লিংক পেস্ট করুন",
@@ -1813,6 +1823,17 @@ function verifyMember(){
     else { memberSelf=null; saveMember(); window.__memberKicked=true; }   // code reset, or member removed
     render();
   }).catch(function(){});                                                 // offline: keep it
+}
+// "Not you? Leave" asks first, in a pop-up: leaving means typing the code again
+function confirmLeaveMember(){
+  var nm=(memberSelf&&memberSelf.name)||"";
+  openDialog(t("leaveQTitle"),
+    '<p style="margin:0 0 16px;font-size:14px;line-height:1.5;color:var(--ink2)">'+esc(t("leaveQText").replace("{name}",nm))+'</p>'+
+    '<button class="b wide" id="lvYes" style="background:var(--neg)">'+esc(t("leaveYes"))+'</button>'+
+    '<button class="b ghost wide" id="lvNo" style="margin-top:8px">'+esc(t("leaveNo"))+'</button>');
+  var close=function(){ var o=document.getElementById("teamOverlay"); if(o) o.style.display="none"; };
+  document.getElementById("lvNo").addEventListener("click", close);
+  document.getElementById("lvYes").addEventListener("click", function(){ close(); leaveMember(); toastMsg(t("leftPhone")); });
 }
 function leaveMember(){ memberSelf=null; saveMember(); window.__memberKicked=false; render(); }
 function withdrawCookReq(id){
@@ -3230,8 +3251,8 @@ function viewSettings(){
              '<button class="sw'+(smIn?" on":"")+'" data-cooktoggle="'+sm.id+'"><i></i></button></div>'+
            '<label class="msheet-act as-row">'+ICONS.calendar+'<span>'+esc(t("started"))+'</span>'+
              '<input type="date" class="joindate" data-joinfor="'+sm.id+'" value="'+esc(sm.joinedOn||"")+'"></label>'+
-           '<button class="msheet-act" data-toggle="'+sm.id+'">'+ICONS.archive+
-             '<span>'+esc(smInact?t("bringBack"):t("markInactive"))+'</span></button>'+
+           '<button class="msheet-act'+(!smInact&&armed["leave"+sm.id]?' dg':'')+'" data-toggle="'+sm.id+'">'+ICONS.archive+
+             '<span>'+esc(smInact?t("bringBack"):(armed["leave"+sm.id]?t("confirmLeave"):t("markInactive")))+'</span></button>'+
            (smHasData?''
              : '<button class="msheet-act dg" data-delmem="'+sm.id+'">'+ICONS.trash+
                '<span>'+esc(armed["mem"+sm.id]?t("confirmDel"):t("del"))+'</span></button>')+
@@ -3607,7 +3628,15 @@ document.addEventListener("click",function(ev){
     state.members.forEach(function(m){ if(m.id===el.dataset.cooktoggle) m.cooks = (m.cooks===false); });
     save(); render(); return;
   }
-  if(el.dataset.toggle){ window.__memSheet=null;
+  if(el.dataset.toggle){
+    var lm=state.members.filter(function(x){ return x.id===el.dataset.toggle; })[0];
+    if(lm&&lm.active!==false&&!armed["leave"+lm.id]){          // first tap: ask to confirm
+      armed["leave"+lm.id]=true; render();
+      setTimeout(function(){ if(armed["leave"+lm.id]){ armed["leave"+lm.id]=false; render(); } },4000);
+      return;
+    }
+    if(lm) armed["leave"+lm.id]=false;
+    window.__memSheet=null;
     state.members.forEach(function(m){
       if(m.id!==el.dataset.toggle) return;
       if(m.active===false){ m.active=true; delete m.leftOn; delete m.leftAt; }
@@ -3700,7 +3729,7 @@ document.addEventListener("click",function(ev){
       if(c3){ c3.style.color="var(--neg)"; c3.textContent=/too_many/.test(e.message)?t("tooMany"):(t("couldNotSend")+" ("+e.message+")"); }
     });
   }
-  else if(a==="leaveMember"){ leaveMember(); toastMsg(t("leftPhone")); }
+  else if(a==="leaveMember"){ confirmLeaveMember(); }
   else if(a==="memCode"){
     window.__memSheetMode="code"; window.__codeErr=null; render();
     var cm=state.members.filter(function(x){ return x.id===window.__memSheet; })[0];
