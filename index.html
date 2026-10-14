@@ -1145,7 +1145,7 @@ function canWrite(){
   return !!adminSession && isAdminUrl(); // otherwise: signed-in admin, on the admin address
 }
 
-var APP_VERSION = "12.7";
+var APP_VERSION = "12.8";
 
 var STR = {
   en:{
@@ -2446,8 +2446,7 @@ function askCookCard(){
        '<input type="text" id="reqNote" placeholder="'+esc(t("whatCook"))+'" value="'+esc(window.__reqNote||"")+'" style="margin-top:14px">'+
        '<button class="b wide" style="margin-top:10px" data-act="sendCookReq"'+(sel?'':' disabled')+'>'+esc(t("sendRequest"))+'</button>';
   }
-  h+='</div><div class="leaverow"><span>'+esc(t("phoneIs").replace("{name}",nm))+'</span>'+
-     '<button data-act="leaveMember">'+esc(t("notYouLeave"))+'</button></div></div>';
+  h+='</div></div>';                      // leaving is in Settings only
   return h;
 }
 function pendingCard(){
