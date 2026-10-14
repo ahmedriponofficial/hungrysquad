@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Hungry Squad">
+<meta name="apple-mobile-web-app-title" content="Mess Ledger">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
 <meta name="theme-color" content="#5B4FE5">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Hungry Squad</title>
+<title>Mess Ledger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -684,6 +686,34 @@
   .ftotal .num{font-size:15px;font-weight:700;color:var(--ink)}
   .shopname{font-size:15px;font-weight:500;color:var(--ink);letter-spacing:-0.1px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+  /* member codes */
+  .qrbox{width:208px;height:208px;margin:2px auto 14px;background:#fff;border-radius:18px;padding:6px;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center}
+  .codebig{display:flex;justify-content:center;gap:6px}
+  .codebig span{width:36px;height:46px;border-radius:11px;background:var(--fill);display:flex;align-items:center;justify-content:center;
+    font-family:"JetBrains Mono",monospace;font-size:22px;font-weight:700;color:var(--ink)}
+  .codebig span.gap{width:8px;background:transparent}
+  .cdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink3);margin-right:5px;vertical-align:middle}
+  .cdot.on{background:var(--pos)}
+  .jtag{margin-left:auto;font-size:11px;font-weight:700;color:var(--pos);background:var(--posBg);border-radius:var(--rfull);padding:3px 9px}
+  .avwrap{position:relative;display:inline-flex;flex-shrink:0}
+  .joindot{position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:var(--pos);
+    border:2px solid var(--group2)}
+  .cboxes{display:flex;justify-content:center;gap:7px;margin:2px 0 4px}
+  .cbox{width:42px!important;height:52px;border:none;border-radius:12px;background:var(--fill);text-align:center;padding:0!important;
+    font-family:"JetBrains Mono",monospace;font-size:22px;font-weight:700;color:var(--ink);caret-color:var(--brand)}
+  .cbox{box-shadow:inset 0 0 0 1.5px var(--sep)}
+  .cbox:focus{outline:2px solid var(--brand);outline-offset:0}
+  .cgap{width:6px}
+  .cerr{color:var(--neg);font-size:12.5px;font-weight:700;min-height:18px;text-align:center;margin:4px 0 10px}
+  .shake{animation:cshake .38s}
+  @keyframes cshake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+  .hirow{display:flex;align-items:center;gap:12px;margin:0 4px}
+  .hiav{width:46px;height:46px;border-radius:50%;background:var(--brandSoft);color:var(--brand);display:flex;
+    align-items:center;justify-content:center;font-size:17px;font-weight:700;flex-shrink:0}
+  .hiname{font-size:20px;font-weight:800;letter-spacing:-0.4px}
+  .leaverow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--ink3);margin:10px 4px 0}
+  .leaverow button{border:none;background:none;color:var(--neg);font-family:inherit;font-weight:700;font-size:12.5px;cursor:pointer;padding:4px}
 </style>
 </head>
 <body>
@@ -693,7 +723,7 @@
     <div class="brandline">
       <div class="greet">
         <div class="greetdate" id="greetDate"></div>
-        <h1 id="appTitle">Hungry Squad</h1>
+        <h1 id="appTitle">Mess Ledger</h1>
       </div>
       <div class="hdright">
         <div class="status" id="saveStatus">&nbsp;</div>
@@ -749,8 +779,9 @@ function normaliseUrl(u){
   catch(e){ return u.replace(/\/+$/,"").replace(/\/rest\/v1.*$/i,""); }
 }
 /* ===========================================================================
-   CONNECTION  -  fill these in before you deploy for your mess members.
-   Leave them blank and the app works as a private copy on one device only.
+   CONNECTION  -  OPTIONAL. Leave blank: the file stays reusable by anyone.
+   Each mess connects its own Supabase in Settings > Team access, and its
+   member link carries that connection to the members.
 
    The "anon" key is PUBLIC by design: anyone can read it in the page source.
    That is safe ONLY because the database rules (supabase-lock.sql) let the
@@ -758,8 +789,8 @@ function normaliseUrl(u){
    NEVER paste the "service_role" key here.
    =========================================================================== */
 var APP_CONFIG = {
-  supabaseUrl: "https://iqptxfgkrzecvrfzupsk.supabase.co",   // e.g. https://abcdefghijklmnop.supabase.co
-  anonKey:     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxcHR4ZmdrcnplY3ZyZnp1cHNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxODMyMDYsImV4cCI6MjEwMTc1OTIwNn0.dNuwMWuHi9mg3YLD0zzCH4IqntkZUPawqtEajpzu9fE",   // Supabase > Project Settings > API > "anon public"
+  supabaseUrl: "",   // e.g. https://abcdefghijklmnop.supabase.co
+  anonKey:     "",   // Supabase > Project Settings > API > "anon public"
   row:         "mess"
 };
 var DEFAULT_CLOUD = { url: APP_CONFIG.supabaseUrl, readKey: APP_CONFIG.anonKey, id: APP_CONFIG.row };
@@ -779,7 +810,7 @@ function jwtRole(k){
   }catch(e){ return ""; }
 }
 // the secret service_role key must never be used by the app
-function keyIsSafe(k){ return jwtRole(k)!=="service_role"; }
+function keyIsSafe(k){ var v=String(k||"").trim(); return !/^sb_secret_/i.test(v) && jwtRole(v)!=="service_role"; }
 function cloudReady(){ var c=cloudCfg(); return !!(c&&c.url&&c.readKey&&c.id&&keyIsSafe(c.readKey)); }
 function cloudRow(cfg){ return normaliseUrl(cfg.url)+"/rest/v1/ledger?id=eq."+encodeURIComponent(cfg.id); }
 function realOrigin(){
@@ -943,8 +974,8 @@ function openAdminLogin(){
     err.style.color="var(--ink3)"; err.textContent=t("signingIn"); go.disabled=true;
     adminLogin(em,pw).then(function(){
       var o=document.getElementById("teamOverlay"); if(o) o.style.display="none";
-      applyRole(); render(); toastMsg(t("signedInOk"));
-      pullIfNewer(false).then(function(){ render(); autoSecurityCheck(); });
+      applyRole(); load(); render(); toastMsg(t("signedInOk"));   // own saved copy first; the pull below decides
+      pullIfNewer(false).then(function(){ render(); autoSecurityCheck(); fetchCodes(); });
       fetchCookReqs();
     }).catch(function(e){
       go.disabled=false; err.style.color="var(--neg)"; err.textContent=(e&&e.message)||"Sign-in failed";
@@ -952,7 +983,7 @@ function openAdminLogin(){
   }
   go.addEventListener("click",submit);
   document.getElementById("admPass").addEventListener("keydown",function(ev){ if(ev.key==="Enter") submit(); });
-  setTimeout(function(){ var i=document.getElementById("admEmail"); if(i) i.focus(); },50);
+  var ei=document.getElementById("admEmail"); if(ei) ei.focus();   // at once: a delayed jump could split what is being typed
 }
 
 function pushCloud(silent){
@@ -999,7 +1030,11 @@ function pullIfNewer(announce){
   var cfg=cloudCfg();
   return pullCloud({url:cfg.url,readKey:cfg.readKey,id:cfg.id}).then(function(d){
     syncReady=true;                         // we have now seen what is really stored
-    if(!d||!d.updated) return false;
+    if(!d||!d.updated){
+      // a brand-new, empty project: send this device's ledger up so members see it
+      if(state.members.length||state.transactions.length||state.meals.length) setTimeout(function(){ pushCloud(true); },0);
+      return false;
+    }
     var theirs=new Date(d.updated).getTime(), ours=cfg.lastPush?new Date(cfg.lastPush).getTime():0;
     if(theirs<=ours+1500) return false;
     applyingRemote=true;
@@ -1028,8 +1063,36 @@ function toastMsg(msg){
   statusTimer=setTimeout(function(){ el.innerHTML="&nbsp;"; },2200);
 }
 
-// The member link is simply this page's address; being read-only is the default.
-function memberLink(){ return realOrigin() || (location.href.split("#")[0]); }
+function b64urlEnc(str){ return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+function b64urlDec(x){ x=x.replace(/-/g,"+").replace(/_/g,"/"); while(x.length%4) x+="="; return decodeURIComponent(escape(atob(x))); }
+// The member link = this page + the mess's (public, read-only) connection.
+// Anyone can host this one file; each mess's link points at that mess's own database.
+function memberLink(){
+  var base=realOrigin()||location.href.split("#")[0], c=cloudCfg();
+  if(!c||!c.url) return base;
+  var m=normaliseUrl(c.url).match(/^https:\/\/([a-z0-9]+)\.supabase\.co$/i);
+  return base+"#join="+b64urlEnc(JSON.stringify({u:m?m[1]:normaliseUrl(c.url),k:c.readKey,r:c.id}));
+}
+function readJoinLink(){
+  var mm=location.hash.match(/^#join=([A-Za-z0-9_\-]+)/); if(!mm) return false;
+  try{
+    var p=JSON.parse(b64urlDec(mm[1]));
+    var url=/^https?:\/\//.test(p.u)?normaliseUrl(p.u):("https://"+p.u+".supabase.co");
+    if(!p.k||!keyIsSafe(p.k)) return false;          // never accept a secret key from a link
+    var cur=cloudCfg(), id=p.r||"mess";
+    var same=cur&&normaliseUrl(cur.url)===url&&cur.readKey===p.k&&cur.id===id;
+    if(!same){
+      // a different mess: sign-ins for the old one do not carry over
+      if(cur&&normaliseUrl(cur.url)!==url){ try{ localStorage.removeItem(ADMIN_KEY); localStorage.removeItem(MEMBER_KEY); }catch(e){} }
+      saveCloudCfg({url:url,readKey:p.k,id:id});
+    }
+    // a PERSONAL link also says who this phone belongs to (checked with the database next)
+    if(p.t&&String(p.t).length>=20){
+      try{ localStorage.setItem(MEMBER_KEY,JSON.stringify({token:String(p.t),id:null,name:"",url:url})); }catch(e){}
+    }
+    return true;
+  }catch(e){ return false; }
+}
 function deputyLink(){ return memberLink(); }
 function deputyMay(what){ return false; }
 function canWrite(){
@@ -1037,10 +1100,50 @@ function canWrite(){
   return !!adminSession;                 // otherwise: only a signed-in admin
 }
 
-var APP_VERSION = "12.0";
+var APP_VERSION = "12.2";
 
 var STR = {
   en:{
+    memberCode:"Member code",
+    joinedShort:"Joined",
+    makingCode:"Making a code…",
+    codeErr:"Could not make the code. Is the database set up with the latest supabase-lock.sql?",
+    joinedOn:"Joined on",
+    notJoinedYet:"Not joined yet",
+    codeHint:"Scan with the phone camera, or type the 6 digits on the Ask to cook page.",
+    shareWith:"Share with",
+    resetCode:"Reset code",
+    tapAgainReset:"Tap again to reset",
+    resetHint:"Reset if a phone is lost or the code was shared. The old code stops working at once.",
+    codeResetDone:"{name}’s old code no longer works",
+    shareText1:"{name}, here is your link for {mess}. Open it once on your phone:",
+    shareText2:"Or type this code:",
+    qrOffline:"The QR needs internet to draw. Share the link or the code instead.",
+    joinTitle:"Join",
+    joinHead:"Join {mess}",
+    joinHint:"Type the 6-digit code from the admin. You only do this once on this phone.",
+    joinBtn:"Join",
+    joinQrHint:"Got a QR code? Scan it with your phone’s camera — it opens the app and joins you by itself.",
+    enter6:"Enter all 6 digits",
+    checking:"Checking…",
+    codeNoMatch:"That code doesn’t match anyone",
+    tooMany:"Too many wrong tries. Wait 15 minutes, then try again.",
+    welcomeName:"Welcome, {name}",
+    codeWasReset:"Your code was reset by the admin, so this phone was signed out. Ask for your new code.",
+    goodToSee:"Good to see you",
+    hi:"Hi",
+    askHintMe:"Pick a day — your name is added for you.",
+    withdraw:"Withdraw",
+    withdrawn:"Request withdrawn",
+    phoneIs:"This phone is {name}’s",
+    notYouLeave:"Not you? Leave",
+    leftPhone:"This phone left",
+    membership:"You",
+    joinedAs:"Joined as",
+    joinWithCode:"Join with your code",
+    errAlreadyWaiting:"You already have a request waiting.",
+    errFutureDay:"Pick a day after today.",
+    errNotMember:"This phone is no longer joined. Ask the admin for your code.",
     signInAdmin:"Sign in as admin", adminAccount:"Admin", email:"Email", password:"Password",
     adminLoginHint:"Only the admin can change anything. Everyone else can look, but not edit.",
     signIn:"Sign in", signingIn:"Signing in\u2026", signedInOk:"Signed in", signedInAs:"Signed in as",
@@ -1051,17 +1154,17 @@ var STR = {
     secOk:"Locked \u2014 an ordinary visitor cannot change your data.",
     secOpen:"OPEN \u2014 anyone can change your data. Run supabase-lock.sql in Supabase now.",
     secUnknown:"Could not check (offline, or the table is missing).",
-    noDbText:"This copy is not connected to a database, so everything stays on this device only.",
+    noDbText:"Not connected to a database yet, so everything stays on this phone. Connect your own Supabase project to share the ledger with your mess.",
     connectDbBtn:"Connect a database",
-    dlgHint:"Connects THIS device. For your members, put the same two values in the APP_CONFIG block at the top of the HTML file before you deploy.",
+    dlgHint:"Connects this device to YOUR Supabase project. Both values are in Supabase \u2192 Project Settings \u2192 API Keys. Use the Publishable key (sb_publishable_\u2026) or the legacy anon key \u2014 never the secret key. Members then join with the member link, which carries this connection.",
     dlgSave:"Save", dlgTest:"Test (read-only) and check security", dlgSaved:"Saved",
     dlgLockTitle:"Lock the database", dlgLockHint:"Type your admin email and copy the SQL. Paste it in Supabase > SQL Editor > Run.",
-    dlgCopySql:"Copy the SQL", dlgBadUrl:"That address does not look right", dlgNeedKey:"The anon public key is needed",
+    dlgCopySql:"Copy the SQL", dlgBadUrl:"That address does not look right", dlgNeedKey:"The Publishable key is needed",
     dlgReadOk:"Connected \u2014 reading works.",
-    badKey:"That is the secret service_role key. It must never go in the app. Use the anon public key.",
-    badKeyBanner:"The key in this page is the secret service_role key. Remove it now.",
+    badKey:"That is a SECRET key (sb_secret_\u2026 or service_role). It must never go in the app. Use the Publishable key.",
+    badKeyBanner:"The key in this page is a SECRET key. Remove it now.",
     dbOpenBanner:"Anyone can edit your data right now. Run supabase-lock.sql in Supabase.",
-    appTitle:"Hungry Squad", appSub:"Meal and money accounts",
+    appTitle:"Mess Ledger", appSub:"Meal and money accounts",
     messName:"Mess name", messNameHint:"Shown as the title at the top of every page.",
     tabSummary:"Summary", tabMeals:"Meals", tabMoney:"Transactions", tabMembers:"Members", tabSettings:"Settings",
     saved:"Saved \u2713", saveFailed:"Save failed",
@@ -1157,6 +1260,46 @@ var STR = {
     confirmRestore:"Confirm restore", cancel:"Cancel"
   },
   bn:{
+    memberCode:"সদস্য কোড",
+    joinedShort:"যুক্ত",
+    makingCode:"কোড তৈরি হচ্ছে…",
+    codeErr:"কোড তৈরি করা যায়নি। ডেটাবেসে কি সর্বশেষ supabase-lock.sql চালানো হয়েছে?",
+    joinedOn:"যুক্ত হয়েছে",
+    notJoinedYet:"এখনো যুক্ত হয়নি",
+    codeHint:"ফোনের ক্যামেরা দিয়ে স্ক্যান করুন, বা রান্নার অনুরোধ পেজে ৬ সংখ্যা লিখুন।",
+    shareWith:"শেয়ার করুন",
+    resetCode:"কোড রিসেট",
+    tapAgainReset:"রিসেট করতে আবার চাপুন",
+    resetHint:"ফোন হারালে বা কোড শেয়ার হয়ে গেলে রিসেট করুন। পুরনো কোড সাথে সাথে বন্ধ হয়ে যাবে।",
+    codeResetDone:"{name}-এর পুরনো কোড আর কাজ করবে না",
+    shareText1:"{name}, {mess}-এর জন্য আপনার লিংক। ফোনে একবার খুলুন:",
+    shareText2:"অথবা এই কোড লিখুন:",
+    qrOffline:"QR দেখাতে ইন্টারনেট দরকার। লিংক বা কোড শেয়ার করুন।",
+    joinTitle:"যুক্ত হোন",
+    joinHead:"{mess}-এ যুক্ত হোন",
+    joinHint:"অ্যাডমিনের দেওয়া ৬ সংখ্যার কোড লিখুন। এই ফোনে একবারই করতে হবে।",
+    joinBtn:"যুক্ত হোন",
+    joinQrHint:"QR কোড আছে? ফোনের ক্যামেরা দিয়ে স্ক্যান করুন — অ্যাপ খুলে নিজেই যুক্ত করে দেবে।",
+    enter6:"৬টি সংখ্যাই লিখুন",
+    checking:"যাচাই হচ্ছে…",
+    codeNoMatch:"এই কোড কারও সাথে মেলে না",
+    tooMany:"অনেকবার ভুল হয়েছে। ১৫ মিনিট পরে আবার চেষ্টা করুন।",
+    welcomeName:"স্বাগতম, {name}",
+    codeWasReset:"অ্যাডমিন আপনার কোড রিসেট করেছেন, তাই এই ফোন সাইন আউট হয়েছে। নতুন কোড চেয়ে নিন।",
+    goodToSee:"আবার দেখা হলো",
+    hi:"হাই",
+    askHintMe:"একটি দিন বাছুন — আপনার নাম নিজেই যুক্ত হবে।",
+    withdraw:"ফিরিয়ে নিন",
+    withdrawn:"অনুরোধ ফিরিয়ে নেওয়া হয়েছে",
+    phoneIs:"এই ফোনটি {name}-এর",
+    notYouLeave:"আপনি নন? বের হোন",
+    leftPhone:"এই ফোন বের হয়ে গেছে",
+    membership:"আপনি",
+    joinedAs:"যুক্ত আছেন",
+    joinWithCode:"কোড দিয়ে যুক্ত হোন",
+    errAlreadyWaiting:"আপনার একটি অনুরোধ ইতিমধ্যে অপেক্ষায় আছে।",
+    errFutureDay:"আজকের পরের একটি দিন বাছুন।",
+    errNotMember:"এই ফোন আর যুক্ত নেই। অ্যাডমিনের কাছে কোড চান।",
     signInAdmin:"অ্যাডমিন হিসেবে সাইন ইন", adminAccount:"অ্যাডমিন", email:"ইমেইল", password:"পাসওয়ার্ড",
     adminLoginHint:"শুধু অ্যাডমিন পরিবর্তন করতে পারবেন। অন্যরা শুধু দেখতে পারবেন।",
     signIn:"সাইন ইন", signingIn:"সাইন ইন হচ্ছে\u2026", signedInOk:"সাইন ইন হয়েছে", signedInAs:"সাইন ইন করা আছে",
@@ -1167,15 +1310,15 @@ var STR = {
     secOk:"নিরাপদ \u2014 সাধারণ দর্শক আপনার ডেটা পরিবর্তন করতে পারে না।",
     secOpen:"ঝুঁকি \u2014 যে কেউ আপনার ডেটা পরিবর্তন করতে পারে। এখনই supabase-lock.sql চালান।",
     secUnknown:"পরীক্ষা করা যায়নি (অফলাইন, বা টেবিল নেই)।",
-    noDbText:"এই কপি কোনো ডেটাবেসে যুক্ত নয়, তাই সবকিছু শুধু এই ডিভাইসে থাকে।",
+    noDbText:"এখনো কোনো ডেটাবেসে যুক্ত নয়, তাই সবকিছু এই ফোনেই থাকে। মেসের সাথে শেয়ার করতে নিজের Supabase প্রজেক্ট যুক্ত করুন।",
     connectDbBtn:"ডেটাবেস যুক্ত করুন",
-    dlgHint:"এটি শুধু এই ডিভাইস যুক্ত করে। সদস্যদের জন্য ডেপ্লয়ের আগে HTML ফাইলের APP_CONFIG-এ একই দুটি মান দিন।",
+    dlgHint:"এটি এই ডিভাইসকে আপনার নিজের Supabase প্রজেক্টে যুক্ত করে। দুটি মানই Supabase \u2192 Project Settings \u2192 API Keys-এ আছে। Publishable key (sb_publishable_\u2026) বা পুরনো anon key দিন \u2014 কখনও secret key নয়। সদস্যরা সদস্য লিংক দিয়ে যুক্ত হবেন।",
     dlgSave:"সংরক্ষণ", dlgTest:"পরীক্ষা (শুধু পড়া) ও নিরাপত্তা যাচাই", dlgSaved:"সংরক্ষিত",
     dlgLockTitle:"ডেটাবেস লক করুন", dlgLockHint:"অ্যাডমিন ইমেইল লিখে SQL কপি করুন। Supabase > SQL Editor-এ পেস্ট করে Run দিন।",
-    dlgCopySql:"SQL কপি করুন", dlgBadUrl:"ঠিকানাটি সঠিক মনে হচ্ছে না", dlgNeedKey:"anon public কী দরকার",
+    dlgCopySql:"SQL কপি করুন", dlgBadUrl:"ঠিকানাটি সঠিক মনে হচ্ছে না", dlgNeedKey:"Publishable key দরকার",
     dlgReadOk:"যুক্ত হয়েছে \u2014 পড়া কাজ করছে।",
-    badKey:"এটি গোপন service_role কী। অ্যাপে কখনও দেবেন না। anon public কী ব্যবহার করুন।",
-    badKeyBanner:"এই পেজের কী-টি গোপন service_role কী। এখনই সরিয়ে ফেলুন।",
+    badKey:"এটি একটি গোপন কী (sb_secret_\u2026 বা service_role)। অ্যাপে কখনও দেবেন না। Publishable key ব্যবহার করুন।",
+    badKeyBanner:"এই পেজের কী-টি একটি গোপন কী। এখনই সরিয়ে ফেলুন।",
     dbOpenBanner:"এই মুহূর্তে যে কেউ আপনার ডেটা পরিবর্তন করতে পারে। Supabase-এ supabase-lock.sql চালান।",
     appTitle:"মেস লেজার", appSub:"\u0986\u09B9\u09AE\u09C7\u09A6 \u09B0\u09BF\u09AA\u09A8-\u098F\u09B0 \u0996\u09BE\u09AC\u09BE\u09B0 \u0993 \u099F\u09BE\u0995\u09BE\u09B0 \u09B9\u09BF\u09B8\u09BE\u09AC",
     messName:"\u09AE\u09C7\u09B8\u09C7\u09B0 \u09A8\u09BE\u09AE", messNameHint:"\u09AA\u09CD\u09B0\u09A4\u09BF \u09AA\u09BE\u09A4\u09BE\u09B0 \u0989\u09AA\u09B0\u09C7 \u09B6\u09BF\u09B0\u09CB\u09A8\u09BE\u09AE \u09B9\u09BF\u09B8\u09C7\u09AC\u09C7 \u09A6\u09C7\u0996\u09BE\u09AC\u09C7\u0964",
@@ -1388,7 +1531,8 @@ function showBackupToast(){
   clearTimeout(bkToastTimer);
   bkToastTimer=setTimeout(function(){ el.className="toast hide"; },7000);
 }
-function save(){
+function save(){ var r=saveCore(); reconcileCodes(); return r; }
+function saveCore(){
   if(guestMode) return;
   try{
     localStorage.setItem(KEY, JSON.stringify(state));
@@ -1556,6 +1700,173 @@ function reqHeaders(extra){
   return h;
 }
 // keep the members table in step so the database can verify a request
+/* ---------- Member codes: a member's phone proves who it is ---------- */
+var MEMBER_KEY = "mess-member";
+var memberSelf = null;        // {token,id,name,url} on a member's phone
+var memberCodes = {};         // admin only: member_id -> {code,token,joined_at,device,member_name}
+function loadMember(){
+  try{
+    var m=JSON.parse(localStorage.getItem(MEMBER_KEY)), c=cloudCfg();
+    memberSelf=(m&&m.token&&c&&normaliseUrl(m.url||"")===normaliseUrl(c.url))?m:null;
+  }catch(e){ memberSelf=null; }
+}
+function saveMember(){
+  try{ if(memberSelf) localStorage.setItem(MEMBER_KEY,JSON.stringify(memberSelf)); else localStorage.removeItem(MEMBER_KEY); }catch(e){}
+}
+function rpc(name,args){
+  var c=cloudCfg();
+  return fetch(normaliseUrl(c.url)+"/rest/v1/rpc/"+name,{method:"POST",headers:reqHeaders(),body:JSON.stringify(args)})
+    .then(function(r){ return r.text().then(function(txt){
+      var j=null; try{ j=JSON.parse(txt); }catch(e){}
+      if(!r.ok){ var er=new Error((j&&(j.message||j.hint))||("HTTP "+r.status)); er.status=r.status; throw er; }
+      return j;
+    }); });
+}
+function deviceLabel(){ var u=navigator.userAgent||""; return /iPhone/.test(u)?"iPhone":/iPad/.test(u)?"iPad":/Android/.test(u)?"Android":"browser"; }
+function messTitle(){ return (state.messName||"").trim()||t("appTitle"); }
+function joinWithCode(code){
+  return rpc("join_with_code",{p_code:String(code).replace(/\D/g,""),p_device:deviceLabel()}).then(function(j){
+    if(!j||!j.token) return false;
+    memberSelf={token:j.token,id:j.member_id,name:j.member_name,url:normaliseUrl(cloudCfg().url)};
+    window.__memberKicked=false; window.__cboxVals=null; saveMember(); return true;
+  });
+}
+function verifyMember(){
+  if(!memberSelf||!cloudReady()) return Promise.resolve();
+  return rpc("whoami",{p_token:memberSelf.token}).then(function(j){
+    if(j&&j.member_id){ memberSelf.id=j.member_id; memberSelf.name=j.member_name; saveMember(); }
+    else { memberSelf=null; saveMember(); window.__memberKicked=true; }   // code reset, or member removed
+    render();
+  }).catch(function(){});                                                 // offline: keep it
+}
+function leaveMember(){ memberSelf=null; saveMember(); window.__memberKicked=false; render(); }
+function withdrawCookReq(id){
+  if(!memberSelf) return Promise.resolve(false);
+  return rpc("withdraw_cook",{p_token:memberSelf.token,p_id:+id}).then(function(j){ return j===true; }).catch(function(){ return false; });
+}
+function reqErrText(m){
+  m=String(m||"");
+  if(/already_waiting/.test(m)) return t("errAlreadyWaiting");
+  if(/pick_a_future_day/.test(m)) return t("errFutureDay");
+  if(/not_a_member/.test(m)) return t("errNotMember");
+  return t("couldNotSend");
+}
+// --- admin side: make, share and reset codes ---
+function randStr(n,abc){ var a=new Uint32Array(n),o=""; crypto.getRandomValues(a); for(var i=0;i<n;i++) o+=abc[a[i]%abc.length]; return o; }
+function newCode(){
+  var c, taken=Object.keys(memberCodes).map(function(k){ return memberCodes[k].code; });
+  do{ c=randStr(6,"0123456789"); }while(c[0]==="0"||taken.indexOf(c)>=0);
+  return c;
+}
+function newToken(){ return randStr(32,"abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"); }
+function adminFetch(url,opts){
+  return adminToken().then(function(tok){
+    if(!tok) throw new Error("Please sign in again");
+    opts=opts||{}; var c=cloudCfg();
+    opts.headers=Object.assign({apikey:c.readKey,Authorization:"Bearer "+tok,"Content-Type":"application/json"},opts.headers||{});
+    return fetch(url,opts);
+  });
+}
+function codesUrl(q){ return normaliseUrl(cloudCfg().url)+"/rest/v1/member_codes"+(q||""); }
+function fetchCodes(){
+  if(!adminSession||!cloudReady()) return Promise.resolve();
+  return adminFetch(codesUrl("?select=member_id,member_name,code,token,joined_at,device"))
+    .then(function(r){ return r.ok?r.json():[]; })
+    .then(function(rows){ memberCodes={}; (rows||[]).forEach(function(x){ memberCodes[x.member_id]=x; }); render(); })
+    .catch(function(){});
+}
+function saveCode(m,reset){
+  var cur=memberCodes[m.id], fresh=reset||!cur;
+  var row={member_id:m.id,member_name:m.name,
+    code:fresh?newCode():cur.code, token:fresh?newToken():cur.token,
+    joined_at:fresh?null:cur.joined_at, device:fresh?null:cur.device, updated_at:new Date().toISOString()};
+  return adminFetch(codesUrl("?on_conflict=member_id"),{method:"POST",
+      headers:{Prefer:"resolution=merge-duplicates,return=representation"},body:JSON.stringify(row)})
+    .then(function(r){ if(!r.ok) return r.text().then(function(b){ throw new Error("HTTP "+r.status+" "+b.slice(0,140)); }); return r.json(); })
+    .then(function(rows){ if(!rows||!rows.length) throw new Error("refused"); memberCodes[m.id]=rows[0]; return rows[0]; });
+}
+function dropCode(id){
+  if(!memberCodes[id]||memberCodes[id]._dropping) return Promise.resolve();
+  memberCodes[id]._dropping=true;
+  return adminFetch(codesUrl("?member_id=eq."+encodeURIComponent(id)),{method:"DELETE"})
+    .then(function(r){ if(r.ok) delete memberCodes[id]; else memberCodes[id]._dropping=false; })
+    .catch(function(){ if(memberCodes[id]) memberCodes[id]._dropping=false; });
+}
+// keep codes in step with the member list: renamed -> new name; left/deleted -> code stops working
+function reconcileCodes(){
+  if(!adminSession||!cloudReady()) return;
+  Object.keys(memberCodes).forEach(function(id){
+    var m=state.members.filter(function(x){ return x.id===id; })[0];
+    if(!m||m.active===false) dropCode(id);
+    else if(memberCodes[id].member_name!==m.name){ memberCodes[id].member_name=m.name; saveCode(m).catch(function(){}); }
+  });
+}
+function personalLink(id){
+  var c=cloudCfg(), mc=memberCodes[id]; if(!c||!mc) return "";
+  var base=realOrigin()||location.href.split("#")[0];
+  var m=normaliseUrl(c.url).match(/^https:\/\/([a-z0-9]+)\.supabase\.co$/i);
+  return base+"#join="+b64urlEnc(JSON.stringify({u:m?m[1]:normaliseUrl(c.url),k:c.readKey,r:c.id,t:mc.token}));
+}
+var QR_LIB="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js";
+function loadQrLib(){
+  if(window.qrcode) return Promise.resolve(true);
+  if(window.__qrLoading) return window.__qrLoading;
+  window.__qrLoading=new Promise(function(res){
+    var sc=document.createElement("script"); sc.src=QR_LIB; sc.async=true;
+    sc.onload=function(){ res(!!window.qrcode); };
+    sc.onerror=function(){ window.__qrLoading=null; res(false); };
+    document.head.appendChild(sc);
+  });
+  return window.__qrLoading;
+}
+function drawQR(el,text){
+  if(!el||!text) return;
+  if(el.getAttribute("data-for")===text&&el.querySelector("svg")) return;    // already drawn
+  el.setAttribute("data-for",text);
+  loadQrLib().then(function(ok){
+    var fail='<div class="hint" style="text-align:center;margin:0;padding:18px 8px">'+esc(t("qrOffline"))+'</div>';
+    if(!ok||!window.qrcode){ el.innerHTML=fail; return; }
+    try{
+      var q=window.qrcode(0,"L"); q.addData(text); q.make();
+      var n=q.getModuleCount(), d="", Q=4;
+      for(var r=0;r<n;r++) for(var c=0;c<n;c++) if(q.isDark(r,c)) d+="M"+c+" "+r+"h1v1h-1z";
+      el.innerHTML='<svg viewBox="'+(-Q)+' '+(-Q)+' '+(n+2*Q)+' '+(n+2*Q)+'" width="100%" height="100%" shape-rendering="crispEdges" role="img" aria-label="QR code">'+
+        '<rect x="'+(-Q)+'" y="'+(-Q)+'" width="'+(n+2*Q)+'" height="'+(n+2*Q)+'" fill="#fff"/><path d="'+d+'" fill="#000"/></svg>';
+    }catch(e){ el.innerHTML=fail; }
+  });
+}
+function afterRender(){
+  if(window.__memSheet&&window.__memSheetMode==="code") drawQR(document.getElementById("qrbox"),personalLink(window.__memSheet));
+  if(window.__cboxVals){ var bx=document.querySelectorAll("[data-cbox]"); for(var i=0;i<bx.length;i++) bx[i].value=window.__cboxVals[i]||""; }
+}
+function codePanelHtml(sm){
+  var mc=memberCodes[sm.id];
+  if(!mc) return '<div class="msheet-pad"><div class="hint" style="margin:0;text-align:center">'+esc(window.__codeErr||t("makingCode"))+'</div></div>';
+  return '<div class="msheet-pad" style="text-align:center">'+
+    '<div class="qrbox" id="qrbox"></div>'+
+    '<div class="codebig">'+mc.code.split("").map(function(ch,i){ return (i===3?'<span class="gap"></span>':'')+'<span>'+ch+'</span>'; }).join("")+'</div>'+
+    '<div class="tsub" style="margin:7px 0 2px"><span class="cdot'+(mc.joined_at?" on":"")+'"></span>'+
+      esc(mc.joined_at?(t("joinedOn")+" "+(mc.device||"")):t("notJoinedYet"))+'</div>'+
+    '<div class="hint" style="margin:4px 0 12px">'+esc(t("codeHint"))+'</div>'+
+    '<button class="b wide" data-act="shareCode">'+esc(t("shareWith"))+' '+esc(sm.name)+'</button>'+
+    '<button class="b ghost wide" style="margin-top:8px;color:var(--neg)" data-act="resetCode">'+
+      esc(armed["rc"+sm.id]?t("tapAgainReset"):t("resetCode"))+'</button>'+
+    '<div class="hint" style="margin:10px 0 0">'+esc(t("resetHint"))+'</div>'+
+  '</div>';
+}
+function joinCardHtml(){
+  var boxes='';
+  for(var i=0;i<6;i++){ if(i===3) boxes+='<span class="cgap"></span>';
+    boxes+='<input class="cbox" inputmode="numeric" '+(i===0?'autocomplete="one-time-code" ':'')+'data-cbox="'+i+'" aria-label="digit '+(i+1)+'">'; }
+  return '<div><h2>'+esc(t("joinTitle"))+'</h2><div class="group" style="padding:16px">'+
+    (window.__memberKicked?'<div class="clashbox" style="margin:0 0 12px">'+esc(t("codeWasReset"))+'</div>':'')+
+    '<div style="font-weight:700;font-size:15px;margin-bottom:4px">'+esc(t("joinHead").replace("{mess}",messTitle()))+'</div>'+
+    '<div class="hint" style="margin:0 0 12px">'+esc(t("joinHint"))+'</div>'+
+    '<div class="cboxes" id="cboxes">'+boxes+'</div><div class="cerr" id="cerr"></div>'+
+    '<button class="b wide" data-act="joinCode">'+esc(t("joinBtn"))+'</button>'+
+    '<div class="hint" style="margin:12px 0 0">'+esc(t("joinQrHint"))+'</div></div></div>';
+}
+
 function fetchCookReqs(){
   var c=cloudCfg(); if(!c||!c.url) return Promise.resolve();
   return fetch(normaliseUrl(c.url)+"/rest/v1/cook_requests?select=*&order=cook_date.asc",
@@ -1567,15 +1878,16 @@ function fetchCookReqs(){
     .then(function(rows){ cookReqs=rows||[]; render(); })
     .catch(function(e){ window.__reqErr = (e&&e.message)||"network"; });
 }
-function sendCookReq(dateStr, note, whoId){
-  var c=cloudCfg(); if(!c||!c.url) return Promise.resolve(false);
-  var m=state.members.filter(function(x){ return x.id===whoId; })[0];
-  if(!m) return Promise.resolve(false);
-  return fetch(normaliseUrl(c.url)+"/rest/v1/cook_requests",
-    {method:"POST", headers:reqHeaders({Prefer:"return=minimal"}),
-     body:JSON.stringify({member_id:m.id, member_name:m.name,
-       cook_date:dateStr, note:note||null, status:"pending"})})
-    .then(function(r){ return r.ok; }).catch(function(){ return false; });
+function sendCookReq(dateStr, note){
+  window.__reqSendErr=null;
+  if(!memberSelf) return Promise.resolve(false);
+  return rpc("request_cook",{p_token:memberSelf.token,p_date:dateStr,p_note:note||null})
+    .then(function(j){ return !!(j&&j.id); })
+    .catch(function(e){
+      window.__reqSendErr=e.message;
+      if(/not_a_member/.test(e.message)){ memberSelf=null; saveMember(); window.__memberKicked=true; }
+      return false;
+    });
 }
 function decideCookReq(id, ok, dateStr, who){
   var c=cloudCfg(); if(!c||!c.url) return Promise.resolve(false);
@@ -1740,6 +2052,7 @@ var ICONS = {
   box:'<svg viewBox="0 0 24 24"><path d="M21 8 12 3 3 8l9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>',
   sum:'<svg viewBox="0 0 24 24"><path d="M18 4H6l7 8-7 8h12"/></svg>',
   shop:'<svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V10h14v11"/><path d="M3 10l1.6-5h14.8L21 10a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/></svg>',
+  qr:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg>',
   smile:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0"/><path d="M9 9.5h.01"/><path d="M15 9.5h.01"/></svg>',
   dots:'<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg>',
   pencil:'<svg viewBox="0 0 24 24"><path d="M4 20h4l10.5-10.5a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
@@ -2020,32 +2333,27 @@ function upcomingCard(){
     }).join("")+'</div></div>';
 }
 function askCookCard(){
-  var act = state.members.filter(function(m){ return m.active!==false; });
-  if(!act.length) return '';
-  var who = window.__reqWho || act[0].id;
-  var mine = cookReqs.filter(function(r){ return r.member_id===who && r.status==="pending" && r.cook_date>todayISO(); });
-  var head = '<div><h2>'+esc(t("askToCook"))+'</h2><div class="group" style="padding:15px 16px">';
-  if(mine.length){
-    var r=mine[0];
-    return head+
-      '<div class="row-wait"><span class="pill-wait">'+esc(t("waitingApproval"))+'</span></div>'+
-      '<div style="font-size:15px;font-weight:600;margin-top:9px">'+esc(niceDate(r.cook_date))+'</div>'+
-      (r.note?'<div class="hint" style="margin:5px 0 0">\u201C'+esc(r.note)+'\u201D</div>':'')+
-      '<button class="b ghost wide" style="margin-top:11px" data-act="switchReqWho">'+
-        esc(t("notYou"))+'</button></div></div>';
+  if(!cloudReady()) return '';
+  if(!memberSelf) return joinCardHtml();
+  var nm=memberSelf.name||"";
+  var mine=cookReqs.filter(function(r){ return r.member_id===memberSelf.id && r.status==="pending" && r.cook_date>todayISO(); })[0];
+  var h='<div class="hirow"><span class="hiav">'+esc((nm||"?").slice(0,1).toUpperCase())+'</span>'+
+        '<div><div class="tsub">'+esc(t("goodToSee"))+'</div><div class="hiname">'+esc(t("hi"))+' '+esc(nm)+'</div></div></div>';
+  h+='<div><h2>'+esc(t("askToCook"))+'</h2><div class="group" style="padding:15px 16px">';
+  if(mine){
+    h+='<div class="row-wait"><span class="pill-wait">'+esc(t("waitingApproval"))+'</span></div>'+
+       '<div style="font-size:15px;font-weight:600;margin-top:9px">'+esc(niceDate(mine.cook_date))+'</div>'+
+       (mine.note?'<div class="hint" style="margin:5px 0 0">\u201C'+esc(mine.note)+'\u201D</div>':'')+
+       '<button class="b ghost wide" style="margin-top:11px" data-withdraw="'+mine.id+'">'+esc(t("withdraw"))+'</button>';
+  } else {
+    var sel=window.__reqDate||"";
+    h+='<div class="hint" style="margin:0 0 4px">'+esc(t("askHintMe"))+'</div>'+dayChips(sel)+
+       '<input type="text" id="reqNote" placeholder="'+esc(t("whatCook"))+'" value="'+esc(window.__reqNote||"")+'" style="margin-top:14px">'+
+       '<button class="b wide" style="margin-top:10px" data-act="sendCookReq"'+(sel?'':' disabled')+'>'+esc(t("sendRequest"))+'</button>';
   }
-  var sel=window.__reqDate||"";
-  return head+
-    '<div class="hint" style="margin:0 0 10px">'+esc(t("askHint"))+'</div>'+
-    '<label class="f" style="margin-bottom:16px"><span>'+esc(t("whoAreYou"))+'</span><select id="reqWho">'+
-      act.map(function(m){ return '<option value="'+m.id+'"'+(m.id===who?' selected':'')+'>'+esc(m.name)+'</option>'; }).join("")+
-    '</select></label>'+
-    dayChips(sel)+
-    '<input type="text" id="reqNote" placeholder="'+esc(t("whatCook"))+'" '+
-      'value="'+esc(window.__reqNote||"")+'" style="margin-top:14px">'+
-    '<button class="b wide" style="margin-top:10px" data-act="sendCookReq"'+(sel?'':' disabled')+'>'+
-      esc(t("sendRequest"))+'</button>'+
-    '</div></div>';
+  h+='</div><div class="leaverow"><span>'+esc(t("phoneIs").replace("{name}",nm))+'</span>'+
+     '<button data-act="leaveMember">'+esc(t("notYouLeave"))+'</button></div></div>';
+  return h;
 }
 function pendingCard(){
   var ps=pendingReqs();
@@ -2577,7 +2885,7 @@ function openCloudSetup(){
   openDialog(t("connectDbBtn"),
     '<p class="hint" style="margin:0 0 10px">'+esc(t("dlgHint"))+'</p>'+
     '<input id="mUrl" placeholder="https://xxxx.supabase.co" style="'+box+'" autocapitalize="none" autocomplete="off">'+
-    '<input id="mRead" placeholder="anon public key" style="'+box+'" autocapitalize="none" autocomplete="off">'+
+    '<input id="mRead" placeholder="Publishable key (sb_publishable_\u2026)" style="'+box+'" autocapitalize="none" autocomplete="off">'+
     '<input id="mId" placeholder="row name" style="'+box+'" autocapitalize="none" autocomplete="off">'+
     '<p id="mErr" style="font-size:12px;font-weight:700;white-space:pre-wrap;min-height:16px;margin:6px 0"></p>'+
     '<button class="btn primary" id="mSave" style="width:100%;margin-bottom:8px">'+esc(t("dlgSave"))+'</button>'+
@@ -2627,6 +2935,7 @@ function openCloudSetup(){
     saveCloudCfg(f);
     var o=document.getElementById("teamOverlay"); if(o) o.style.display="none";
     applyRole(); render(); toastMsg(t("dlgSaved"));
+    setTimeout(openAdminLogin, 300);                 // next step: sign in as the admin
   });
 }
 
@@ -2723,6 +3032,12 @@ function viewSettings(){
        '</span></div></div></div>';
     h+='<div style="padding:14px 0"><button class="btn" data-act="refreshTeam" style="width:100%">Refresh</button></div>';
     if(cloudReady()){
+      h+='<div class="divider"><h3>'+esc(t("membership"))+'</h3><div class="group">'+
+         (memberSelf
+           ? '<div class="kv"><span class="k">'+esc(t("joinedAs"))+'</span><span class="v" style="font-size:14px">'+esc(memberSelf.name||"")+'</span></div>'+
+             '<button class="kv" data-act="leaveMember" style="width:100%;background:transparent;border:none;font-family:inherit;cursor:pointer;text-align:left"><span style="color:var(--neg);font-weight:600">'+esc(t("notYouLeave"))+'</span></button>'
+           : '<button class="kv" data-act="gotoAsk" style="width:100%;background:transparent;border:none;font-family:inherit;cursor:pointer;text-align:left"><span style="color:var(--brand);font-weight:600">'+esc(t("joinWithCode"))+'</span></button>')+
+         '</div></div>';
       h+='<div class="divider"><h3>'+esc(t("adminAccount"))+'</h3><div class="group">'+
          '<button class="kv" data-act="adminLogin" style="width:100%;background:transparent;border:none;font-family:inherit;cursor:pointer;text-align:left">'+
          '<span style="color:var(--brand);font-weight:600">'+esc(t("signInAdmin"))+'</span></button></div>'+
@@ -2768,7 +3083,7 @@ function viewSettings(){
     var inCircle = m.cooks!==false;
     h+='<div class="mrow2">'+
        '<span class="mrow2-n">'+(i+1)+'</span>'+
-       avatarHtml(m)+
+       '<span class="avwrap">'+avatarHtml(m)+(memberCodes[m.id]&&memberCodes[m.id].joined_at?'<i class="joindot"></i>':'')+'</span>'+
        '<span class="mrow2-t">'+
          '<span class="mrow2-name">'+esc(m.name)+'</span>'+
          '<span class="mrow2-sub">'+
@@ -2809,6 +3124,9 @@ function viewSettings(){
              '<span class="mrow2-t"><span class="mrow2-name">'+esc(sm.name)+'</span>'+
              '<span class="mrow2-sub">'+(smIn?esc(t("inCircle")):'<span class="off">'+esc(t("notCooking"))+'</span>')+'</span></span>'+
            '</div>'+
+           (window.__memSheetMode==="code" ? codePanelHtml(sm) : (
+           (cloudReady()&&adminSession?'<button class="msheet-act" data-act="memCode">'+ICONS.qr+'<span>'+esc(t("memberCode"))+'</span>'+
+             (memberCodes[sm.id]&&memberCodes[sm.id].joined_at?'<span class="jtag">'+esc(t("joinedShort"))+'</span>':'')+'</button>':'')+
            (window.__memSheetMode==="avatar"
              ? '<div class="msheet-pad">'+
                '<div style="display:flex;gap:10px;align-items:center">'+
@@ -2834,6 +3152,7 @@ function viewSettings(){
            (smHasData?''
              : '<button class="msheet-act dg" data-delmem="'+sm.id+'">'+ICONS.trash+
                '<span>'+esc(armed["mem"+sm.id]?t("confirmDel"):t("del"))+'</span></button>')+
+         ''))+
          '</div>'+
          '<button class="msheet-cancel" data-act="closeMemSheet">'+esc(t("cancel"))+'</button>'+
          '</div>';
@@ -2968,7 +3287,8 @@ function viewSettings(){
   return base+m+'</div>';
 }
 
-function render(){
+function render(){ renderCore(); afterRender(); }
+function renderCore(){
   renderHeader(); renderTabs(); renderBanner();
   var v=document.getElementById("view");
   v.innerHTML = tab==="summary"?viewSummary():
@@ -3052,7 +3372,7 @@ document.addEventListener("toggle",function(ev){
 },true);
 
 document.addEventListener("click",function(ev){
-  var el = ev.target.closest("[data-tab],[data-act],[data-expand],[data-meal],[data-pickday],[data-scope],[data-deltx],[data-toggle],[data-cooktoggle],[data-setpage],[data-editname],[data-memmenu],[data-pickcook],[data-reqok],[data-reqno],[data-vendor],[data-cookdates],[data-ftype],[data-delmem],[data-editavatar],[data-perm],[data-dep]");
+  var el = ev.target.closest("[data-tab],[data-act],[data-expand],[data-meal],[data-pickday],[data-scope],[data-deltx],[data-toggle],[data-cooktoggle],[data-setpage],[data-editname],[data-memmenu],[data-pickcook],[data-reqok],[data-reqno],[data-vendor],[data-cookdates],[data-ftype],[data-withdraw],[data-delmem],[data-editavatar],[data-perm],[data-dep]");
   if(!el) return;
 
   // Looking, not touching: members may only move around the app.
@@ -3060,6 +3380,7 @@ document.addEventListener("click",function(ev){
     var harmless = el.dataset.tab || el.dataset.expand || el.dataset.pickday || el.dataset.scope || el.dataset.ftype
                 || el.dataset.act === "toggleTheme" || el.dataset.act === "exportCsv"
                 || el.dataset.act === "dismissToast" || el.dataset.act === "adminLogin" || el.dataset.act === "refreshTeam"
+                || el.dataset.act === "joinCode" || el.dataset.act === "leaveMember" || el.dataset.withdraw
                 // asking to cook is the one thing a member may do
                 || el.dataset.act === "gotoAsk" || el.dataset.act === "sendCookReq"
                 || el.dataset.act === "switchReqWho" || el.dataset.pickcook || el.dataset.cookdates;
@@ -3133,6 +3454,10 @@ document.addEventListener("click",function(ev){
   if(el.dataset.cookdates){
     window.__cookDates = (window.__cookDates===el.dataset.cookdates) ? null : el.dataset.cookdates;
     render(); return;
+  }
+  if(el.dataset.withdraw){
+    withdrawCookReq(el.dataset.withdraw).then(function(ok){ toastMsg(ok?t("withdrawn"):t("couldNotSend")); fetchCookReqs(); });
+    return;
   }
   if(el.dataset.pickcook){ window.__reqDate=el.dataset.pickcook; render(); return; }
   if(el.dataset.reqok){
@@ -3233,13 +3558,49 @@ document.addEventListener("click",function(ev){
     var nEl=document.getElementById("reqNote");
     var note=nEl?nEl.value.trim():"";
     if(!window.__reqDate){ toastMsg(t("pickDayFirst")); return; }
-    var wEl=document.getElementById("reqWho");
-    var whoId=wEl?wEl.value:(window.__reqWho||"");
-    window.__reqWho=whoId;
-    sendCookReq(window.__reqDate, note, whoId).then(function(ok){
+    sendCookReq(window.__reqDate, note).then(function(ok){
       if(ok){ window.__reqDate=null; window.__reqNote=""; toastMsg(t("requestSent")); fetchCookReqs(); }
-      else toastMsg(t("couldNotSend"));
+      else { toastMsg(reqErrText(window.__reqSendErr)); render(); }
     });
+  }
+  else if(a==="joinCode"){
+    var code=[].map.call(document.querySelectorAll("[data-cbox]"),function(i){ return i.value; }).join("");
+    var ce=document.getElementById("cerr");
+    var shake=function(){ var b=document.getElementById("cboxes"); if(b){ b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); } };
+    if(code.length<6){ if(ce){ ce.style.color="var(--neg)"; ce.textContent=t("enter6"); } shake(); return; }
+    if(ce){ ce.style.color="var(--ink3)"; ce.textContent=t("checking"); }
+    joinWithCode(code).then(function(ok){
+      if(ok){ toastMsg(t("welcomeName").replace("{name}",memberSelf.name)); fetchCookReqs(); render(); }
+      else { var c2=document.getElementById("cerr"); if(c2){ c2.style.color="var(--neg)"; c2.textContent=t("codeNoMatch"); } shake(); }
+    }).catch(function(e){
+      var c3=document.getElementById("cerr");
+      if(c3){ c3.style.color="var(--neg)"; c3.textContent=/too_many/.test(e.message)?t("tooMany"):(t("couldNotSend")+" ("+e.message+")"); }
+    });
+  }
+  else if(a==="leaveMember"){ leaveMember(); toastMsg(t("leftPhone")); }
+  else if(a==="memCode"){
+    window.__memSheetMode="code"; window.__codeErr=null; render();
+    var cm=state.members.filter(function(x){ return x.id===window.__memSheet; })[0];
+    fetchCodes().then(function(){
+      if(cm&&!memberCodes[cm.id]) return saveCode(cm).then(render).catch(function(e){ window.__codeErr=t("codeErr")+" ("+e.message+")"; render(); });
+      render();
+    });
+  }
+  else if(a==="shareCode"){
+    var sm2=state.members.filter(function(x){ return x.id===window.__memSheet; })[0], mc2=sm2&&memberCodes[sm2.id];
+    if(!mc2) return;
+    var msg=t("shareText1").replace("{name}",sm2.name).replace("{mess}",messTitle())+"\n"+personalLink(sm2.id)+"\n\n"+
+            t("shareText2")+" "+mc2.code.slice(0,3)+" "+mc2.code.slice(3);
+    if(navigator.share) navigator.share({title:messTitle(),text:msg}).catch(function(){});
+    else copyStr(msg,t("copied"));
+  }
+  else if(a==="resetCode"){
+    var rid=window.__memSheet, rm=state.members.filter(function(x){ return x.id===rid; })[0];
+    if(!rm) return;
+    if(!armed["rc"+rid]){ armed["rc"+rid]=true; render(); setTimeout(function(){ armed["rc"+rid]=false; render(); },4000); return; }
+    armed["rc"+rid]=false;
+    saveCode(rm,true).then(function(){ toastMsg(t("codeResetDone").replace("{name}",rm.name)); render(); })
+      .catch(function(){ toastMsg(t("codeErr")); });
   }
   else if(a==="switchReqWho"){ window.__reqWho=null; window.__reqDate=null; render(); }
   else if(a==="closeMemSheet"){ window.__memSheet=null; window.__memSheetMode=null; render(); }
@@ -3424,17 +3785,20 @@ document.addEventListener("click",function(ev){
   if(ev.target.closest("[data-closepicker]")) closePicker();
 });
 
+readJoinLink();
 loadAdmin();
+loadMember();
 applyRole();                 // signed-in admin = editor, everyone else = read-only
 load();
 render();
 if(guestMode){
   refreshTeam(true);
   fetchCookReqs();
+  verifyMember();
 } else {
   scheduleAutoBackup();
   if(cloudReady()){
-    pullIfNewer(false).then(function(){ autoSecurityCheck(); });   // pull FIRST, so we never overwrite the cloud with an empty copy
+    pullIfNewer(false).then(function(){ autoSecurityCheck(); fetchCodes(); });   // pull FIRST, so we never overwrite the cloud with an empty copy
     fetchCookReqs();
   }
 }
@@ -3444,11 +3808,28 @@ setInterval(function(){
   if(!document.hidden && (teamCfg || cloudReady())) fetchCookReqs();
 }, 60000);
 
+document.addEventListener("input", function(ev){
+  var b=ev.target; if(!b||!b.dataset||b.dataset.cbox===undefined) return;
+  var all=document.querySelectorAll("[data-cbox]"), from=+b.dataset.cbox, digits=b.value.replace(/\D/g,"");
+  var ce=document.getElementById("cerr"); if(ce) ce.textContent="";
+  if(digits.length>1){
+    if(digits.length>=6) from=0;
+    for(var i=0;i<digits.length&&from+i<all.length;i++) all[from+i].value=digits[i];
+    all[Math.min(from+digits.length,all.length)-1].focus();
+  } else { b.value=digits; if(digits&&all[from+1]) all[from+1].focus(); }
+  window.__cboxVals=[].map.call(all,function(x){ return x.value; });
+});
+document.addEventListener("keydown", function(ev){
+  var b=ev.target; if(!b||!b.dataset||b.dataset.cbox===undefined) return;
+  if(ev.key==="Backspace"&&!b.value){ var all=document.querySelectorAll("[data-cbox]"), p=all[+b.dataset.cbox-1]; if(p){ p.focus(); p.value=""; } }
+  if(ev.key==="Enter"){ var j=document.querySelector('[data-act="joinCode"]'); if(j) j.click(); }
+});
 document.addEventListener("visibilitychange", function(){
   if(document.hidden) return;
   if(teamCfg) refreshTeam(false);
   else if(cloudReady()) pullIfNewer(true);
   if(teamCfg || cloudReady()) fetchCookReqs();
+  if(guestMode) verifyMember();
 });
 </script>
 </body>
