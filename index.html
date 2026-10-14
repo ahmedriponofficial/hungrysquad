@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Mess Ledger">
+<meta name="apple-mobile-web-app-title" content="Hungry Squad">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta name="theme-color" content="#5B4FE5">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Mess Ledger</title>
+<title>Hungry Squad</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -729,7 +729,7 @@
     <div class="brandline">
       <div class="greet">
         <div class="greetrow"><div class="greetdate" id="greetDate"></div><span id="admBadge" class="admbadge" style="display:none">Admin</span></div>
-        <h1 id="appTitle">Mess Ledger</h1>
+        <h1 id="appTitle">Hungry Squad</h1>
       </div>
       <div class="hdright">
         <div class="status" id="saveStatus">&nbsp;</div>
@@ -795,17 +795,21 @@ function normaliseUrl(u){
    NEVER paste the "service_role" key here.
    =========================================================================== */
 var APP_CONFIG = {
-  supabaseUrl: "",   // e.g. https://abcdefghijklmnop.supabase.co
-  anonKey:     "",   // Supabase > Project Settings > API > "anon public"
+  supabaseUrl: "https://iqptxfgkrzecvrfzupsk.supabase.co",   // e.g. https://abcdefghijklmnop.supabase.co
+  anonKey:     "sb_publishable_g9y_ifxK6d7pstyw2EhYQQ_SaTnuZ6Y",   // Supabase > Project Settings > API > "anon public"
   row:         "mess"
 };
 var DEFAULT_CLOUD = { url: APP_CONFIG.supabaseUrl, readKey: APP_CONFIG.anonKey, id: APP_CONFIG.row };
 function cloudCfg(){
-  try{
-    var c = JSON.parse(localStorage.getItem(CLOUD_KEY));
-    if(c) return c;
-  }catch(e){}
-  return DEFAULT_CLOUD.url ? Object.assign({}, DEFAULT_CLOUD) : null;
+  var st=null; try{ st=JSON.parse(localStorage.getItem(CLOUD_KEY)); }catch(e){}
+  // A website with its mess built in ALWAYS uses that mess. An older connection
+  // saved on this phone (e.g. from testing) can never override it.
+  if(DEFAULT_CLOUD.url){
+    var d=Object.assign({}, DEFAULT_CLOUD);
+    if(st&&st.url&&normaliseUrl(st.url)===normaliseUrl(d.url)&&st.lastPush) d.lastPush=st.lastPush;
+    return d;
+  }
+  return st||null;
 }
 function saveCloudCfg(c){ try{ localStorage.setItem(CLOUD_KEY, JSON.stringify(c)); return true; }catch(e){ return false; } }
 function jwtRole(k){
@@ -919,15 +923,25 @@ function adminToken(){
 }
 // Who is this device?  Signed-in admin = can edit.  Everyone else = read-only.
 // With no database connected at all it is a private local copy, so it can edit.
+// The plain address is ALWAYS the member view, on every phone (yours too).
+// Editing happens only on  .../#admin  AND only after signing in.
+function isAdminUrl(){ return /^#admin\b/.test(location.hash); }
 function applyRole(){
   deputyMode=false;
-  if(cloudReady()&&!adminSession){
+  if(cloudReady()&&!(adminSession&&isAdminUrl())){
     guestMode=true; var c=cloudCfg();
     teamCfg={url:normaliseUrl(c.url),readKey:c.readKey,id:c.id};
   } else { guestMode=false; teamCfg=null; }
 }
+// switch this page into admin mode (after signing in, or opening /#admin when already signed in)
+function enterAdminMode(){
+  applyRole(); load(); render();          // this phone's own saved copy first; the pull decides
+  pullIfNewer(false).then(function(){ render(); autoSecurityCheck(); fetchCodes(); });
+  fetchCookReqs();
+}
+function goMemberAddress(){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){ location.hash=""; } }
 function adminSignOut(){
-  adminSession=null; saveAdmin(); syncReady=false; window.__dbOpen=false;
+  adminSession=null; saveAdmin(); syncReady=false; window.__dbOpen=false; goMemberAddress();
   applyRole(); tab="summary"; window.__setPage=null;
   render(); refreshTeam(false); fetchCookReqs();
 }
@@ -980,9 +994,8 @@ function openAdminLogin(){
     err.style.color="var(--ink3)"; err.textContent=t("signingIn"); go.disabled=true;
     adminLogin(em,pw).then(function(){
       var o=document.getElementById("teamOverlay"); if(o) o.style.display="none";
-      applyRole(); load(); render(); toastMsg(t("signedInOk"));   // own saved copy first; the pull below decides
-      pullIfNewer(false).then(function(){ render(); autoSecurityCheck(); fetchCodes(); });
-      fetchCookReqs();
+      if(!isAdminUrl()){ try{ history.replaceState(null,"",location.pathname+location.search+"#admin"); }catch(e){} }
+      enterAdminMode(); toastMsg(t("signedInOk"));
     }).catch(function(e){
       go.disabled=false; err.style.color="var(--neg)"; err.textContent=(e&&e.message)||"Sign-in failed";
     });
@@ -1076,6 +1089,7 @@ function b64urlDec(x){ x=x.replace(/-/g,"+").replace(/_/g,"/"); while(x.length%4
 function memberLink(){
   var base=realOrigin()||location.href.split("#")[0], c=cloudCfg();
   if(!c||!c.url) return base;
+  if(DEFAULT_CLOUD.url&&normaliseUrl(DEFAULT_CLOUD.url)===normaliseUrl(c.url)) return base;   // site already knows the mess
   var m=normaliseUrl(c.url).match(/^https:\/\/([a-z0-9]+)\.supabase\.co$/i);
   return base+"#join="+b64urlEnc(JSON.stringify({u:m?m[1]:normaliseUrl(c.url),k:c.readKey,r:c.id}));
 }
@@ -1128,10 +1142,10 @@ function downloadSiteFile(){
 function deputyMay(what){ return false; }
 function canWrite(){
   if(!cloudReady()) return true;         // private copy on this device
-  return !!adminSession;                 // otherwise: only a signed-in admin
+  return !!adminSession && isAdminUrl(); // otherwise: signed-in admin, on the admin address
 }
 
-var APP_VERSION = "12.3";
+var APP_VERSION = "12.5";
 
 var STR = {
   en:{
@@ -1143,7 +1157,7 @@ var STR = {
     wAdminTitle:"Starting a new mess?",
     wAdminText:"Connect your own free Supabase database, then sign in as the admin.",
     wLocal:"Just try it on this phone (nothing is shared)",
-    thisPhoneOnly:"Signed in on this phone only. Anyone else who opens the link sees the read-only view.",
+    thisPhoneOnly:"Editing only works on the /#admin address, on this phone. The plain address is the member view — for everyone, you included.",
     linksTitle:"Links",
     copyAdminLink:"Copy the admin link",
     adminLinkHint:"Opens the sign-in box. Keep it for yourself — it gives no access without your password.",
@@ -1156,14 +1170,14 @@ var STR = {
     codeErr:"Could not make the code. Is the database set up with the latest supabase-lock.sql?",
     joinedOn:"Joined on",
     notJoinedYet:"Not joined yet",
-    codeHint:"Scan with the phone camera, or type the 6 digits on the Ask to cook page.",
+    codeHint:"They type this code once, on the Ask to cook page. It works on one phone at a time until you reset it.",
     shareWith:"Share with",
     resetCode:"Reset code",
     tapAgainReset:"Tap again to reset",
     resetHint:"Reset if a phone is lost or the code was shared. The old code stops working at once.",
     codeResetDone:"{name}’s old code no longer works",
-    shareText1:"{name}, here is your link for {mess}. Open it once on your phone:",
-    shareText2:"Or type this code:",
+    shareText1:"{name}, open {mess} here:",
+    shareText2:"Then go to Ask to cook and type your code:",
     qrOffline:"The QR needs internet to draw. Share the link or the code instead.",
     joinTitle:"Join",
     joinHead:"Join {mess}",
@@ -1210,7 +1224,7 @@ var STR = {
     badKey:"That is a SECRET key (sb_secret_\u2026 or service_role). It must never go in the app. Use the Publishable key.",
     badKeyBanner:"The key in this page is a SECRET key. Remove it now.",
     dbOpenBanner:"Anyone can edit your data right now. Run supabase-lock.sql in Supabase.",
-    appTitle:"Mess Ledger", appSub:"Meal and money accounts",
+    appTitle:"Hungry Squad", appSub:"Meal and money accounts",
     messName:"Mess name", messNameHint:"Shown as the title at the top of every page.",
     tabSummary:"Summary", tabMeals:"Meals", tabMoney:"Transactions", tabMembers:"Members", tabSettings:"Settings",
     saved:"Saved \u2713", saveFailed:"Save failed",
@@ -1314,7 +1328,7 @@ var STR = {
     wAdminTitle:"নতুন মেস শুরু করছেন?",
     wAdminText:"নিজের ফ্রি Supabase ডেটাবেস যুক্ত করুন, তারপর অ্যাডমিন হিসেবে সাইন ইন করুন।",
     wLocal:"শুধু এই ফোনে চেষ্টা করুন (কিছু শেয়ার হবে না)",
-    thisPhoneOnly:"শুধু এই ফোনে সাইন ইন করা আছে। অন্য কেউ লিংক খুললে শুধু দেখতে পারবেন।",
+    thisPhoneOnly:"শুধু /#admin ঠিকানায়, এই ফোনেই সম্পাদনা করা যায়। সাধারণ ঠিকানা সবার জন্য সদস্যদের ভিউ — আপনার জন্যও।",
     linksTitle:"লিংক",
     copyAdminLink:"অ্যাডমিন লিংক কপি করুন",
     adminLinkHint:"সাইন ইন বক্স খোলে। নিজের কাছে রাখুন — পাসওয়ার্ড ছাড়া এটি কোনো অনুমতি দেয় না।",
@@ -1327,14 +1341,14 @@ var STR = {
     codeErr:"কোড তৈরি করা যায়নি। ডেটাবেসে কি সর্বশেষ supabase-lock.sql চালানো হয়েছে?",
     joinedOn:"যুক্ত হয়েছে",
     notJoinedYet:"এখনো যুক্ত হয়নি",
-    codeHint:"ফোনের ক্যামেরা দিয়ে স্ক্যান করুন, বা রান্নার অনুরোধ পেজে ৬ সংখ্যা লিখুন।",
+    codeHint:"সদস্য এই কোড একবার ‘রান্নার অনুরোধ’ পেজে লিখবেন। রিসেট না করা পর্যন্ত এটি তাঁর ফোনে কাজ করবে।",
     shareWith:"শেয়ার করুন",
     resetCode:"কোড রিসেট",
     tapAgainReset:"রিসেট করতে আবার চাপুন",
     resetHint:"ফোন হারালে বা কোড শেয়ার হয়ে গেলে রিসেট করুন। পুরনো কোড সাথে সাথে বন্ধ হয়ে যাবে।",
     codeResetDone:"{name}-এর পুরনো কোড আর কাজ করবে না",
-    shareText1:"{name}, {mess}-এর জন্য আপনার লিংক। ফোনে একবার খুলুন:",
-    shareText2:"অথবা এই কোড লিখুন:",
+    shareText1:"{name}, {mess} এখানে খুলুন:",
+    shareText2:"তারপর ‘রান্নার অনুরোধ’-এ গিয়ে আপনার কোড লিখুন:",
     qrOffline:"QR দেখাতে ইন্টারনেট দরকার। লিংক বা কোড শেয়ার করুন।",
     joinTitle:"যুক্ত হোন",
     joinHead:"{mess}-এ যুক্ত হোন",
@@ -1897,14 +1911,12 @@ function drawQR(el,text){
   });
 }
 function afterRender(){
-  if(window.__memSheet&&window.__memSheetMode==="code") drawQR(document.getElementById("qrbox"),personalLink(window.__memSheet));
   if(window.__cboxVals){ var bx=document.querySelectorAll("[data-cbox]"); for(var i=0;i<bx.length;i++) bx[i].value=window.__cboxVals[i]||""; }
 }
 function codePanelHtml(sm){
   var mc=memberCodes[sm.id];
   if(!mc) return '<div class="msheet-pad"><div class="hint" style="margin:0;text-align:center">'+esc(window.__codeErr||t("makingCode"))+'</div></div>';
   return '<div class="msheet-pad" style="text-align:center">'+
-    '<div class="qrbox" id="qrbox"></div>'+
     '<div class="codebig">'+mc.code.split("").map(function(ch,i){ return (i===3?'<span class="gap"></span>':'')+'<span>'+ch+'</span>'; }).join("")+'</div>'+
     '<div class="tsub" style="margin:7px 0 2px"><span class="cdot'+(mc.joined_at?" on":"")+'"></span>'+
       esc(mc.joined_at?(t("joinedOn")+" "+(mc.device||"")):t("notJoinedYet"))+'</div>'+
@@ -1925,7 +1937,7 @@ function joinCardHtml(){
     '<div class="hint" style="margin:0 0 12px">'+esc(t("joinHint"))+'</div>'+
     '<div class="cboxes" id="cboxes">'+boxes+'</div><div class="cerr" id="cerr"></div>'+
     '<button class="b wide" data-act="joinCode">'+esc(t("joinBtn"))+'</button>'+
-    '<div class="hint" style="margin:12px 0 0">'+esc(t("joinQrHint"))+'</div></div></div>';
+    '</div></div>';
 }
 
 function fetchCookReqs(){
@@ -2345,7 +2357,7 @@ function pushToSheet(){
 
 function renderHeader(){
   var now=new Date();
-  var __ab=document.getElementById("admBadge"); if(__ab) __ab.style.display=(adminSession&&cloudReady())?"inline-flex":"none";
+  var __ab=document.getElementById("admBadge"); if(__ab) __ab.style.display=(adminSession&&cloudReady()&&!guestMode)?"inline-flex":"none";
   var __nm=(state.messName||"").trim()||t("appTitle");
   document.getElementById("appTitle").textContent=__nm;
   try{ document.title=__nm;
@@ -3516,7 +3528,7 @@ document.addEventListener("click",function(ev){
     return;
   }
   if(el.dataset.act==="cloudSetup"){ openCloudSetup(); return; }
-  if(el.dataset.act==="adminLogin"){ openAdminLogin(); return; }
+  if(el.dataset.act==="adminLogin"){ if(!isAdminUrl()){ location.hash="#admin"; return; } openAdminLogin(); return; }
   if(el.dataset.act==="copyAdminLink"){ copyStr(adminLink(), t("copied")); return; }
   if(el.dataset.act==="downloadSite"){ downloadSiteFile(); return; }
   if(el.dataset.act==="welcomeLocal"){ try{ localStorage.setItem("mess-local-ok","1"); }catch(e){} render(); return; }
@@ -3700,7 +3712,7 @@ document.addEventListener("click",function(ev){
   else if(a==="shareCode"){
     var sm2=state.members.filter(function(x){ return x.id===window.__memSheet; })[0], mc2=sm2&&memberCodes[sm2.id];
     if(!mc2) return;
-    var msg=t("shareText1").replace("{name}",sm2.name).replace("{mess}",messTitle())+"\n"+personalLink(sm2.id)+"\n\n"+
+    var msg=t("shareText1").replace("{name}",sm2.name).replace("{mess}",messTitle())+"\n"+memberLink()+"\n\n"+
             t("shareText2")+" "+mc2.code.slice(0,3)+" "+mc2.code.slice(3);
     if(navigator.share) navigator.share({title:messTitle(),text:msg}).catch(function(){});
     else copyStr(msg,t("copied"));
@@ -3935,6 +3947,15 @@ document.addEventListener("keydown", function(ev){
   var b=ev.target; if(!b||!b.dataset||b.dataset.cbox===undefined) return;
   if(ev.key==="Backspace"&&!b.value){ var all=document.querySelectorAll("[data-cbox]"), p=all[+b.dataset.cbox-1]; if(p){ p.focus(); p.value=""; } }
   if(ev.key==="Enter"){ var j=document.querySelector('[data-act="joinCode"]'); if(j) j.click(); }
+});
+// moving between the member address and /#admin switches the mode
+window.addEventListener("hashchange", function(){
+  if(/^#(join)=/.test(location.hash)){ location.reload(); return; }
+  var wasGuest=guestMode; applyRole();
+  if(isAdminUrl()&&!adminSession&&cloudReady()){ render(); openAdminLogin(); return; }
+  if(wasGuest&&!guestMode){ enterAdminMode(); return; }
+  if(!wasGuest&&guestMode){ syncReady=false; tab="summary"; window.__setPage=null; render(); refreshTeam(false); fetchCookReqs(); return; }
+  render();
 });
 document.addEventListener("visibilitychange", function(){
   if(document.hidden) return;
