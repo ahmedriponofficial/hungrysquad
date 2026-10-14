@@ -714,6 +714,12 @@
   .hiname{font-size:20px;font-weight:800;letter-spacing:-0.4px}
   .leaverow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--ink3);margin:10px 4px 0}
   .leaverow button{border:none;background:none;color:var(--neg);font-family:inherit;font-weight:700;font-size:12.5px;cursor:pointer;padding:4px}
+  .greetrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .admbadge{align-items:center;gap:4px;background:var(--brand);color:#fff;border-radius:var(--rfull);
+    padding:2px 8px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+  body.welcome #tabbar, body.welcome #fabAdd, body.welcome nav, body.welcome #monthBtn{display:none!important}
+  .wlocal{display:block;margin:4px auto 0;border:none;background:none;color:var(--ink3);font-family:inherit;
+    font-size:12.5px;font-weight:600;text-decoration:underline;cursor:pointer;padding:8px}
 </style>
 </head>
 <body>
@@ -722,7 +728,7 @@
   <div class="wrap">
     <div class="brandline">
       <div class="greet">
-        <div class="greetdate" id="greetDate"></div>
+        <div class="greetrow"><div class="greetdate" id="greetDate"></div><span id="admBadge" class="admbadge" style="display:none">Admin</span></div>
         <h1 id="appTitle">Mess Ledger</h1>
       </div>
       <div class="hdright">
@@ -1074,7 +1080,8 @@ function memberLink(){
   return base+"#join="+b64urlEnc(JSON.stringify({u:m?m[1]:normaliseUrl(c.url),k:c.readKey,r:c.id}));
 }
 function readJoinLink(){
-  var mm=location.hash.match(/^#join=([A-Za-z0-9_\-]+)/); if(!mm) return false;
+  if(/^#admin\b/.test(location.hash)) window.__wantAdmin=true;
+  var mm=location.hash.match(/^#(?:join|admin)=([A-Za-z0-9_\-]+)/); if(!mm) return false;
   try{
     var p=JSON.parse(b64urlDec(mm[1]));
     var url=/^https?:\/\//.test(p.u)?normaliseUrl(p.u):("https://"+p.u+".supabase.co");
@@ -1094,16 +1101,55 @@ function readJoinLink(){
   }catch(e){ return false; }
 }
 function deputyLink(){ return memberLink(); }
+// The admin link only opens the sign-in box. It grants nothing by itself.
+function adminLink(){
+  var base=realOrigin()||location.href.split("#")[0], c=cloudCfg();
+  if(!c||!c.url) return base+"#admin";
+  if(DEFAULT_CLOUD.url&&normaliseUrl(DEFAULT_CLOUD.url)===normaliseUrl(c.url)) return base+"#admin";   // site already knows the mess
+  var m=normaliseUrl(c.url).match(/^https:\/\/([a-z0-9]+)\.supabase\.co$/i);
+  return base+"#admin="+b64urlEnc(JSON.stringify({u:m?m[1]:normaliseUrl(c.url),k:c.readKey,r:c.id}));
+}
+// A copy of this website with THIS mess's public read connection built in,
+// so the plain web address shows the mess (read-only) on any phone.
+function downloadSiteFile(){
+  var c=cloudCfg();
+  if(!c||!c.url||!keyIsSafe(c.readKey)){ toastMsg(t("couldNotSend")); return; }
+  fetch(location.href.split("#")[0],{cache:"no-store"}).then(function(r){ return r.text(); }).then(function(src){
+    var a=src.indexOf("var APP_CONFIG = {"), b=src.indexOf("};",a);
+    if(a<0||b<0) throw new Error("config block not found");
+    var blk=src.slice(a,b)
+      .replace(/supabaseUrl:\s*"[^"]*"/,'supabaseUrl: "'+normaliseUrl(c.url)+'"')
+      .replace(/anonKey:\s*"[^"]*"/,'anonKey:     "'+c.readKey+'"')
+      .replace(/row:\s*"[^"]*"/,'row:         "'+c.id+'"');
+    download("index.html",src.slice(0,a)+blk+src.slice(b),"text/html");
+    toastMsg(t("siteFileReady"));
+  }).catch(function(e){ toastMsg(t("couldNotSend")+" ("+((e&&e.message)||e)+")"); });
+}
 function deputyMay(what){ return false; }
 function canWrite(){
   if(!cloudReady()) return true;         // private copy on this device
   return !!adminSession;                 // otherwise: only a signed-in admin
 }
 
-var APP_VERSION = "12.2";
+var APP_VERSION = "12.3";
 
 var STR = {
   en:{
+    wMemberTitle:"Are you a mess member?",
+    wMemberText:"Open the link your mess admin sent you — it connects this phone to your mess. Or paste that link here:",
+    wPastePh:"Paste your link",
+    wOpen:"Open",
+    wBadLink:"That does not look like a mess link. Ask your admin to send it again.",
+    wAdminTitle:"Starting a new mess?",
+    wAdminText:"Connect your own free Supabase database, then sign in as the admin.",
+    wLocal:"Just try it on this phone (nothing is shared)",
+    thisPhoneOnly:"Signed in on this phone only. Anyone else who opens the link sees the read-only view.",
+    linksTitle:"Links",
+    copyAdminLink:"Copy the admin link",
+    adminLinkHint:"Opens the sign-in box. Keep it for yourself — it gives no access without your password.",
+    downloadSite:"Download the website file for this mess",
+    downloadSiteHint:"Upload it as your index.html. Then the plain web address shows this mess, read-only, on any phone.",
+    siteFileReady:"Saved index.html — upload it to your website",
     memberCode:"Member code",
     joinedShort:"Joined",
     makingCode:"Making a code…",
@@ -1260,6 +1306,21 @@ var STR = {
     confirmRestore:"Confirm restore", cancel:"Cancel"
   },
   bn:{
+    wMemberTitle:"আপনি কি মেসের সদস্য?",
+    wMemberText:"অ্যাডমিনের পাঠানো লিংকটি খুলুন — এটি এই ফোনকে আপনার মেসের সাথে যুক্ত করে। অথবা লিংকটি এখানে পেস্ট করুন:",
+    wPastePh:"লিংক পেস্ট করুন",
+    wOpen:"খুলুন",
+    wBadLink:"এটি মেসের লিংক মনে হচ্ছে না। অ্যাডমিনকে আবার পাঠাতে বলুন।",
+    wAdminTitle:"নতুন মেস শুরু করছেন?",
+    wAdminText:"নিজের ফ্রি Supabase ডেটাবেস যুক্ত করুন, তারপর অ্যাডমিন হিসেবে সাইন ইন করুন।",
+    wLocal:"শুধু এই ফোনে চেষ্টা করুন (কিছু শেয়ার হবে না)",
+    thisPhoneOnly:"শুধু এই ফোনে সাইন ইন করা আছে। অন্য কেউ লিংক খুললে শুধু দেখতে পারবেন।",
+    linksTitle:"লিংক",
+    copyAdminLink:"অ্যাডমিন লিংক কপি করুন",
+    adminLinkHint:"সাইন ইন বক্স খোলে। নিজের কাছে রাখুন — পাসওয়ার্ড ছাড়া এটি কোনো অনুমতি দেয় না।",
+    downloadSite:"এই মেসের ওয়েবসাইট ফাইল ডাউনলোড করুন",
+    downloadSiteHint:"এটিকে index.html হিসেবে আপলোড করুন। তখন সাধারণ ঠিকানাতেই যেকোনো ফোনে মেস দেখা যাবে (শুধু দেখা)।",
+    siteFileReady:"index.html সংরক্ষিত — ওয়েবসাইটে আপলোড করুন",
     memberCode:"সদস্য কোড",
     joinedShort:"যুক্ত",
     makingCode:"কোড তৈরি হচ্ছে…",
@@ -2284,6 +2345,7 @@ function pushToSheet(){
 
 function renderHeader(){
   var now=new Date();
+  var __ab=document.getElementById("admBadge"); if(__ab) __ab.style.display=(adminSession&&cloudReady())?"inline-flex":"none";
   var __nm=(state.messName||"").trim()||t("appTitle");
   document.getElementById("appTitle").textContent=__nm;
   try{ document.title=__nm;
@@ -2972,7 +3034,16 @@ function teamCardHtml(){
      '<div class="kv"><span class="k">'+esc(t("signedInAs"))+'</span>'+
      '<span class="v" style="font-size:13px;max-width:60%;overflow:hidden;text-overflow:ellipsis">'+esc(adminSession?adminSession.email:"")+'</span></div>'+
      '<button class="kv" data-act="adminSignOut" style="width:100%;background:transparent;border:none;font-family:inherit;cursor:pointer;text-align:left">'+
-     '<span style="color:var(--neg);font-weight:600">'+esc(t("signOut"))+'</span></button></div></div>';
+     '<span style="color:var(--neg);font-weight:600">'+esc(t("signOut"))+'</span></button></div>'+
+     '<div class="hint">'+esc(t("thisPhoneOnly"))+'</div></div>';
+  h+='<div class="divider"><h2>'+esc(t("linksTitle"))+'</h2><div class="group">'+
+     '<button class="kv" data-act="copyAdminLink" style="width:100%;background:transparent;border:none;font-family:inherit;cursor:pointer;text-align:left">'+
+       '<span><span style="display:block;font-weight:600;color:var(--brand)">'+esc(t("copyAdminLink"))+'</span>'+
+       '<span class="tsub">'+esc(t("adminLinkHint"))+'</span></span></button>'+
+     '<button class="kv" data-act="downloadSite" style="width:100%;background:transparent;border:none;font-family:inherit;cursor:pointer;text-align:left">'+
+       '<span><span style="display:block;font-weight:600;color:var(--brand)">'+esc(t("downloadSite"))+'</span>'+
+       '<span class="tsub">'+esc(t("downloadSiteHint"))+'</span></span></button>'+
+     '</div></div>';
   h+='<div class="divider"><h2>Team access</h2><div class="group">'+
      '<div class="kv"><span class="k" id="syncNote" style="font-size:14px;color:var(--ink3)">'+
      esc(cloudCfg().lastPush?"Last sent "+new Date(cloudCfg().lastPush).toLocaleString():"Not synced yet")+
@@ -3287,7 +3358,39 @@ function viewSettings(){
   return base+m+'</div>';
 }
 
-function render(){ renderCore(); afterRender(); }
+// A phone that is not connected to any mess sees a welcome screen, not an
+// empty ledger it could "edit" (that copy would only ever live on that phone).
+function needsWelcome(){
+  if(cloudReady()) return false;
+  try{ if(localStorage.getItem("mess-local-ok")==="1") return false; }catch(e){}
+  return !(state.members.length||state.transactions.length||state.meals.length);
+}
+function renderWelcome(){
+  document.body.classList.add("welcome");
+  renderHeader(); renderBanner();      // safety warnings must show here too
+  var v=document.getElementById("view");
+  v.innerHTML='<div class="stack">'+
+    '<div class="group" style="padding:18px 17px">'+
+      '<div style="font-size:17px;font-weight:800;letter-spacing:-0.3px;margin-bottom:6px">'+esc(t("wMemberTitle"))+'</div>'+
+      '<div class="hint" style="margin:0 0 12px">'+esc(t("wMemberText"))+'</div>'+
+      '<input type="text" id="wLink" autocomplete="off" autocapitalize="none" placeholder="'+esc(t("wPastePh"))+'">'+
+      '<div class="cerr" id="wErr" style="text-align:left;margin:6px 2px 8px"></div>'+
+      '<button class="b wide" data-act="welcomeOpen">'+esc(t("wOpen"))+'</button>'+
+    '</div>'+
+    '<div class="group" style="padding:18px 17px">'+
+      '<div style="font-size:17px;font-weight:800;letter-spacing:-0.3px;margin-bottom:6px">'+esc(t("wAdminTitle"))+'</div>'+
+      '<div class="hint" style="margin:0 0 12px">'+esc(t("wAdminText"))+'</div>'+
+      '<button class="b ghost wide" data-act="cloudSetup">'+esc(t("connectDbBtn"))+'</button>'+
+    '</div>'+
+    '<button class="wlocal" data-act="welcomeLocal">'+esc(t("wLocal"))+'</button>'+
+    creditHtml()+
+  '</div>';
+}
+function render(){
+  if(needsWelcome()){ renderWelcome(); return; }
+  document.body.classList.remove("welcome");
+  renderCore(); afterRender();
+}
 function renderCore(){
   renderHeader(); renderTabs(); renderBanner();
   var v=document.getElementById("view");
@@ -3414,6 +3517,14 @@ document.addEventListener("click",function(ev){
   }
   if(el.dataset.act==="cloudSetup"){ openCloudSetup(); return; }
   if(el.dataset.act==="adminLogin"){ openAdminLogin(); return; }
+  if(el.dataset.act==="copyAdminLink"){ copyStr(adminLink(), t("copied")); return; }
+  if(el.dataset.act==="downloadSite"){ downloadSiteFile(); return; }
+  if(el.dataset.act==="welcomeLocal"){ try{ localStorage.setItem("mess-local-ok","1"); }catch(e){} render(); return; }
+  if(el.dataset.act==="welcomeOpen"){
+    var wv=(document.getElementById("wLink")||{}).value||"", wm=wv.match(/#(join|admin)=[A-Za-z0-9_\-]+/);
+    if(!wm){ var we=document.getElementById("wErr"); if(we) we.textContent=t("wBadLink"); return; }
+    location.hash=wm[0]; location.reload(); return;
+  }
   if(el.dataset.act==="adminSignOut"){ adminSignOut(); return; }
   if(el.dataset.act==="securityCheck"){ runSecurityCheck(); return; }
   if(el.dataset.act==="memberLink"){ showLink(false); return; }
@@ -3795,6 +3906,7 @@ if(guestMode){
   refreshTeam(true);
   fetchCookReqs();
   verifyMember();
+  if(window.__wantAdmin) setTimeout(openAdminLogin,0);
 } else {
   scheduleAutoBackup();
   if(cloudReady()){
