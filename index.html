@@ -933,6 +933,14 @@
   .pf-del.armed{color:#fff;background:var(--neg);border-radius:999px;padding:6px 12px}
   .pf-del:disabled{opacity:.6}
   html.cks-open .toast{z-index:310}
+  .avr{position:relative;display:inline-flex;flex-shrink:0;padding-bottom:7px;margin-bottom:-7px;cursor:pointer;border-radius:50%}
+  .avr:active{transform:scale(.95)}
+  .avr-b{position:absolute;left:50%;bottom:0;transform:translateX(-50%);display:inline-flex;align-items:center;gap:2px;
+    padding:1px 6px 1px 4px;border-radius:999px;background:var(--group);box-shadow:0 1px 4px rgba(26,26,46,.18);
+    font-size:11px;font-weight:800;color:var(--ink);white-space:nowrap;line-height:1.45}
+  html[data-theme="dark"] .avr-b{background:#2C2C2E;box-shadow:0 1px 4px rgba(0,0,0,.5)}
+  .avr-b .rb-svg{width:10px;height:10px;min-width:10px;flex-shrink:0}
+  .rbadge .rb-svg,.pf-da .rb-svg{flex-shrink:0}
 </style>
 </head>
 <body>
@@ -2911,8 +2919,8 @@ function viewSummary(){
     var col = r.closing<-0.01?"var(--neg)":(r.closing>0.01?"var(--pos)":"var(--ink3)");
     var tag = r.closing<-0.01?t("due"):(r.closing>0.01?t("advance"):t("settled"));
     h+='<div class="mrow" style="margin-bottom:10px"><button class="mhead" data-expand="'+r.member.id+'">'+
-       '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">'+avatarHtml(r.member)+
-       '<div style="min-width:0"><div class="mname-row"><span class="mname">'+esc(r.member.name)+'</span>'+tally(r.mealCount)+ratingBadge(r.member.id)+'</div>'+(r.member.leftOn?'<div class="tsub" style="color:var(--brand);font-weight:600">'+esc(t("leftOn"))+' '+esc(r.member.leftOn)+(r.locked?' \u00B7 '+esc(t("billLocked")):'')+'</div>':'')+'<div class="mmeta">'+
+       '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">'+avatarRated(r.member)+
+       '<div style="min-width:0"><div class="mname-row"><span class="mname">'+esc(r.member.name)+'</span>'+tally(r.mealCount)+'</div>'+(r.member.leftOn?'<div class="tsub" style="color:var(--brand);font-weight:600">'+esc(t("leftOn"))+' '+esc(r.member.leftOn)+(r.locked?' \u00B7 '+esc(t("billLocked")):'')+'</div>':'')+'<div class="mmeta">'+
        '<span>'+esc(t("contribShort"))+' '+money(r.contribution)+'</span><span>\u00B7</span>'+
        '<span>'+esc(t("expenseShort"))+' '+money(r.expense)+'</span>'+
        (r.withdrawal>0?'<span>\u00B7</span><span>'+esc(t("withdrawn"))+' '+money(r.withdrawal)+'</span>':'')+
@@ -3845,6 +3853,12 @@ function ratePromptHtml(){
     '<div class="rc-priv">'+LOCK_SVG+esc(t("rtPrivate"))+'</div></div>';
 }
 
+function avatarRated(m){
+  var r=ratingsOn()?(ratingSum[m.id]||{})[month]:null, has=r&&r.avg!=null;
+  if(!cookingOn()) return avatarHtml(m);
+  return '<span class="avr" data-profile="'+esc(m.id)+'" role="button" tabindex="0" aria-label="'+esc(t("cookingProfile")+": "+m.name+(has?", "+Number(r.avg).toFixed(1)+" / 5":""))+'">'+
+    avatarHtml(m)+(has?'<span class="avr-b">'+starSvg(true,"rb-svg")+Number(r.avg).toFixed(1)+'</span>':'')+'</span>';
+}
 function ratingBadge(id){
   if(!ratingsOn()) return '';
   var r=(ratingSum[id]||{})[month]; if(!r||r.avg==null) return '';
@@ -4110,7 +4124,7 @@ document.addEventListener("change",function(ev){
   else cookCfg().ratingMin=Number(ev.target.value)||3;
   save(); render(); if(id==="ckMin") setTimeout(fetchRatings,1500);
 },true);
-document.addEventListener("keydown",function(ev){ if(ev.key==="Escape"&&document.getElementById("ckSheet")&&document.getElementById("ckSheet").style.display==="block") ckClose(); });
+document.addEventListener("keydown",function(ev){ var av=ev.target&&ev.target.closest&&ev.target.closest(".avr"); if(av&&(ev.key==="Enter"||ev.key===" ")){ ev.preventDefault(); ev.stopPropagation(); openProfile(av.dataset.profile); return; } if(ev.key==="Escape"&&document.getElementById("ckSheet")&&document.getElementById("ckSheet").style.display==="block") ckClose(); });
 
 function needsWelcome(){
   if(cloudReady()) return false;
