@@ -720,6 +720,100 @@
   body.welcome #tabbar, body.welcome #fabAdd, body.welcome nav, body.welcome #monthBtn{display:none!important}
   .wlocal{display:block;margin:4px auto 0;border:none;background:none;color:var(--ink3);font-family:inherit;
     font-size:12.5px;font-weight:600;text-decoration:underline;cursor:pointer;padding:8px}
+  /* ===== Settings v13 ===== */
+  .sset{display:flex;flex-direction:column;gap:14px}
+  .sgroup{background:var(--group);border-radius:26px;border:1.5px solid var(--hair);
+    box-shadow:var(--card);overflow:hidden;padding:0 18px}
+  .slabel{font-size:13px;font-weight:600;color:var(--ink3);margin:8px 6px -6px;letter-spacing:-0.005em}
+  .shint{font-size:13px;color:var(--ink3);line-height:1.5;margin:-6px 8px 4px;overflow-wrap:anywhere}
+  .shint:empty{display:none}
+  .shint.in{margin:0 0 12px 36px}
+  .setrow{display:flex;align-items:center;gap:14px;width:100%;min-height:62px;padding:13px 0;
+    background:none;border:0;font:inherit;color:var(--ink);text-align:left;text-decoration:none;
+    position:relative;-webkit-appearance:none;appearance:none}
+  button.setrow,a.setrow,.setrow.has-select,.setrow[data-memmenu]{cursor:pointer}
+  .setrow+.setrow,.sfield+.setrow,.setrow+.sfield,.shint.in+.setrow{border-top:1px solid var(--sep)}
+  button.setrow:active,a.setrow:active,.setrow.has-select:active,.sprof:active{opacity:.55}
+  .sico{width:23px;height:23px;flex-shrink:0;fill:none;stroke:var(--ink2);stroke-width:1.55;
+    stroke-linecap:round;stroke-linejoin:round}
+  .stx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+  .slb{font-size:16px;font-weight:500;letter-spacing:-0.2px;line-height:1.3}
+  .ssub{font-size:13px;color:var(--ink3);line-height:1.4;letter-spacing:-0.005em}
+  .sval{font-size:15px;color:var(--ink3);font-weight:500;white-space:nowrap;flex-shrink:0}
+  .sval.num{font-size:12px}
+  .schev{width:18px;height:18px;flex-shrink:0;fill:none;stroke:var(--ink3);stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round;margin-right:-2px}
+  .setrow .badge{flex-shrink:0}
+  .setrow.neg .slb,.setrow.neg .sico{color:var(--neg);stroke:var(--neg)}
+  .setrow.brand .slb{color:var(--brand);font-weight:600}
+  .setrow.brand .sico{stroke:var(--brand)}
+  .setrow.warn .sval{color:var(--neg);font-weight:600}
+  .setrow.has-select select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;
+    -webkit-appearance:none;appearance:none;font-size:16px}
+  .setrow .sw{flex-shrink:0}
+
+  /* mess card */
+  .sprof{display:flex;align-items:center;gap:14px;width:100%;padding:16px 18px;text-align:left;
+    background:var(--group);border:1.5px solid var(--hair);border-radius:26px;box-shadow:var(--card);
+    font:inherit;color:var(--ink);cursor:pointer}
+  div.sprof{cursor:default}
+  .sav{width:54px;height:54px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    background:var(--brandGrad);color:#fff;font-weight:700;font-size:19px;letter-spacing:-0.5px;
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.22)}
+  .sprof .circ-ic{width:54px!important;height:54px!important;font-size:20px!important;border-radius:50%}
+  .sprof-n{font-size:18px;font-weight:600;letter-spacing:-0.3px;line-height:1.25;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sprof .ssub{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* the dark highlight card */
+  .spromo{display:flex;align-items:center;gap:14px;padding:20px 18px 20px 16px;border-radius:26px;
+    background:linear-gradient(120deg,#17161F 0%,#2B2A35 60%,#46454F 100%);color:#fff;
+    box-shadow:0 10px 26px rgba(23,22,31,.22)}
+  .spark{width:38px;height:38px;flex-shrink:0;fill:#6C5DF0;align-self:center}
+  .spromo-t{flex:1;min-width:0}
+  .spromo-h{font-size:17px;font-weight:700;letter-spacing:-0.3px;line-height:1.25}
+  .spromo-b{font-size:13px;line-height:1.5;color:rgba(255,255,255,.68);margin-top:5px}
+  .spromo-btn{display:inline-flex;align-items:center;gap:3px;flex-shrink:0;white-space:nowrap;
+    padding:9px 11px 9px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.3);
+    background:rgba(255,255,255,.08);color:#fff;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .spromo-btn:active{background:rgba(255,255,255,.18)}
+  .spromo-chev{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  html[data-theme="dark"] .spromo{background:linear-gradient(120deg,#25213F 0%,#2C2C2E 70%,#3A3A3C 100%);
+    border:1px solid rgba(255,255,255,.08);box-shadow:none}
+  html[data-theme="dark"] .spark{fill:#8B7EFF}
+
+  /* sub-page header */
+  .shead{display:grid;grid-template-columns:46px 1fr 46px;align-items:center;margin:-4px 0 4px}
+  .sback{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--hair);background:var(--group);
+    box-shadow:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink)}
+  .sback svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .sback:active{opacity:.55}
+  .shead-t{text-align:center;font-size:18px;font-weight:600;letter-spacing:-0.3px}
+
+  /* fields inside a group */
+  .sfield{display:flex;flex-direction:column;gap:6px;padding:14px 0}
+  .sfield-l{font-size:13px;color:var(--ink3);font-weight:500}
+  .sfield input{border:0;background:var(--group2);border-radius:14px;padding:12px 14px;
+    font:inherit;font-size:16px;font-weight:500;color:var(--ink);box-shadow:none;width:100%}
+  .sfield.inline{flex-direction:row;align-items:center;justify-content:space-between}
+  .sfield.inline .sfield-l{font-size:16px;color:var(--ink);padding-left:37px}
+  .sfield.inline input{width:130px;text-align:right}
+
+  /* members */
+  .sadd{display:flex;gap:10px}
+  .sadd input{flex:1;border-radius:18px}
+  .sadd-btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:18px;padding:0 18px;
+    background:var(--brand);color:#fff;font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+  .sadd-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+  .setrow.mem .avwrap,.setrow.mem>.circ-ic{width:40px;height:40px;flex-shrink:0;position:relative}
+  .setrow.mem .circ-ic{width:40px;height:40px;border-radius:50%}
+  .setrow.mem.gone .circ-ic{opacity:.5}
+  .setrow.mem.gone .slb{color:var(--ink3)}
+  .spill{border:1.5px solid var(--hair);background:var(--group2);color:var(--brand);border-radius:999px;
+    padding:7px 13px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
+  .sempty{text-align:center;color:var(--ink3);font-size:14px;padding:28px 12px}
+  .scredit{text-align:center;color:var(--ink3);font-size:13px;line-height:1.8;margin-top:14px}
+  .scredit a{color:var(--ink2);font-weight:600;text-decoration:none}
 </style>
 </head>
 <body>
@@ -1145,7 +1239,7 @@ function canWrite(){
   return !!adminSession && isAdminUrl(); // otherwise: signed-in admin, on the admin address
 }
 
-var APP_VERSION = "12.8";
+var APP_VERSION = "13.0";
 
 var STR = {
   en:{
@@ -1523,6 +1617,93 @@ var CURRENCIES = {
 var tab = "summary";
 var month = new Date().toISOString().slice(0,7);
 var expandedId = null, armed = {}, storageOk = true;
+
+/* settings copy (v13) — merged over STR so older keys get the new wording */
+(function(){
+  var S = {
+    en:{
+      sBack:"Back", sMessProfile:"Mess profile", sMembers:"Members", sMemberView:"What members see",
+      sSync:"Sync & links", sStock:"Stock value", sBackups:"Backups",
+      sActive:"active", sOf:"of", sOff:"Off", sNever:"Never", sNotYet:"Not yet", sJustNow:"Just now",
+      sMinAgo:"min ago", sHrAgo:"h ago", sLoading:"Loading\u2026", sSince:"since",
+      sThisPhone:"Saved on this phone only",
+      sInviteTitle:"Invite your mess", sInviteBody:"Share the member link so everyone can check meals, balances and the cooking rota.", sInviteBtn:"Copy link",
+      sShareTitle:"Share with your mess", sShareBody:"Right now the ledger lives on this phone. Connect a free Supabase database so members can see it too.", sShareBtn:"Connect",
+      sPermSummary:"Balances and this month\u2019s totals", sPermMeals:"Daily meal counts", sPermMoney:"Every contribution, expense and withdrawal",
+      sPermHint:"Members always see their own Ask to cook page. Turning a screen off hides it from everyone except you.",
+      sSyncLabel:"Sync", sLastSent:"Last sent", sPush:"Send my changes", sPushSub:"Upload what you changed on this phone",
+      sPull:"Get the latest", sPullSub:"Download changes made on another phone",
+      sMemberLinkSub:"For everyone in the mess. They can look, not edit.",
+      sStockSub:"Adds rice, gas and groceries on hand to Present balance",
+      sLastBackup:"Last backup", sRestoreSub:"Replaces everything with the backup file",
+      sBackupHintCloud:"Your ledger is saved in your database. A backup file is an extra copy you can keep anywhere and restore later.",
+      sDeviceStore:"Saving on this phone",
+      sSecSub:"Makes sure only the admin can change data",
+      sViewOnly:"View only", sMemberOf:"Member of {m}",
+      sJoinTitle:"Join your mess", sJoinBody:"Enter the 6-digit code from your admin to ask for a cooking day.", sJoinBtn:"Join",
+      sCheckUpdates:"Check for updates", sLeavePhone:"Not you? Leave this phone", sLeavePhoneSub:"You\u2019ll need your code to join again",
+      sAdminOnly:"Only the admin can make changes", sAccessOff:"Your editing access was turned off. You can still see everything.",
+      messName:"Mess name", messNameHint:"Shown at the top of every screen, for you and your members.",
+      membersHint:"Tap someone to rename them, change their emoji or take them off the cooking rota. When someone leaves, pay back their balance with a Withdrawal, then mark them as left \u2014 their history stays.",
+      formerMembers:"Left the mess", noMembers:"No members yet. Add the first one above.",
+      newMemberName:"Name", add:"Add",
+      assetsHint:"Stock is anything bought but not used yet. Counting it gives a truer Present balance.",
+      currentInv:"Value right now",
+      inventoryOn:"Count stock in balance",
+      downloadBackup:"Download a backup", restore:"Restore a backup",
+      showToast:"Remind me to back up",
+      backupHint:"Everything is saved on this phone only. If the phone is lost or the browser is cleared, the data goes with it, so download a backup regularly.",
+      googleDrive:"Google Sheets", connectGoogle:"Connect Google Sheets", openSheet:"Open the sheet", disconnectGoogle:"Disconnect",
+      googleDriveHint:"Paste the OAuth Client ID from your Google Cloud project, then connect. Every change then updates a sheet in your Drive.",
+      reconnectHint:"Google asks you to sign in again about every hour. Syncing pauses until you reconnect.",
+      storageOkShort:"Working", storageBadShort:"Blocked",
+      storageBad:"This browser is blocking storage, often because of private browsing. Download a backup before you close it.",
+      dbHint:"This Supabase project stores your ledger. Open the SQL editor when an update asks you to run SQL.",
+      openSqlEditor:"SQL editor", openTables:"Table editor", copyDbUrl:"Copy database address", securityCheck:"Check security",
+      thisPhoneOnly:"Editing works only from the admin link, on a phone where you\u2019re signed in. The plain link is the read-only member view, for you too.",
+      copyMemberLink:"Copy the member link", copyAdminLink:"Copy the admin link",
+      adminLinkHint:"Opens the sign-in screen. Keep it to yourself.",
+      downloadSite:"Download the website file", downloadSiteHint:"Upload it as index.html and the plain address opens this mess.",
+      linksTitle:"Links", signInAdmin:"Sign in as admin", darkMode:"Dark mode"
+    },
+    bn:{
+      sBack:"\u09AB\u09BF\u09B0\u09C7 \u09AF\u09BE\u09A8", sMessProfile:"\u09AE\u09C7\u09B8\u09C7\u09B0 \u09AA\u09CD\u09B0\u09CB\u09AB\u09BE\u0987\u09B2", sMembers:"\u09B8\u09A6\u09B8\u09CD\u09AF",
+      sMemberView:"\u09B8\u09A6\u09B8\u09CD\u09AF\u09B0\u09BE \u0995\u09C0 \u09A6\u09C7\u0996\u09AC\u09C7",
+      sSync:"\u09B8\u09BF\u0999\u09CD\u0995 \u0993 \u09B2\u09BF\u0982\u0995", sStock:"\u09AE\u099C\u09C1\u09A6\u09C7\u09B0 \u09AE\u09C2\u09B2\u09CD\u09AF", sBackups:"\u09AC\u09CD\u09AF\u09BE\u0995\u0986\u09AA",
+      sActive:"\u099C\u09A8 \u09B8\u0995\u09CD\u09B0\u09BF\u09AF\u09BC", sOf:"/", sOff:"\u09AC\u09A8\u09CD\u09A7", sNever:"\u0995\u0996\u09A8\u0993 \u09A8\u09BE",
+      sNotYet:"\u098F\u0996\u09A8\u0993 \u09A8\u09BE", sJustNow:"\u098F\u0987\u09AE\u09BE\u09A4\u09CD\u09B0", sMinAgo:"\u09AE\u09BF\u09A8\u09BF\u099F \u0986\u0997\u09C7",
+      sHrAgo:"\u0998\u09A3\u09CD\u099F\u09BE \u0986\u0997\u09C7", sLoading:"\u09B2\u09CB\u09A1 \u09B9\u099A\u09CD\u099B\u09C7\u2026", sSince:"\u09AF\u09CB\u0997\u09A6\u09BE\u09A8",
+      sThisPhone:"\u09B6\u09C1\u09A7\u09C1 \u098F\u0987 \u09AB\u09CB\u09A8\u09C7 \u09B8\u0982\u09B0\u0995\u09CD\u09B7\u09BF\u09A4",
+      sInviteTitle:"\u09AE\u09C7\u09B8\u09C7\u09B0 \u09B8\u09AC\u09BE\u0987\u0995\u09C7 \u09A1\u09BE\u0995\u09C1\u09A8",
+      sInviteBody:"\u09B8\u09A6\u09B8\u09CD\u09AF \u09B2\u09BF\u0982\u0995 \u09B6\u09C7\u09AF\u09BC\u09BE\u09B0 \u0995\u09B0\u09C1\u09A8, \u09AF\u09BE\u09A4\u09C7 \u09B8\u09AC\u09BE\u0987 \u0996\u09BE\u09AC\u09BE\u09B0, \u09B9\u09BF\u09B8\u09BE\u09AC \u0993 \u09B0\u09BE\u09A8\u09CD\u09A8\u09BE\u09B0 \u09AA\u09BE\u09B2\u09BE \u09A6\u09C7\u0996\u09A4\u09C7 \u09AA\u09BE\u09B0\u09C7\u0964",
+      sInviteBtn:"\u09B2\u09BF\u0982\u0995 \u0995\u09AA\u09BF",
+      sShareTitle:"\u09AE\u09C7\u09B8\u09C7\u09B0 \u09B8\u09BE\u09A5\u09C7 \u09B6\u09C7\u09AF\u09BC\u09BE\u09B0 \u0995\u09B0\u09C1\u09A8",
+      sShareBody:"\u098F\u0996\u09A8 \u09B9\u09BF\u09B8\u09BE\u09AC \u09B6\u09C1\u09A7\u09C1 \u098F\u0987 \u09AB\u09CB\u09A8\u09C7\u0964 \u09AC\u09BF\u09A8\u09BE\u09AE\u09C2\u09B2\u09CD\u09AF\u09C7\u09B0 Supabase \u09A1\u09BE\u099F\u09BE\u09AC\u09C7\u09B8 \u09AF\u09C1\u0995\u09CD\u09A4 \u0995\u09B0\u09B2\u09C7 \u09B8\u09A6\u09B8\u09CD\u09AF\u09B0\u09BE\u0993 \u09A6\u09C7\u0996\u09A4\u09C7 \u09AA\u09BE\u09AC\u09C7\u0964",
+      sShareBtn:"\u09AF\u09C1\u0995\u09CD\u09A4 \u0995\u09B0\u09C1\u09A8",
+      sPermSummary:"\u09AC\u09CD\u09AF\u09BE\u09B2\u09C7\u09A8\u09CD\u09B8 \u0993 \u098F \u09AE\u09BE\u09B8\u09C7\u09B0 \u09AE\u09CB\u099F", sPermMeals:"\u09AA\u09CD\u09B0\u09A4\u09BF\u09A6\u09BF\u09A8\u09C7\u09B0 \u0996\u09BE\u09AC\u09BE\u09B0\u09C7\u09B0 \u09B9\u09BF\u09B8\u09BE\u09AC",
+      sPermMoney:"\u09B8\u09AC \u099C\u09AE\u09BE, \u0996\u09B0\u099A \u0993 \u0989\u09A4\u09CD\u09A4\u09CB\u09B2\u09A8",
+      sPermHint:"\u09B8\u09A6\u09B8\u09CD\u09AF\u09B0\u09BE \u09B8\u09AC\u09B8\u09AE\u09AF\u09BC \u09A8\u09BF\u099C\u09C7\u09A6\u09C7\u09B0 \u09B0\u09BE\u09A8\u09CD\u09A8\u09BE\u09B0 \u0985\u09A8\u09C1\u09B0\u09CB\u09A7 \u09AA\u09BE\u09A4\u09BE \u09A6\u09C7\u0996\u09C7\u0964 \u0995\u09CB\u09A8\u09CB \u09AA\u09BE\u09A4\u09BE \u09AC\u09A8\u09CD\u09A7 \u0995\u09B0\u09B2\u09C7 \u0986\u09AA\u09A8\u09BF \u099B\u09BE\u09A1\u09BC\u09BE \u0995\u09C7\u0989 \u09A6\u09C7\u0996\u09AC\u09C7 \u09A8\u09BE\u0964",
+      sSyncLabel:"\u09B8\u09BF\u0999\u09CD\u0995", sLastSent:"\u09B6\u09C7\u09B7 \u09AA\u09BE\u09A0\u09BE\u09A8\u09CB", sPush:"\u0986\u09AE\u09BE\u09B0 \u09AA\u09B0\u09BF\u09AC\u09B0\u09CD\u09A4\u09A8 \u09AA\u09BE\u09A0\u09BE\u09A8", sPushSub:"\u098F\u0987 \u09AB\u09CB\u09A8\u09C7 \u09AF\u09BE \u09AC\u09A6\u09B2\u09BE\u09B2\u09C7\u09A8 \u09A4\u09BE \u0986\u09AA\u09B2\u09CB\u09A1 \u0995\u09B0\u09C1\u09A8",
+      sPull:"\u09B8\u09B0\u09CD\u09AC\u09B6\u09C7\u09B7 \u0986\u09A8\u09C1\u09A8", sPullSub:"\u0985\u09A8\u09CD\u09AF \u09AB\u09CB\u09A8\u09C7\u09B0 \u09AA\u09B0\u09BF\u09AC\u09B0\u09CD\u09A4\u09A8 \u09A8\u09BE\u09AE\u09BE\u09A8",
+      sMemberLinkSub:"\u09AE\u09C7\u09B8\u09C7\u09B0 \u09B8\u09AC\u09BE\u09B0 \u099C\u09A8\u09CD\u09AF\u0964 \u09A6\u09C7\u0996\u09A4\u09C7 \u09AA\u09BE\u09B0\u09AC\u09C7, \u09AC\u09A6\u09B2\u09BE\u09A4\u09C7 \u09A8\u09AF\u09BC\u0964",
+      sStockSub:"\u09B9\u09BE\u09A4\u09C7 \u09A5\u09BE\u0995\u09BE \u099A\u09BE\u09B2, \u0997\u09CD\u09AF\u09BE\u09B8, \u09AC\u09BE\u099C\u09BE\u09B0 \u09AC\u09B0\u09CD\u09A4\u09AE\u09BE\u09A8 \u09AC\u09CD\u09AF\u09BE\u09B2\u09C7\u09A8\u09CD\u09B8\u09C7 \u09AF\u09CB\u0997 \u09B9\u09AF\u09BC",
+      sLastBackup:"\u09B6\u09C7\u09B7 \u09AC\u09CD\u09AF\u09BE\u0995\u0986\u09AA", sRestoreSub:"\u09B8\u09AC \u09A4\u09A5\u09CD\u09AF \u09AC\u09CD\u09AF\u09BE\u0995\u0986\u09AA \u09AB\u09BE\u0987\u09B2 \u09A6\u09BF\u09AF\u09BC\u09C7 \u09AC\u09A6\u09B2\u09C7 \u09AF\u09BE\u09AC\u09C7",
+      sBackupHintCloud:"\u0986\u09AA\u09A8\u09BE\u09B0 \u09B9\u09BF\u09B8\u09BE\u09AC \u09A1\u09BE\u099F\u09BE\u09AC\u09C7\u09B8\u09C7 \u09B8\u0982\u09B0\u0995\u09CD\u09B7\u09BF\u09A4\u0964 \u09AC\u09CD\u09AF\u09BE\u0995\u0986\u09AA \u09AB\u09BE\u0987\u09B2 \u098F\u0995\u099F\u09BF \u0985\u09A4\u09BF\u09B0\u09BF\u0995\u09CD\u09A4 \u0995\u09AA\u09BF\u0964",
+      sDeviceStore:"\u098F\u0987 \u09AB\u09CB\u09A8\u09C7 \u09B8\u0982\u09B0\u0995\u09CD\u09B7\u09A3", sSecSub:"\u09B6\u09C1\u09A7\u09C1 \u0985\u09CD\u09AF\u09BE\u09A1\u09AE\u09BF\u09A8 \u09A1\u09BE\u099F\u09BE \u09AC\u09A6\u09B2\u09BE\u09A4\u09C7 \u09AA\u09BE\u09B0\u09C7 \u0995\u09BF\u09A8\u09BE \u09A6\u09C7\u0996\u09C7",
+      sViewOnly:"\u09B6\u09C1\u09A7\u09C1 \u09A6\u09C7\u0996\u09BE", sMemberOf:"{m}-\u098F\u09B0 \u09B8\u09A6\u09B8\u09CD\u09AF",
+      sJoinTitle:"\u09AE\u09C7\u09B8\u09C7 \u09AF\u09C1\u0995\u09CD\u09A4 \u09B9\u09CB\u09A8", sJoinBody:"\u09B0\u09BE\u09A8\u09CD\u09A8\u09BE\u09B0 \u09A6\u09BF\u09A8 \u099A\u09BE\u0987\u09A4\u09C7 \u0985\u09CD\u09AF\u09BE\u09A1\u09AE\u09BF\u09A8\u09C7\u09B0 \u09A6\u09C7\u0993\u09AF\u09BC\u09BE \u09EC \u09B8\u0982\u0996\u09CD\u09AF\u09BE\u09B0 \u0995\u09CB\u09A1 \u09A6\u09BF\u09A8\u0964", sJoinBtn:"\u09AF\u09C1\u0995\u09CD\u09A4 \u09B9\u09CB\u09A8",
+      sCheckUpdates:"\u0986\u09AA\u09A1\u09C7\u099F \u09A6\u09C7\u0996\u09C1\u09A8", sLeavePhone:"\u0986\u09AA\u09A8\u09BF \u09A8\u09A8? \u098F\u0987 \u09AB\u09CB\u09A8 \u09A5\u09C7\u0995\u09C7 \u09AC\u09C7\u09B0 \u09B9\u09CB\u09A8",
+      sLeavePhoneSub:"\u0986\u09AC\u09BE\u09B0 \u09AF\u09C1\u0995\u09CD\u09A4 \u09B9\u09A4\u09C7 \u0995\u09CB\u09A1 \u09B2\u09BE\u0997\u09AC\u09C7",
+      sAdminOnly:"\u09B6\u09C1\u09A7\u09C1 \u0985\u09CD\u09AF\u09BE\u09A1\u09AE\u09BF\u09A8 \u09AA\u09B0\u09BF\u09AC\u09B0\u09CD\u09A4\u09A8 \u0995\u09B0\u09A4\u09C7 \u09AA\u09BE\u09B0\u09C7\u09A8",
+      sAccessOff:"\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09AE\u09CD\u09AA\u09BE\u09A6\u09A8\u09BE\u09B0 \u0985\u09A8\u09C1\u09AE\u09A4\u09BF \u09AC\u09A8\u09CD\u09A7 \u0995\u09B0\u09BE \u09B9\u09AF\u09BC\u09C7\u099B\u09C7\u0964 \u09A4\u09AC\u09C7 \u09B8\u09AC \u09A6\u09C7\u0996\u09A4\u09C7 \u09AA\u09BE\u09B0\u09AC\u09C7\u09A8\u0964",
+      inventoryOn:"\u09AE\u099C\u09C1\u09A6 \u09AC\u09CD\u09AF\u09BE\u09B2\u09C7\u09A8\u09CD\u09B8\u09C7 \u09A7\u09B0\u09C1\u09A8", currentInv:"\u098F\u0996\u09A8\u0995\u09BE\u09B0 \u09AE\u09C2\u09B2\u09CD\u09AF",
+      showToast:"\u09AC\u09CD\u09AF\u09BE\u0995\u0986\u09AA\u09C7\u09B0 \u0995\u09A5\u09BE \u09AE\u09A8\u09C7 \u0995\u09B0\u09BF\u09AF\u09BC\u09C7 \u09A6\u09BF\u09A8",
+      googleDrive:"Google Sheets", storageOkShort:"\u099A\u09B2\u099B\u09C7", newMemberName:"\u09A8\u09BE\u09AE",
+      formerMembers:"\u09AE\u09C7\u09B8 \u099B\u09C7\u09A1\u09BC\u09C7\u099B\u09C7\u09A8"
+    }
+  };
+  for(var l in S){ STR[l]=STR[l]||{}; for(var k in S[l]) STR[l][k]=S[l][k]; }
+})();
 
 function t(k){ var L = STR[state.lang]||STR.en; return L[k]||STR.en[k]||k; }
 function uid(p){ return p+Math.random().toString(36).slice(2,9); }
@@ -3121,100 +3302,279 @@ function projectRef(){
   var m=normaliseUrl(c.url).match(/^https:\/\/([a-z0-9]+)\.supabase\.co/i);
   return m?m[1]:"";
 }
-function viewSettings(){
-  var h='<div class="stack settings-scope">';
+/* ===== Settings (v13 redesign) ==============================================
+   One list of grouped rows, a mess card on top, and one dark highlight card.
+   Every control keeps its old id / data-act, so the handlers are unchanged. */
+var SIC = {
+  users:'<path d="M16 19v-1.2A3.8 3.8 0 0 0 12.2 14H7.8A3.8 3.8 0 0 0 4 17.8V19"/><circle cx="10" cy="7.5" r="3.5"/><path d="M20 19v-1.2a3.8 3.8 0 0 0-2.6-3.6"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/>',
+  eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/>',
+  box:'<path d="M20.5 7.8 12 3.5 3.5 7.8v8.4L12 20.5l8.5-4.3z"/><path d="M3.5 7.8 12 12l8.5-4.2"/><path d="M12 12v8.5"/>',
+  moon:'<path d="M20 14.2A8 8 0 1 1 9.8 4a6.3 6.3 0 0 0 10.2 10.2z"/>',
+  globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5s-1.1 6.1-3.4 8.5c-2.3-2.4-3.4-5.2-3.4-8.5S9.7 5.9 12 3.5z"/>',
+  coins:'<ellipse cx="9" cy="7" rx="5.5" ry="2.5"/><path d="M3.5 7v4c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5V7"/><path d="M9.5 16.4c.9.6 2.6 1.1 5 1.1 3 0 5.5-1.1 5.5-2.5v-4c0-1.2-1.8-2.2-4.3-2.4"/><path d="M20 15v4c0 1.4-2.5 2.5-5.5 2.5S9 20.4 9 19v-1.6"/>',
+  sync:'<path d="M20 11a8 8 0 0 0-14.4-4.6L4 8.2"/><path d="M4 4v4.2h4.2"/><path d="M4 13a8 8 0 0 0 14.4 4.6l1.6-1.8"/><path d="M20 20v-4.2h-4.2"/>',
+  archive:'<rect x="3.5" y="4" width="17" height="4.5" rx="1.2"/><path d="M5 8.5V18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5"/><path d="M10 12.5h4"/>',
+  db:'<ellipse cx="12" cy="5.8" rx="7.5" ry="2.8"/><path d="M4.5 5.8v12.4c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V5.8"/><path d="M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/>',
+  logout:'<path d="M14 4.5h3.5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H14"/><path d="M10 16.5 5.5 12 10 7.5"/><path d="M5.5 12H15"/>',
+  link:'<path d="M10 14a4.2 4.2 0 0 0 6 0l3-3a4.2 4.2 0 0 0-6-6l-1 1"/><path d="M14 10a4.2 4.2 0 0 0-6 0l-3 3a4.2 4.2 0 0 0 6 6l1-1"/>',
+  key:'<circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5"/><path d="m16.5 6 2.5 2.5"/><path d="m14.5 8 2 2"/>',
+  up:'<path d="M12 15.5V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4.5 15v3a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3"/>',
+  down:'<path d="M12 4v11.5"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M4.5 15v3a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3"/>',
+  file:'<path d="M14 3.5H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5z"/><path d="M14 3.5v5h5"/><path d="m9.5 14.5 2 2 3.5-4"/>',
+  restore:'<path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3.5 4v4.5H8"/><path d="M12 8v4.2l2.8 1.8"/>',
+  bell:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',
+  sheet:'<rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M4 9h16"/><path d="M4 14.5h16"/><path d="M10 9v11.5"/>',
+  terminal:'<rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="m7 10 3 2.5L7 15"/><path d="M12.5 15h4.5"/>',
+  table:'<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17"/><path d="M9.5 9.5v10"/>',
+  copy:'<rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 8.5V5.5a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/>',
+  shield:'<path d="M12 3.5 4.5 6.5v5.2c0 4.4 3.1 7.6 7.5 8.8 4.4-1.2 7.5-4.4 7.5-8.8V6.5z"/><path d="m9 12 2.2 2.2L15.3 10"/>',
+  phone:'<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
+  pencil:'<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
+  plus:'<path d="M12 5v14"/><path d="M5 12h14"/>',
+  login:'<path d="M10 4.5H6.5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2H10"/><path d="M14 16.5 18.5 12 14 7.5"/><path d="M18.5 12H9"/>',
+  ticket:'<path d="M4 7.5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a2.5 2.5 0 0 0 0 5v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2a2.5 2.5 0 0 0 0-5z"/><path d="M14 5.5v13" stroke-dasharray="2 2.4"/>',
+  chev:'<path d="m9.5 6 6 6-6 6"/>',
+  back:'<path d="M19 12H5.5"/><path d="m11 6-6 6 6 6"/>',
+  ext:'<path d="M14 4.5h5.5V10"/><path d="M19.5 4.5 11 13"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/>'
+};
+function sic(k,cls){ return '<svg class="'+(cls||"sico")+'" viewBox="0 0 24 24" aria-hidden="true">'+(SIC[k]||"")+'</svg>'; }
+var SPARK = '<svg class="spark" viewBox="0 0 40 40" aria-hidden="true">'+
+  '<path d="M22 6c1.2 7.6 4.4 10.8 12 12-7.6 1.2-10.8 4.4-12 12-1.2-7.6-4.4-10.8-12-12 7.6-1.2 10.8-4.4 12-12z"/>'+
+  '<path d="M9 3c.5 2.9 1.6 4 4.5 4.5C10.6 8 9.5 9.1 9 12c-.5-2.9-1.6-4-4.5-4.5C7.4 7 8.5 5.9 9 3z" opacity=".75"/></svg>';
+
+/* one row:  icon | label + sub | value | chevron or control */
+function srow(o){
+  var tag = o.tag || (o.act||o.attr||o.href ? (o.href?"a":"button") : "div");
+  var attrs = (o.act?' data-act="'+o.act+'"':'')+(o.attr?' '+o.attr:'')+
+              (o.href?' href="'+o.href+'" target="_blank" rel="noopener"':'')+
+              (tag==="button"?' type="button"':'');
+  return '<'+tag+' class="setrow'+(o.tone?" "+o.tone:"")+(o.cls?" "+o.cls:"")+'"'+attrs+'>'+
+    (o.icon ? (o.icon.indexOf("<")===0 ? o.icon : sic(o.icon)) : '')+
+    '<span class="stx"><span class="slb">'+esc(o.label)+'</span>'+
+      (o.subHtml?'<span class="ssub">'+o.subHtml+'</span>':o.sub?'<span class="ssub">'+esc(o.sub)+'</span>':'')+'</span>'+
+    (o.valueHtml||(o.value!=null&&o.value!==""?'<span class="sval">'+esc(o.value)+'</span>':''))+
+    (o.ctrl||'')+
+    (o.chev ? sic(o.href?"ext":"chev","schev") : '')+
+  '</'+tag+'>';
+}
+function sswitch(on,attr){ return '<button type="button" class="sw'+(on?" on":"")+'" '+attr+' role="switch" aria-checked="'+(on?"true":"false")+'"><i></i></button>'; }
+function sgroup(rows,label,hint){
+  return (label?'<div class="slabel">'+esc(label)+'</div>':'')+
+         '<div class="sgroup">'+rows+'</div>'+
+         (hint?'<div class="shint">'+hint+'</div>':'');
+}
+function agoTxt(ts){
+  if(!ts) return t("sNever");
+  var s=Math.max(0,(Date.now()-new Date(ts).getTime())/1000);
+  if(s<60) return t("sJustNow");
+  if(s<3600) return Math.floor(s/60)+" "+t("sMinAgo");
+  if(s<86400) return Math.floor(s/3600)+" "+t("sHrAgo");
+  var d=Math.floor(s/86400); return d===1?t("bkYesterday"):d+" "+t("bkDaysAgo");
+}
+function messAvatar(){
+  var n=(state.messName||"").trim()||t("appTitle");
+  var w=n.split(/\s+/).filter(Boolean);
+  var ini=((w[0]||"?").charAt(0)+(w[1]?w[1].charAt(0):"")).toUpperCase();
+  return '<span class="sav">'+esc(ini)+'</span>';
+}
+function spromo(title, body, btn, act){
+  return '<div class="spromo">'+SPARK+
+    '<div class="spromo-t"><div class="spromo-h">'+esc(title)+'</div><div class="spromo-b">'+esc(body)+'</div></div>'+
+    '<button type="button" class="spromo-btn" data-act="'+act+'">'+esc(btn)+sic("chev","spromo-chev")+'</button></div>';
+}
+function credit2(){
+  return '<div class="scredit">'+esc(t("version"))+' '+APP_VERSION+'<br>'+esc(t("madeWith"))+
+    ' <span class="credit-heart">\u2665</span> '+esc(t("by"))+' <a href="https://instagram.com/rip.0n" target="_blank" rel="noopener">Ahmed Ripon</a></div>';
+}
+function selectRow(icon,label,id,opts,cur){
+  var shown=""; opts.forEach(function(o){ if(o[0]===cur) shown=o[1]; });
+  return '<div class="setrow has-select">'+sic(icon)+
+    '<span class="stx"><span class="slb">'+esc(label)+'</span></span>'+
+    '<span class="sval">'+esc(shown)+'</span>'+sic("chev","schev")+
+    '<select id="'+id+'" aria-label="'+esc(label)+'">'+
+      opts.map(function(o){ return '<option value="'+o[0]+'"'+(o[0]===cur?" selected":"")+'>'+esc(o[2]||o[1])+'</option>'; }).join("")+
+    '</select></div>';
+}
+
+/* ---- the list everyone lands on ---- */
+function settingsHome(){
+  var h='', cloud=cloudReady(), name=(state.messName||"").trim()||t("appTitle");
 
   if(guestMode){
-    h+='<div><h2>Appearance</h2><div class="group">'+
-       '<div class="kv"><span class="k">'+esc(t("darkMode"))+'</span>'+
-       '<button class="sw '+(state.themeMode==="dark"?"on":"")+'" data-act="toggleTheme"><i></i></button></div></div></div>';
-    h+='<div class="divider"><h3>Access</h3><div class="group">'+
-       '<div class="kv"><span class="k">'+(deputyRevoked?"Your editing access was turned off":"You are viewing the mess ledger")+'</span></div>'+
-       '<div class="kv"><span class="k" style="color:var(--ink3);font-size:14px">'+
-       (cloudUpdated?"Updated "+esc(new Date(cloudUpdated).toLocaleString()):"Loading\u2026")+
-       '</span></div></div></div>';
-    h+='<div style="padding:14px 0"><button class="btn" data-act="refreshTeam" style="width:100%">Refresh</button></div>';
-    if(cloudReady()){
-      h+='<div class="divider"><h3>'+esc(t("membership"))+'</h3><div class="group">'+
-         (memberSelf
-           ? '<div class="kv"><span class="k">'+esc(t("joinedAs"))+'</span><span class="v" style="font-size:14px">'+esc(memberSelf.name||"")+'</span></div>'+
-             '<button class="kv" data-act="leaveMember" style="width:100%;background:transparent;border:none;font-family:inherit;cursor:pointer;text-align:left"><span style="color:var(--neg);font-weight:600">'+esc(t("notYouLeave"))+'</span></button>'
-           : '<button class="kv" data-act="gotoAsk" style="width:100%;background:transparent;border:none;font-family:inherit;cursor:pointer;text-align:left"><span style="color:var(--brand);font-weight:600">'+esc(t("joinWithCode"))+'</span></button>')+
-         '</div></div>';
-      h+='<div class="divider"><h3>'+esc(t("adminAccount"))+'</h3><div class="group">'+
-         '<button class="kv" data-act="adminLogin" style="width:100%;background:transparent;border:none;font-family:inherit;cursor:pointer;text-align:left">'+
-         '<span style="color:var(--brand);font-weight:600">'+esc(t("signInAdmin"))+'</span></button></div>'+
-         '<div class="hint">'+esc(t("viewOnlyNote"))+'</div></div>';
+    var me=memberSelf&&memberSelf.name;
+    h+='<div class="sprof">'+(me?avatarHtml({name:memberSelf.name}).replace('circ-ic','circ-ic sav-m'):messAvatar())+
+       '<span class="stx"><span class="sprof-n">'+esc(me?memberSelf.name:name)+'</span>'+
+       '<span class="ssub">'+esc(me?t("sMemberOf").replace("{m}",name):t("sViewOnly"))+'</span></span></div>';
+    if(cloud&&!me&&!deputyRevoked) h+=spromo(t("sJoinTitle"),t("sJoinBody"),t("sJoinBtn"),"gotoAsk");
+    h+=sgroup(
+      srow({icon:"moon",label:t("darkMode"),ctrl:sswitch(state.themeMode==="dark",'data-act="toggleTheme"')})+
+      srow({icon:"sync",label:t("sCheckUpdates"),act:"refreshTeam",
+            value:cloudUpdated?agoTxt(cloudUpdated):t("sLoading")})
+    );
+    var acc='';
+    if(cloud){
+      if(me) acc+=srow({icon:"logout",label:t("sLeavePhone"),sub:t("sLeavePhoneSub"),act:"leaveMember",tone:"neg"});
+      acc+=srow({icon:"login",label:t("signInAdmin"),sub:t("sAdminOnly"),act:"adminLogin",chev:true});
     }
-    h+=creditHtml();
-    return h+'</div>';
+    if(acc) h+=sgroup(acc);
+    if(deputyRevoked) h+='<div class="shint">'+esc(t("sAccessOff"))+'</div>';
+    return h+credit2();
   }
 
-  var P={}, curKey="secTeam", mark=h.length;
-  h += teamCardHtml();
+  var live=state.members.filter(function(m){ return m.active!==false; }).length;
+  h+='<button type="button" class="sprof" data-setpage="secSetup">'+messAvatar()+
+     '<span class="stx"><span class="sprof-n">'+esc(name)+'</span>'+
+     '<span class="ssub">'+esc(cloud&&adminSession?adminSession.email:t("sThisPhone"))+'</span></span>'+
+     sic("chev","schev")+'</button>';
 
-  P[curKey]=h.slice(mark); curKey="secSetup"; mark=h.length;
-  h+='<div><h2>'+esc(t("messName"))+'</h2><div class="group">'+
-     '<div class="kv"><input type="text" id="messNameInput" placeholder="'+esc(t("appTitle"))+'" '+
-     'value="'+esc(state.messName||"")+'" style="border:none;background:transparent;box-shadow:none;'+
-     'padding:0;font-size:15px;font-weight:600"></div></div>'+
-     '<div class="hint">'+esc(t("messNameHint"))+'</div></div>';
+  h+= cloud ? spromo(t("sInviteTitle"),t("sInviteBody"),t("sInviteBtn"),"memberLink")
+            : spromo(t("sShareTitle"),t("sShareBody"),t("sShareBtn"),"cloudSetup");
 
-  h+='<div class="divider"><h2>'+esc(t("appearance"))+'</h2><div class="group">'+
-     '<div class="kv"><span class="k">'+esc(t("darkMode"))+'</span>'+
-     '<button class="sw '+(state.themeMode==="dark"?"on":"")+'" data-act="toggleTheme"><i></i></button></div>'+
-     '<div class="kv"><span class="k">'+esc(t("language"))+'</span>'+
-     '<select id="langSel" style="width:auto"><option value="en"'+(state.lang==="en"?" selected":"")+'>English</option>'+
-     '<option value="bn"'+(state.lang==="bn"?" selected":"")+'>\u09AC\u09BE\u0982\u09B2\u09BE</option></select></div>'+
-     '<div class="kv"><span class="k">'+esc(t("currency"))+'</span>'+
-     '<select id="currSel" style="width:auto">'+
-     Object.keys(CURRENCIES).map(function(code){
-       return '<option value="'+code+'"'+(state.currency===code?" selected":"")+'>'+
-         code+' ('+CURRENCIES[code].symbol+')</option>';
-     }).join("")+
-     '</select></div></div>';
+  var shown=["summary","meals","money"].filter(function(k){ return state.perms[k]; }).length;
+  h+=sgroup(
+    srow({icon:"users",label:t("sMembers"),value:live+" "+t("sActive"),attr:'data-setpage="secPeople"',chev:true})+
+    (cloud?srow({icon:"eye",label:t("sMemberView"),value:shown+" "+t("sOf")+" 3",attr:'data-setpage="secAccess"',chev:true}):'')+
+    srow({icon:"box",label:t("sStock"),value:state.inventoryEnabled?money(Number(state.inventoryValue)||0):t("sOff"),attr:'data-setpage="secMoney"',chev:true})
+  );
 
-  var liveM = state.members.filter(function(m){ return m.active!==false; });
-  var goneM = state.members.filter(function(m){ return m.active===false; });
+  h+=sgroup(
+    srow({icon:"moon",label:t("darkMode"),ctrl:sswitch(state.themeMode==="dark",'data-act="toggleTheme"')})+
+    selectRow("globe",t("language"),"langSel",[["en","English"],["bn","\u09AC\u09BE\u0982\u09B2\u09BE"]],state.lang)+
+    selectRow("coins",t("currency"),"currSel",Object.keys(CURRENCIES).map(function(c){
+      return [c,c,c+" ("+CURRENCIES[c].symbol+")"]; }),state.currency)
+  );
 
-  P[curKey]=h.slice(mark); curKey="secPeople"; mark=h.length;
-  h+='<div><h2>'+esc(t("tabMembers"))+'</h2>'+
-     (canWrite() ? '<div style="display:flex;gap:10px;margin-bottom:12px"><input type="text" id="newMember" placeholder="'+
-     esc(t("newMemberName"))+'"><button class="b" data-act="addMember">'+esc(t("add"))+'</button></div>' : '');
-  if(!liveM.length) h+='<div class="hint">'+esc(t("noMembers"))+'</div>';
-  liveM.forEach(function(m,i){
-    var inCircle = m.cooks!==false;
-    h+='<div class="mrow2">'+
-       '<span class="mrow2-n">'+(i+1)+'</span>'+
-       '<span class="avwrap">'+avatarHtml(m)+(memberCodes[m.id]&&memberCodes[m.id].joined_at?'<i class="joindot"></i>':'')+'</span>'+
-       '<span class="mrow2-t">'+
-         '<span class="mrow2-name">'+esc(m.name)+'</span>'+
-         '<span class="mrow2-sub">'+
-           (inCircle?'<span class="cdot"></span>'+esc(t("inCircle")):'<span class="off">'+esc(t("notCooking"))+'</span>')+
-           (m.joinedOn?' \u00B7 '+esc(t("started"))+' '+esc(niceDate(m.joinedOn)):'')+
-         '</span>'+
-       '</span>'+
-       (canWrite()
-         ? '<button class="iconbtn" data-memmenu="'+m.id+'" title="'+esc(t("options"))+'">'+ICONS.dots+'</button>'
-         : '')+
-       '</div>';
-  });
-  h+='<div class="hint">'+esc(t("membersHint"))+' '+esc(t("avatarHint"))+'</div>';
+  var dsb=daysSinceBackup();
+  h+=sgroup(
+    (cloud?srow({icon:"sync",label:t("sSync"),value:cloudCfg().lastPush?agoTxt(cloudCfg().lastPush):t("sNotYet"),attr:'data-setpage="secTeam"',chev:true}):'')+
+    srow({icon:"archive",label:t("sBackups"),value:dsb===null?t("sNever"):(dsb===0?t("bkToday"):dsb===1?t("bkYesterday"):dsb+" "+t("bkDaysAgo")),
+          attr:'data-setpage="secBackup"',chev:true,cls:(cloud||dsb!==null&&dsb<=7)?"":"warn"})+
+    (projectRef()?srow({icon:"db",label:t("database"),attr:'data-setpage="secDb"',chev:true}):'')
+  );
 
-  if(goneM.length){
-    h+='<h2 style="margin-top:20px">'+esc(t("formerMembers"))+' ('+goneM.length+')</h2>';
-    goneM.forEach(function(m){
-      h+='<div class="mrow2 gone">'+avatarHtml(m)+
-         '<span class="mrow2-t"><span class="mrow2-name">'+esc(m.name)+'</span>'+
-           (m.leftOn?'<span class="mrow2-sub">'+esc(t("leftOn"))+' '+esc(m.leftOn)+'</span>':'')+'</span>'+
-         (canWrite()
-           ? '<span class="mrow2-acts"><button class="iconbtn" data-toggle="'+m.id+'" title="'+esc(t("bringBack"))+'">'+ICONS.undo+'</button></span>'
-           : '')+
-         '</div>';
-    });
+  if(cloud&&adminSession) h+=sgroup(srow({icon:"logout",label:t("signOut"),act:"adminSignOut",tone:"neg"}));
+  return h+credit2();
+}
+
+/* ---- pages behind the rows ---- */
+var SET_PAGES = {
+  secSetup:function(){
+    return sgroup(
+      '<label class="sfield"><span class="sfield-l">'+esc(t("messName"))+'</span>'+
+      '<input type="text" id="messNameInput" maxlength="40" placeholder="'+esc(t("appTitle"))+'" value="'+esc(state.messName||"")+'"></label>',
+      null, esc(t("messNameHint")));
+  },
+
+  secPeople:function(){
+    var live=state.members.filter(function(m){ return m.active!==false; });
+    var gone=state.members.filter(function(m){ return m.active===false; });
+    var h='';
+    if(canWrite()) h+='<div class="sadd"><input type="text" id="newMember" placeholder="'+esc(t("newMemberName"))+'">'+
+                      '<button type="button" class="sadd-btn" data-act="addMember">'+sic("plus","")+esc(t("add"))+'</button></div>';
+    var rows=live.map(function(m){
+      var cook=m.cooks!==false;
+      var sub=(cook?t("inCircle"):t("notCooking"))+(m.joinedOn?", "+t("sSince")+" "+niceDate(m.joinedOn):"");
+      var av='<span class="avwrap">'+avatarHtml(m)+(memberCodes[m.id]&&memberCodes[m.id].joined_at?'<i class="joindot"></i>':'')+'</span>';
+      return srow({icon:av,label:m.name,sub:sub,cls:"mem"+(cook?"":" nocook"),
+                   attr:canWrite()?'data-memmenu="'+m.id+'"':'',chev:canWrite()});
+    }).join("");
+    h+= rows ? sgroup(rows,null,esc(t("membersHint"))) : '<div class="sempty">'+esc(t("noMembers"))+'</div>';
+    if(gone.length){
+      h+=sgroup(gone.map(function(m){
+        return srow({icon:avatarHtml(m),label:m.name,sub:m.leftOn?t("leftOn")+" "+niceDate(m.leftOn):"",cls:"mem gone",
+          ctrl:canWrite()?'<button type="button" class="spill" data-toggle="'+m.id+'">'+esc(t("bringBack"))+'</button>':''});
+      }).join(""), t("formerMembers")+" ("+gone.length+")");
+    }
+    return h+memberSheetHtml();
+  },
+
+  secAccess:function(){
+    function p(k,label,sub,icon){ return srow({icon:icon,label:label,sub:sub,ctrl:sswitch(state.perms[k],'data-perm="'+k+'"')}); }
+    return sgroup(
+      p("summary",t("tabSummary"),t("sPermSummary"),"eye")+
+      p("meals",t("tabMeals"),t("sPermMeals"),"ticket")+
+      p("money",t("tabMoney"),t("sPermMoney"),"coins"),
+      null, esc(t("sPermHint")));
+  },
+
+  secTeam:function(){
+    var c=cloudCfg();
+    return sgroup(
+        srow({icon:"up",label:t("sPush"),act:"pushNow",
+              subHtml:esc(t("sLastSent"))+': <span id="syncNote">'+esc(c.lastPush?agoTxt(c.lastPush):t("sNotYet"))+'</span>'})+
+        srow({icon:"down",label:t("sPull"),sub:t("sPullSub"),act:"pullNow"}), t("sSyncLabel"))+
+      sgroup(
+        srow({icon:"link",label:t("copyMemberLink"),sub:t("sMemberLinkSub"),act:"memberLink"})+
+        srow({icon:"key",label:t("copyAdminLink"),sub:t("adminLinkHint"),act:"copyAdminLink"})+
+        srow({icon:"file",label:t("downloadSite"),sub:t("downloadSiteHint"),act:"downloadSite"}),
+        t("linksTitle"), esc(t("thisPhoneOnly")));
+  },
+
+  secMoney:function(){
+    return sgroup(
+      srow({icon:"box",label:t("inventoryOn"),sub:t("sStockSub"),ctrl:sswitch(state.inventoryEnabled,'data-act="toggleInv"')})+
+      (state.inventoryEnabled
+        ? '<label class="sfield inline"><span class="sfield-l">'+esc(t("currentInv"))+'</span>'+
+          '<input type="text" inputmode="decimal" autocomplete="off" id="invVal" value="'+(Number(state.inventoryValue)||0)+'"></label>'
+        : ''),
+      null, esc(t("assetsHint")));
+  },
+
+  secBackup:function(){
+    var cloud=cloudReady(), dsb=daysSinceBackup();
+    var h=sgroup(
+      srow({icon:"down",label:t("downloadBackup"),sub:t("sLastBackup")+": "+(dsb===null?t("sNever"):dsb===0?t("bkToday"):dsb===1?t("bkYesterday"):dsb+" "+t("bkDaysAgo")),act:"exportBackup"})+
+      srow({icon:"restore",label:t("restore"),sub:t("sRestoreSub"),act:"pickRestore"})+
+      srow({icon:"bell",label:t("showToast"),ctrl:sswitch(state.showBackupToast,'data-act="toggleBkToast"')}),
+      null, esc(cloud?t("sBackupHintCloud"):t("backupHint")))+
+      '<input type="file" id="fileIn" accept=".json,application/json,text/plain" class="hide"><div id="importNote" class="shint"></div>';
+
+    var g='', gOn=!!state.googleConnected;
+    if(!gOn){
+      g+='<label class="sfield"><span class="sfield-l">'+esc(t("clientId"))+'</span>'+
+         '<input type="text" autocomplete="off" id="gClientId" placeholder="xxxx.apps.googleusercontent.com" value="'+esc(state.googleClientId)+'"></label>'+
+         srow({icon:"sheet",label:t("connectGoogle"),act:"connectGoogle",tone:"brand"});
+    } else {
+      g+=srow({icon:"sheet",label:t("status"),valueHtml:'<span class="badge '+(googleNeedsReconnect?"neg":"pos")+'">'+
+              esc(googleNeedsReconnect?t("reconnectNeeded"):t("connected"))+'</span>',
+              sub:t("lastSynced")+": "+(state.lastSheetSync?agoTxt(state.lastSheetSync):t("sNever"))});
+      if(googleNeedsReconnect) g+=srow({icon:"sync",label:t("reconnectNow"),act:"connectGoogle",tone:"brand"});
+      else if(state.googleSheetId) g+=srow({icon:"table",label:t("openSheet"),href:"https://docs.google.com/spreadsheets/d/"+state.googleSheetId+"/edit",chev:true});
+      g+=srow({icon:"logout",label:t("disconnectGoogle"),act:"disconnectGoogle",tone:"neg"});
+    }
+    h+=sgroup(g, t("googleDrive"), esc(t("googleDriveHint"))+(googleNeedsReconnect?' '+esc(t("reconnectHint")):''));
+
+    h+=sgroup(srow({icon:"phone",label:t("sDeviceStore"),valueHtml:'<span class="badge '+(storageOk?"pos":"neg")+'">'+
+              esc(storageOk?t("storageOkShort"):t("storageBadShort"))+'</span>'}), null, storageOk?'':'<span style="color:var(--neg)">'+esc(t("storageBad"))+'</span>');
+    return h;
+  },
+
+  secDb:function(){
+    var pref=projectRef();
+    return sgroup(
+      srow({icon:"db",label:t("dbProject"),valueHtml:'<span class="sval num">'+esc(pref)+'</span>'})+
+      srow({icon:"shield",label:t("securityCheck"),sub:t("sSecSub"),act:"securityCheck"})+
+      '<div id="secResult" class="shint in"></div>'+
+      srow({icon:"terminal",label:t("openSqlEditor"),href:"https://supabase.com/dashboard/project/"+esc(pref)+"/sql/new",chev:true})+
+      srow({icon:"table",label:t("openTables"),href:"https://supabase.com/dashboard/project/"+esc(pref)+"/editor",chev:true})+
+      srow({icon:"copy",label:t("copyDbUrl"),act:"copyDbUrl"}),
+      null, esc(t("dbHint")));
   }
-  h+='</div>';
+};
+var SET_TITLES = {secSetup:"sMessProfile", secPeople:"sMembers", secAccess:"sMemberView",
+                  secTeam:"sSync", secMoney:"sStock", secBackup:"sBackups", secDb:"database"};
 
+function viewSettings(){
+  var page=window.__setPage;
+  if(guestMode || !page || !SET_PAGES[page]){ window.__setPage=null; return '<div class="sset">'+settingsHome()+'</div>'; }
+  return '<div class="sset">'+
+    '<div class="shead"><button type="button" class="sback" data-act="setBack" aria-label="'+esc(t("sBack"))+'">'+sic("back","")+'</button>'+
+    '<div class="shead-t">'+esc(t(SET_TITLES[page]))+'</div><span></span></div>'+
+    SET_PAGES[page]()+'</div>';
+}
+
+function memberSheetHtml(){
+  var h='';
   if(canWrite() && window.__memSheet){
     var sm = state.members.filter(function(x){ return x.id===window.__memSheet; })[0];
     if(sm){
@@ -3262,132 +3622,7 @@ function viewSettings(){
     }
   }
 
-  P[curKey]=h.slice(mark); curKey="secMoney"; mark=h.length;
-  h+='<div><h2>'+esc(t("assets"))+'</h2><div class="group">'+
-     '<div class="kv"><span class="k">'+esc(t("inventoryOn"))+'</span>'+
-     '<button class="sw '+(state.inventoryEnabled?"on":"")+'" data-act="toggleInv"><i></i></button></div>'+
-     (state.inventoryEnabled?
-       '<div class="kv"><span class="k">'+esc(t("currentInv"))+'</span>'+
-       '<input type="text" inputmode="decimal" autocomplete="off" id="invVal" value="'+
-       (Number(state.inventoryValue)||0)+'" style="width:115px;text-align:right;'+
-       'background:var(--group2);padding:8px 12px;font-size:15px"></div>' : ''
-     )+'</div>'+
-     '<div class="hint">'+esc(t("assetsHint"))+'</div></div>';
-
-  P[curKey]=h.slice(mark); curKey="secData"; mark=h.length;
-  var pref=projectRef();
-  if(pref){
-    h+='<div><h2>'+esc(t("database"))+'</h2><div class="group">'+
-       '<div class="kv"><span class="k">'+esc(t("dbProject"))+'</span>'+
-         '<span class="v num" style="font-size:12px">'+esc(pref)+'</span></div>'+
-       '<a class="kv" href="https://supabase.com/dashboard/project/'+esc(pref)+'/sql/new" target="_blank" rel="noopener" '+
-         'style="text-decoration:none;color:var(--brand);font-weight:600">'+esc(t("openSqlEditor"))+'</a>'+
-       '<a class="kv" href="https://supabase.com/dashboard/project/'+esc(pref)+'/editor" target="_blank" rel="noopener" '+
-         'style="text-decoration:none;color:var(--brand);font-weight:600">'+esc(t("openTables"))+'</a>'+
-       '<button class="kv" data-act="copyDbUrl" style="width:100%;background:transparent;border:none;'+
-         'font-family:inherit;text-align:left;color:var(--brand);font-weight:600;cursor:pointer">'+
-         esc(t("copyDbUrl"))+'</button>'+
-       '<button class="kv" data-act="securityCheck" style="width:100%;background:transparent;border:none;'+
-         'font-family:inherit;text-align:left;color:var(--brand);font-weight:600;cursor:pointer">'+
-         esc(t("securityCheck"))+'</button>'+
-       '<div id="secResult" class="hint" style="margin:0 15px 10px;font-weight:600"></div>'+
-       '</div><div class="hint">'+esc(t("dbHint"))+'</div></div>';
-  }
-
-  h+='<div class="divider"><h2>'+esc(t("storage"))+'</h2><div class="group">'+
-     '<div class="kv"><span class="k">'+esc(t("version"))+'</span><span class="v">v'+APP_VERSION+'</span></div>'+
-     '<div class="kv"><span class="k">'+esc(t("storage"))+'</span>'+
-     '<span class="badge '+(storageOk?"pos":"neg")+'">'+esc(storageOk?t("storageOkShort"):t("storageBadShort"))+'</span></div></div>'+
-     (storageOk?'':'<div class="hint" style="color:var(--neg)">'+esc(t("storageBad"))+'</div>')+'</div>';
-
-  var dsb=daysSinceBackup();
-  var lastTxt = state.lastBackupAt
-    ? (dsb===0?t("bkToday"):(dsb===1?t("bkYesterday"):dsb+" "+t("bkDaysAgo")))
-    : t("bkNever");
-  var stale = (dsb===null||dsb>7);
-
-
-  var gConnected = !!state.googleConnected;
-  var gLastTxt = state.lastSheetSync ? new Date(state.lastSheetSync).toLocaleString() : t("bkNever");
-  h+='<div class="divider"><h2>'+esc(t("googleDrive"))+'</h2><div class="group">';
-  if(!gConnected){
-    h+='<div class="kv"><span class="k">'+esc(t("clientId"))+'</span>'+
-       '<input type="text" autocomplete="off" id="gClientId" placeholder="xxxx.apps.googleusercontent.com" '+
-       'value="'+esc(state.googleClientId)+'" style="width:170px;text-align:right;background:var(--group2);'+
-       'padding:8px 10px;font-size:14px"></div>'+
-       '<button class="kv" data-act="connectGoogle" style="width:100%;background:transparent;'+
-       'font-family:inherit;cursor:pointer;text-align:left"><span style="color:var(--brand)">'+
-       esc(t("connectGoogle"))+'</span></button>';
-  } else if(googleNeedsReconnect){
-    h+='<div class="kv"><span class="k">'+esc(t("status"))+'</span>'+
-       '<span class="badge neg">'+esc(t("reconnectNeeded"))+'</span></div>'+
-       '<div class="kv"><span class="k">'+esc(t("lastSynced"))+'</span>'+
-       '<span class="v" style="font-size:14px">'+esc(gLastTxt)+'</span></div>'+
-       '<button class="kv" data-act="connectGoogle" style="width:100%;background:transparent;'+
-       'font-family:inherit;cursor:pointer;text-align:left"><span style="color:var(--brand);font-weight:600">'+
-       esc(t("reconnectNow"))+'</span></button>'+
-       '<button class="kv" data-act="disconnectGoogle" style="width:100%;background:transparent;'+
-       'font-family:inherit;cursor:pointer;text-align:left"><span style="color:var(--neg)">'+
-       esc(t("disconnectGoogle"))+'</span></button>';
-  } else {
-    h+='<div class="kv"><span class="k">'+esc(t("status"))+'</span>'+
-       '<span class="badge pos">'+esc(t("connected"))+'</span></div>'+
-       '<div class="kv"><span class="k">'+esc(t("lastSynced"))+'</span>'+
-       '<span class="v" style="font-size:14px">'+esc(gLastTxt)+'</span></div>';
-    if(state.googleSheetId){
-      h+='<a class="kv" href="https://docs.google.com/spreadsheets/d/'+state.googleSheetId+'/edit" '+
-         'target="_blank" rel="noopener" style="text-decoration:none;display:flex">'+
-         '<span style="color:var(--brand)">'+esc(t("openSheet"))+'</span></a>';
-    }
-    h+='<button class="kv" data-act="disconnectGoogle" style="width:100%;background:transparent;'+
-       'font-family:inherit;cursor:pointer;text-align:left"><span style="color:var(--neg)">'+
-       esc(t("disconnectGoogle"))+'</span></button>';
-  }
-  h+='</div><div class="hint">'+esc(t("googleDriveHint"))+
-     (googleNeedsReconnect?' '+esc(t("reconnectHint")):'')+'</div></div>';
-
-  h+='<div class="divider"><h2>'+esc(t("backup"))+'</h2><div class="group">'+
-     '<div class="kv"><span class="k">'+esc(t("showToast"))+'</span>'+
-     '<button class="sw '+(state.showBackupToast?"on":"")+'" data-act="toggleBkToast"><i></i></button></div>'+
-     '<button class="kv" data-act="exportBackup" style="width:100%;background:transparent;'+
-     'font-family:inherit;cursor:pointer;text-align:left;font-size:15px">'+
-     '<span style="color:var(--brand)">'+esc(t("downloadBackup"))+'</span></button>'+
-     '<button class="kv" data-act="pickRestore" style="width:100%;background:transparent;'+
-     'font-family:inherit;cursor:pointer;text-align:left;font-size:15px">'+
-     '<span style="color:var(--brand)">'+esc(t("restore"))+'</span></button></div>'+
-     '<input type="file" id="fileIn" accept=".json,application/json,text/plain" class="hide">'+
-     '<div class="hint">'+esc(t("backupHint"))+'</div>'+
-     '<div id="importNote" class="hint"></div></div>';
-  h+='<div class="credit">'+esc(t("designedBy"))+' <strong>Ahmed Ripon</strong></div>';
-  h+='</div>';
-  P[curKey]=h.slice(mark);
-
-  var base='<div class="stack settings-scope">';
-  var page=window.__setPage;
-  if(page && P[page]){
-    return base+
-      '<button class="backbar" data-act="setBack">'+ICONS.back+'<span>'+esc(t(page))+'</span></button>'+
-      P[page]+'</div>';
-  }
-  function svgOf(x){ return x.indexOf("<svg")===0 ? x : '<svg viewBox="0 0 24 24">'+x+'</svg>'; }
-  var GROUPS=[
-    ["menuGeneral", [["secSetup",svgOf(ICONS.settings)], ["secPeople",svgOf(ICONS.members)]]],
-    ["menuSharing", [["secTeam",svgOf(ICONS.members)]]],
-    ["menuData",    [["secMoney",svgOf(ICONS.wallet)], ["secData",svgOf(ICONS.box)]]]
-  ];
-  var m='';
-  GROUPS.forEach(function(g){
-    m+='<div class="setgroup"><div class="setlabel">'+esc(t(g[0]))+'</div><div class="group">';
-    g[1].forEach(function(x){
-      m+='<button class="menurow" data-setpage="'+x[0]+'">'+
-         '<span class="menuic">'+x[1]+'</span>'+
-         '<span class="menutxt">'+esc(t(x[0]))+'</span>'+
-         ICONS.chevright+'</button>';
-    });
-    m+='</div></div>';
-  });
-  m+=creditHtml();
-  return base+m+'</div>';
+  return h;
 }
 
 // A phone that is not connected to any mess sees a welcome screen, not an
