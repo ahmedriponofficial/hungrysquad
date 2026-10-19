@@ -814,6 +814,118 @@
   .sempty{text-align:center;color:var(--ink3);font-size:14px;padding:28px 12px}
   .scredit{text-align:center;color:var(--ink3);font-size:13px;line-height:1.8;margin-top:14px}
   .scredit a{color:var(--ink2);font-weight:600;text-decoration:none}
+  /* ===== Cooking switch + ratings ===== */
+  .rstars{display:inline-flex;gap:1px;vertical-align:middle}
+  .rstar,.rc-svg,.rs-svg,.rb-svg,.pf-s,.pf-bs,.pf-rs,.pf-es{fill:none;stroke:#C9C9DC;stroke-width:1.6;stroke-linejoin:round}
+  .rstar.on,.rs-svg.on,.rb-svg,.pf-s.on,.pf-bs,.pf-rs.on{fill:#F2A516;stroke:#F2A516}
+  .rcard{background:var(--group);border:1.5px solid var(--hair);border-radius:26px;box-shadow:var(--card);
+    padding:18px;display:flex;flex-direction:column;gap:14px}
+  .rc-top{display:flex;align-items:center;gap:12px}
+  .rc-top .circ-ic{width:44px;height:44px;border-radius:50%}
+  .rc-k{font-size:13px;color:var(--ink3);font-weight:600}
+  .rc-n{font-size:17px;font-weight:700;letter-spacing:-0.3px}
+  .rc-q{font-size:15px;font-weight:600}
+  .rc-stars{display:flex;justify-content:space-between;gap:6px}
+  .rc-star{flex:1;max-width:58px;height:54px;border:0;border-radius:16px;background:var(--group2);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+  .rc-star:active{transform:scale(.94)}
+  .rc-svg{width:30px;height:30px}
+  .rc-star:hover .rc-svg{stroke:#F2A516}
+  .rc-priv{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink3);line-height:1.4}
+  .rlock{width:15px;height:15px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .rbadge{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:700;color:#9A6200;
+    background:#FFF3DA;border-radius:999px;padding:2px 7px 2px 5px;margin-left:6px;vertical-align:middle}
+  html[data-theme="dark"] .rbadge{background:rgba(242,165,22,.16);color:#F5B941}
+  .rb-svg{width:12px;height:12px}
+  .cook-nb{background:none;border:0;padding:0;font:inherit;text-align:left;cursor:pointer;display:block}
+  .cook-nb:active{opacity:.6}
+
+  #ckSheet{display:none;position:fixed;inset:0;z-index:300}
+  html.cks-open,html.cks-open body{overflow:hidden}
+  .cks-bg{position:absolute;inset:0;background:rgba(26,26,46,.42);animation:cksFade .2s ease}
+  .cks{position:absolute;left:0;right:0;bottom:0;max-height:90vh;overflow:auto;background:var(--group);color:var(--ink);
+    border-radius:30px 30px 0 0;padding:10px 22px calc(26px + env(safe-area-inset-bottom,0px));
+    display:flex;flex-direction:column;gap:16px;box-shadow:0 -10px 40px rgba(26,26,46,.18);animation:cksUp .26s cubic-bezier(.2,.8,.2,1)}
+  @media (min-width:560px){ .cks{left:50%;right:auto;width:440px;transform:translateX(-50%);bottom:24px;border-radius:30px;animation:none} }
+  @keyframes cksUp{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+  @keyframes cksFade{from{opacity:0}to{opacity:1}}
+  .cks-grab{width:40px;height:5px;border-radius:999px;background:var(--fill);align-self:center;flex-shrink:0}
+  .rs-head{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+  .rs-head .circ-ic.rs-av{width:60px;height:60px;border-radius:50%;font-size:22px!important}
+  .rs-title{font-size:20px;font-weight:700;letter-spacing:-0.4px}
+  .rs-date{font-size:14px;color:var(--ink3)}
+  .rs-stars{display:flex;justify-content:center;gap:6px}
+  .rs-star{border:0;background:none;padding:2px;cursor:pointer;border-radius:12px}
+  .rs-svg{width:42px;height:42px}
+  .rs-lab{text-align:center;font-size:15px;font-weight:700;color:var(--ink2);margin-top:-8px;min-height:20px}
+  .rs-sec,.rs-note span,.pf-lk{font-size:13px;font-weight:600;color:var(--ink3)}
+  .rs-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:-6px}
+  .pf-liked .rs-chips{margin-top:8px}
+  .rs-chip{padding:8px 13px;border-radius:999px;background:var(--group2);border:1.5px solid transparent;color:var(--ink2);
+    font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+  .rs-chip.on{background:var(--brandSoft);border-color:var(--brand);color:var(--brand)}
+  .rs-chip.static{cursor:default;background:var(--group)}
+  .rs-chip em{font-style:normal;color:var(--ink3);margin-left:2px}
+  .rs-note{display:flex;flex-direction:column;gap:6px}
+  .rs-note input{border:0;background:var(--group2);border-radius:14px;padding:13px 14px;font:inherit;font-size:16px;box-shadow:none}
+  .rs-err{background:var(--negBg);color:var(--neg);border-radius:14px;padding:10px 13px;font-size:13.5px;font-weight:600}
+  .rs-send,.to-go{height:54px;border-radius:999px;border:0;background:var(--brandGrad);color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer;flex-shrink:0}
+  .rs-send:disabled{opacity:.45;cursor:default}
+  .rs-done,.to-keep{height:50px;border-radius:999px;border:0;background:transparent;color:var(--brand);font:inherit;font-size:16px;font-weight:700;cursor:pointer;flex-shrink:0}
+  .to-go{background:var(--ink);color:var(--group)}
+  .to-h{font-size:22px;font-weight:700;letter-spacing:-0.4px}
+  .to-p{font-size:15px;color:var(--ink2);margin-top:-10px}
+  .to-list{display:flex;flex-direction:column;gap:13px}
+  .to-row{display:flex;gap:13px;align-items:flex-start}
+  .to-row b{display:block;font-size:15px;font-weight:600}
+  .to-row em{display:block;font-style:normal;font-size:13px;color:var(--ink3);margin-top:1px}
+  .to-ic{width:40px;height:40px;border-radius:12px;background:var(--group2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .to-ic svg{width:21px;height:21px;fill:none;stroke:var(--ink2);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .to-row.warn .to-ic svg{stroke:var(--neg)}
+  .to-row.warn b{color:var(--neg)}
+  .to-safe{display:flex;gap:10px;align-items:flex-start;background:var(--posBg);color:var(--pos);border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.45;font-weight:500}
+  .to-safe svg{width:20px;height:20px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .ck-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:30px 24px;background:var(--group);
+    border:1.5px solid var(--hair);border-radius:26px;box-shadow:var(--card)}
+  .ck-empty svg{width:56px;height:56px;padding:14px;border-radius:50%;background:var(--group2);fill:none;stroke:var(--ink3);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .ck-empty b{font-size:17px;letter-spacing:-0.3px}
+  .ck-empty span{font-size:14px;color:var(--ink3);line-height:1.5}
+
+  .pf-head{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:4px 0}
+  .pf-head .circ-ic.pf-av{width:72px;height:72px;border-radius:50%;font-size:26px!important}
+  .pf-name{font-size:22px;font-weight:700;letter-spacing:-0.4px}
+  .pf-sub{font-size:14px;color:var(--ink3)}
+  .pf-sec{font-size:13px;font-weight:600;color:var(--ink3);margin:2px 4px -8px}
+  .pf-card{background:var(--group2);border-radius:20px;padding:16px}
+  .pf-empty{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:14px;color:var(--ink3);line-height:1.5}
+  .pf-es{width:20px;height:20px}
+  .pf-top{display:flex;align-items:center;gap:18px}
+  .pf-big{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:92px}
+  .pf-avg{font-size:44px;font-weight:800;letter-spacing:-1.2px;line-height:1}
+  .pf-s{width:15px;height:15px}
+  .pf-n{font-size:12px;color:var(--ink3);font-weight:600}
+  .pf-bars{flex:1;display:flex;flex-direction:column;gap:6px}
+  .pf-bar{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink3);font-weight:600}
+  .pf-bar>span:first-child{width:9px}
+  .pf-bs{width:12px;height:12px}
+  .pf-bar i{flex:1;height:8px;border-radius:999px;background:var(--fill);overflow:hidden}
+  .pf-bar b{display:block;height:8px;border-radius:999px;background:#F2A516}
+  .pf-bc{width:18px;text-align:right}
+  .pf-liked{border-top:1px solid var(--sep);margin-top:14px;padding-top:12px}
+  .pf-hint{font-size:13px;color:var(--ink3);line-height:1.5;margin:-6px 4px 0}
+  .pf-adm{display:flex;align-items:center;gap:8px;background:var(--brandSoft);color:var(--brand);border-radius:14px;padding:10px 13px;font-size:13px;font-weight:600}
+  .pf-day{display:flex;flex-direction:column;gap:10px}
+  .pf-dh{display:flex;justify-content:space-between;align-items:center;font-size:14.5px;font-weight:700}
+  .pf-da{display:inline-flex;align-items:center;gap:4px}
+  .pf-dn{font-size:13px;color:var(--ink3);font-weight:600}
+  .pf-rr{border-top:1px solid var(--sep);padding-top:10px}
+  .pf-rn{display:flex;justify-content:space-between;align-items:center;font-size:14.5px;font-weight:600}
+  .pf-rs{width:14px;height:14px}
+  .pf-rt{font-size:13px;color:var(--ink3);margin-top:2px}
+  .pf-rq{font-size:13.5px;color:var(--ink2);background:var(--group);border-radius:12px;padding:8px 11px;margin-top:6px}
+  .pf-miss{font-size:13px;color:var(--ink3);border-top:1px solid var(--sep);padding-top:10px}
+  .nocook .tallyhead,.nocook .tallyrow{grid-template-columns:1fr 66px}
+  .nocook .tallyhead>span:last-child,.nocook .tcook{display:none}
 </style>
 </head>
 <body>
@@ -935,6 +1047,7 @@ function cloudPayload(){
     inventoryEnabled: state.inventoryEnabled,
     currency: state.currency,
     perms: state.perms,
+    cooking: cookCfg(),
     deputyPerms: state.deputyPerms,
     updated: new Date().toISOString()
   };
@@ -949,6 +1062,7 @@ function applyCloud(d){
   state.inventoryEnabled = !!d.inventoryEnabled;
   if(d.currency) state.currency = d.currency;
   if(d.perms) state.perms = Object.assign({summary:true,meals:true,money:true,members:true}, d.perms);
+  if(d.cooking) state.cooking = Object.assign({on:true,requests:true,ratings:true,ratingMin:3,closeHour:12}, d.cooking);
   if(d.deputyPerms) state.deputyPerms = Object.assign(state.deputyPerms, d.deputyPerms);
   cloudUpdated = d.updated || null;
   if(deputyMode) verifyDeputy();
@@ -1239,7 +1353,7 @@ function canWrite(){
   return !!adminSession && isAdminUrl(); // otherwise: signed-in admin, on the admin address
 }
 
-var APP_VERSION = "13.0";
+var APP_VERSION = "13.1";
 
 var STR = {
   en:{
@@ -1605,6 +1719,7 @@ var state = {members:[],transactions:[],meals:[],cooks:[],inventoryValue:0,theme
   autoBackup:true, lastBackupAt:null, lastBackupHash:null, currency:"EUR", inventoryEnabled:false,
   googleClientId:"", googleConnected:false, googleSheetId:null, lastSheetSync:null,
   showBackupToast:true,
+  cooking:{on:true, requests:true, ratings:true, ratingMin:3, closeHour:12},
   perms:{summary:true, meals:true, money:true, members:true},
   deputyPerms:{enabled:true, addMeals:true, addMoney:true, deleteEntries:false, members:false, token:""}};
 
@@ -1622,7 +1737,7 @@ var expandedId = null, armed = {}, storageOk = true;
 (function(){
   var S = {
     en:{
-      sBack:"Back", sMessProfile:"Mess profile", sMembers:"Members", sMemberView:"What members see",
+      sBack:"Back", soQTitle:"Sign out of this phone?", soQText:"You\u2019ll switch to the read-only member view. To edit again, open the admin link and sign in as {email}.", sMessProfile:"Mess profile", sMembers:"Members", sMemberView:"What members see",
       sSync:"Sync & links", sStock:"Stock value", sBackups:"Backups",
       sActive:"active", sOf:"of", sOff:"Off", sNever:"Never", sNotYet:"Not yet", sJustNow:"Just now",
       sMinAgo:"min ago", sHrAgo:"h ago", sLoading:"Loading\u2026", sSince:"since",
@@ -1667,7 +1782,7 @@ var expandedId = null, armed = {}, storageOk = true;
       linksTitle:"Links", signInAdmin:"Sign in as admin", darkMode:"Dark mode"
     },
     bn:{
-      sBack:"\u09AB\u09BF\u09B0\u09C7 \u09AF\u09BE\u09A8", sMessProfile:"\u09AE\u09C7\u09B8\u09C7\u09B0 \u09AA\u09CD\u09B0\u09CB\u09AB\u09BE\u0987\u09B2", sMembers:"\u09B8\u09A6\u09B8\u09CD\u09AF",
+      sBack:"\u09AB\u09BF\u09B0\u09C7 \u09AF\u09BE\u09A8", soQTitle:"\u098F\u0987 \u09AB\u09CB\u09A8 \u09A5\u09C7\u0995\u09C7 \u09B8\u09BE\u0987\u09A8 \u0986\u0989\u099F \u0995\u09B0\u09AC\u09C7\u09A8?", soQText:"\u0986\u09AA\u09A8\u09BF \u09B6\u09C1\u09A7\u09C1 \u09A6\u09C7\u0996\u09BE\u09B0 \u09B8\u09A6\u09B8\u09CD\u09AF \u09AD\u09BF\u0989\u09A4\u09C7 \u099A\u09B2\u09C7 \u09AF\u09BE\u09AC\u09C7\u09A8\u0964 \u0986\u09AC\u09BE\u09B0 \u09B8\u09AE\u09CD\u09AA\u09BE\u09A6\u09A8\u09BE \u0995\u09B0\u09A4\u09C7 \u0985\u09CD\u09AF\u09BE\u09A1\u09AE\u09BF\u09A8 \u09B2\u09BF\u0982\u0995 \u0996\u09C1\u09B2\u09C7 {email} \u09A6\u09BF\u09AF\u09BC\u09C7 \u09B8\u09BE\u0987\u09A8 \u0987\u09A8 \u0995\u09B0\u09C1\u09A8\u0964", sMessProfile:"\u09AE\u09C7\u09B8\u09C7\u09B0 \u09AA\u09CD\u09B0\u09CB\u09AB\u09BE\u0987\u09B2", sMembers:"\u09B8\u09A6\u09B8\u09CD\u09AF",
       sMemberView:"\u09B8\u09A6\u09B8\u09CD\u09AF\u09B0\u09BE \u0995\u09C0 \u09A6\u09C7\u0996\u09AC\u09C7",
       sSync:"\u09B8\u09BF\u0999\u09CD\u0995 \u0993 \u09B2\u09BF\u0982\u0995", sStock:"\u09AE\u099C\u09C1\u09A6\u09C7\u09B0 \u09AE\u09C2\u09B2\u09CD\u09AF", sBackups:"\u09AC\u09CD\u09AF\u09BE\u0995\u0986\u09AA",
       sActive:"\u099C\u09A8 \u09B8\u0995\u09CD\u09B0\u09BF\u09AF\u09BC", sOf:"/", sOff:"\u09AC\u09A8\u09CD\u09A7", sNever:"\u0995\u0996\u09A8\u0993 \u09A8\u09BE",
@@ -1704,6 +1819,8 @@ var expandedId = null, armed = {}, storageOk = true;
   };
   for(var l in S){ STR[l]=STR[l]||{}; for(var k in S[l]) STR[l][k]=S[l][k]; }
 })();
+
+(function(){ var S={en:{"ckTitle": "Cooking", "ckRow": "Cooking", "ckRota": "Cooking rota", "ckRotaSub": "Pick who cooks each day and keep a count for the month", "ckOffSince": "Off since {d}", "ckHiddenT": "Cooking is hidden", "ckHiddenP": "Meals, Summary and Money work without it. Your rota, past cooking days and ratings are saved for when you turn it back on.", "ckReqsLabel": "Requests", "ckReqs": "Members can ask to cook", "ckReqsSub": "They pick a day, you approve or decline", "ckWaiting": "Waiting for you", "ckReqOne": "request", "ckReqMany": "requests", "ckRatings": "Ratings", "ckRateRow": "Members rate the cook", "ckRateSub": "After a cooking day, members who ate can give 1 to 5 stars", "ckCloses": "Rating closes", "ckNextDay": "Next day", "ckMin": "Show the average after", "ckRatingOne": "rating", "ckRatingMany": "ratings", "ckRateHint": "A cook\u2019s average stays hidden until enough people have rated, so one vote can\u2019t define them.", "ckRateOffHint": "Ratings already given are kept.", "ckSetup": "Set up ratings", "ckSetupSub": "One-time step in your database", "ckSetupHow": "Copy the SQL, open the SQL editor in Supabase, paste it and press Run. Then come back and tap \u201cI\u2019ve run it\u201d.", "ckCopySql": "Copy the SQL", "ckSetupDone": "I\u2019ve run it", "ckSetupOk": "Ratings are ready", "ckSetupNo": "Not found yet. Run the SQL, then try again.", "ckRotaLabel": "Rota", "ckWho": "Who\u2019s in the rota", "ckWhoHint": "Tap a member there to add them to the rota or take them off it.", "ckOffQ": "Turn off cooking?", "ckOffP": "It will be hidden for you and your members.", "ckOffMeals": "No cook to pick for each day", "ckOffSummary": "Today\u2019s cook and the monthly count are hidden", "ckMembersWord": "Members", "ckOffAsk": "They can\u2019t ask to cook anymore", "ckOffRatings": "Nobody can rate the cook", "ckOffPendT": "{n} waiting requests", "ckOffPend": "They\u2019ll be cancelled", "ckOffSafe": "Nothing is deleted. Turn it back on anytime and the rota and every cooking day come back.", "ckOffGo": "Turn off cooking", "ckKeep": "Keep it on", "ckOffToast": "Cooking is off", "ckOnToast": "Cooking is back on", "rtTodayCook": "Today\u2019s cook", "rtYesterdayCook": "Yesterday\u2019s cook", "rtCooked": "{n} cooked", "rtHow": "How was the food?", "rtPrivate": "Your rating is anonymous. Members can\u2019t see who gave it.", "rtRateTitle": "Rate {n}\u2019s cooking", "rtWhatWell": "What went well?", "rtTasty": "Tasty", "rtEnough": "Enough for everyone", "rtClean": "Clean kitchen", "rtOnTime": "On time", "rtNote": "Note for the admin (optional)", "rtNotePh": "A bit too salty", "rtSend": "Send rating", "rtSending": "Sending\u2026", "rtL1": "Poor", "rtL2": "Not great", "rtL3": "Okay", "rtL4": "Good", "rtL5": "Great", "rtThanks": "Thanks, your rating is in", "rtErrAte": "Only people who ate that day can rate it.", "rtErrOwn": "You can\u2019t rate your own cooking.", "rtErrClosed": "Rating for this day has closed.", "rtErrOff": "Ratings are turned off.", "rtErrMember": "Your member code has changed. Ask the admin for a new one.", "rtErrSetup": "Ratings aren\u2019t set up yet. Ask the admin.", "inRota": "In the cooking rota", "notInRota": "Not in the cooking rota", "cookedDays": "cooked {n} days in {m}", "cookedDay": "cooked {n} day in {m}", "sInviteBodyNoCook": "Share the member link so everyone can check meals and balances.", "rtMonthRating": "{m} rating", "rtTooFew": "Not enough ratings yet ({n} of {min}). The average shows once {min} people have rated.", "rtNotYet": "Ratings will show here soon.", "rtNeedSetupAdmin": "Ratings aren\u2019t set up yet. Go to Settings, Cooking, Set up ratings.", "rtCount": "{n} ratings", "rtLiked": "Members liked", "rtLastMonth": "Last month: {a} from {n} ratings.", "rtNoNames": "Names are never shown here.", "rtWhoRated": "Who rated", "rtOnlyYou": "Only you can see this. Members see the average.", "rtNoDays": "No cooking days yet this month.", "sOn": "On", "sJoined": "Joined", "rtNoRatings": "No ratings", "rtNotRated": "Didn\u2019t rate", "done": "Done", "cookingProfile": "Cooking profile", "reqCancelled": "Cancelled"},bn:{"ckTitle": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be", "ckRow": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be", "ckRota": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09b0 \u09aa\u09be\u09b2\u09be", "ckRotaSub": "\u09aa\u09cd\u09b0\u09a4\u09bf\u09a6\u09bf\u09a8 \u0995\u09c7 \u09b0\u09be\u0981\u09a7\u09ac\u09c7 \u09a0\u09bf\u0995 \u0995\u09b0\u09c1\u09a8, \u09ae\u09be\u09b8\u09c7\u09b0 \u09b9\u09bf\u09b8\u09be\u09ac \u09b0\u09be\u0996\u09c1\u09a8", "ckOffSince": "{d} \u09a5\u09c7\u0995\u09c7 \u09ac\u09a8\u09cd\u09a7", "ckHiddenT": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be \u09b2\u09c1\u0995\u09be\u09a8\u09cb \u0986\u099b\u09c7", "ckHiddenP": "\u0996\u09be\u09ac\u09be\u09b0, \u09b8\u09be\u09b0\u09be\u0982\u09b6 \u0993 \u09b2\u09c7\u09a8\u09a6\u09c7\u09a8 \u098f\u099f\u09be \u099b\u09be\u09a1\u09bc\u09be\u0987 \u099a\u09b2\u09ac\u09c7\u0964 \u09aa\u09be\u09b2\u09be, \u0986\u0997\u09c7\u09b0 \u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09b0 \u09a6\u09bf\u09a8 \u0993 \u09b0\u09c7\u099f\u09bf\u0982 \u09b8\u0982\u09b0\u0995\u09cd\u09b7\u09bf\u09a4 \u09a5\u09be\u0995\u09ac\u09c7\u0964", "ckReqsLabel": "\u0985\u09a8\u09c1\u09b0\u09cb\u09a7", "ckReqs": "\u09b8\u09a6\u09b8\u09cd\u09af\u09b0\u09be \u09b0\u09be\u0981\u09a7\u09a4\u09c7 \u099a\u09be\u0987\u09a4\u09c7 \u09aa\u09be\u09b0\u09ac\u09c7", "ckReqsSub": "\u09a4\u09be\u09b0\u09be \u09a6\u09bf\u09a8 \u09ac\u09be\u099b\u09ac\u09c7, \u0986\u09aa\u09a8\u09bf \u0985\u09a8\u09c1\u09ae\u09cb\u09a6\u09a8 \u09a6\u09c7\u09ac\u09c7\u09a8", "ckWaiting": "\u0986\u09aa\u09a8\u09be\u09b0 \u0985\u09aa\u09c7\u0995\u09cd\u09b7\u09be\u09af\u09bc", "ckReqOne": "\u0985\u09a8\u09c1\u09b0\u09cb\u09a7", "ckReqMany": "\u0985\u09a8\u09c1\u09b0\u09cb\u09a7", "ckRatings": "\u09b0\u09c7\u099f\u09bf\u0982", "ckRateRow": "\u09b8\u09a6\u09b8\u09cd\u09af\u09b0\u09be \u09b0\u09be\u0981\u09a7\u09c1\u09a8\u09bf\u0995\u09c7 \u09b0\u09c7\u099f\u09bf\u0982 \u09a6\u09c7\u09ac\u09c7", "ckRateSub": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09b0 \u09a6\u09bf\u09a8\u09c7\u09b0 \u09aa\u09b0 \u09af\u09be\u09b0\u09be \u0996\u09c7\u09af\u09bc\u09c7\u099b\u09c7 \u09a4\u09be\u09b0\u09be \u09e7 \u09a5\u09c7\u0995\u09c7 \u09eb \u09a4\u09be\u09b0\u09be \u09a6\u09bf\u09a4\u09c7 \u09aa\u09be\u09b0\u09ac\u09c7", "ckCloses": "\u09b0\u09c7\u099f\u09bf\u0982 \u09ac\u09a8\u09cd\u09a7 \u09b9\u09ac\u09c7", "ckNextDay": "\u09aa\u09b0\u09c7\u09b0 \u09a6\u09bf\u09a8", "ckMin": "\u0997\u09a1\u09bc \u09a6\u09c7\u0996\u09be\u09ac\u09c7", "ckRatingOne": "\u09b0\u09c7\u099f\u09bf\u0982\u09af\u09bc\u09c7\u09b0 \u09aa\u09b0", "ckRatingMany": "\u09b0\u09c7\u099f\u09bf\u0982\u09af\u09bc\u09c7\u09b0 \u09aa\u09b0", "ckRateHint": "\u09af\u09a5\u09c7\u09b7\u09cd\u099f \u09b0\u09c7\u099f\u09bf\u0982 \u09a8\u09be \u0986\u09b8\u09be \u09aa\u09b0\u09cd\u09af\u09a8\u09cd\u09a4 \u0997\u09a1\u09bc \u09b2\u09c1\u0995\u09be\u09a8\u09cb \u09a5\u09be\u0995\u09c7, \u09af\u09be\u09a4\u09c7 \u098f\u0995\u099f\u09bf \u09ad\u09cb\u099f\u09c7 \u0995\u09be\u0989\u0995\u09c7 \u09ac\u09bf\u099a\u09be\u09b0 \u09a8\u09be \u0995\u09b0\u09be \u09b9\u09af\u09bc\u0964", "ckRateOffHint": "\u09a6\u09c7\u0993\u09af\u09bc\u09be \u09b0\u09c7\u099f\u09bf\u0982\u0997\u09c1\u09b2\u09cb \u09b0\u09be\u0996\u09be \u09a5\u09be\u0995\u09ac\u09c7\u0964", "ckSetup": "\u09b0\u09c7\u099f\u09bf\u0982 \u099a\u09be\u09b2\u09c1 \u0995\u09b0\u09c1\u09a8", "ckSetupSub": "\u09a1\u09be\u099f\u09be\u09ac\u09c7\u09b8\u09c7 \u098f\u0995\u09ac\u09be\u09b0\u09c7\u09b0 \u0995\u09be\u099c", "ckSetupHow": "SQL \u0995\u09aa\u09bf \u0995\u09b0\u09c1\u09a8, Supabase-\u098f\u09b0 SQL \u098f\u09a1\u09bf\u099f\u09b0\u09c7 \u09aa\u09c7\u09b8\u09cd\u099f \u0995\u09b0\u09c7 Run \u099a\u09be\u09aa\u09c1\u09a8\u0964 \u09a4\u09be\u09b0\u09aa\u09b0 \u09ab\u09bf\u09b0\u09c7 \u098f\u09b8\u09c7 \u201c\u099a\u09be\u09b2\u09bf\u09af\u09bc\u09c7\u099b\u09bf\u201d \u099a\u09be\u09aa\u09c1\u09a8\u0964", "ckCopySql": "SQL \u0995\u09aa\u09bf \u0995\u09b0\u09c1\u09a8", "ckSetupDone": "\u099a\u09be\u09b2\u09bf\u09af\u09bc\u09c7\u099b\u09bf", "ckSetupOk": "\u09b0\u09c7\u099f\u09bf\u0982 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a4\u09c1\u09a4", "ckSetupNo": "\u098f\u0996\u09a8\u09cb \u09aa\u09be\u0993\u09af\u09bc\u09be \u09af\u09be\u09af\u09bc\u09a8\u09bf\u0964 SQL \u099a\u09be\u09b2\u09bf\u09af\u09bc\u09c7 \u0986\u09ac\u09be\u09b0 \u099a\u09c7\u09b7\u09cd\u099f\u09be \u0995\u09b0\u09c1\u09a8\u0964", "ckRotaLabel": "\u09aa\u09be\u09b2\u09be", "ckWho": "\u09aa\u09be\u09b2\u09be\u09af\u09bc \u0995\u09be\u09b0\u09be \u0986\u099b\u09c7", "ckWhoHint": "\u09b8\u09c7\u0996\u09be\u09a8\u09c7 \u0995\u09cb\u09a8\u09cb \u09b8\u09a6\u09b8\u09cd\u09af\u09c7 \u099a\u09be\u09aa \u09a6\u09bf\u09af\u09bc\u09c7 \u09aa\u09be\u09b2\u09be\u09af\u09bc \u09af\u09cb\u0997 \u0995\u09b0\u09c1\u09a8 \u09ac\u09be \u09ac\u09be\u09a6 \u09a6\u09bf\u09a8\u0964", "ckOffQ": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be \u09ac\u09a8\u09cd\u09a7 \u0995\u09b0\u09ac\u09c7\u09a8?", "ckOffP": "\u098f\u099f\u09bf \u0986\u09aa\u09a8\u09be\u09b0 \u0993 \u09b8\u09a6\u09b8\u09cd\u09af\u09a6\u09c7\u09b0 \u099c\u09a8\u09cd\u09af \u09b2\u09c1\u0995\u09be\u09a8\u09cb \u09b9\u09ac\u09c7\u0964", "ckOffMeals": "\u09aa\u09cd\u09b0\u09a4\u09bf\u09a6\u09bf\u09a8\u09c7\u09b0 \u09b0\u09be\u0981\u09a7\u09c1\u09a8\u09bf \u09ac\u09be\u099b\u09be\u0987 \u09a5\u09be\u0995\u09ac\u09c7 \u09a8\u09be", "ckOffSummary": "\u0986\u099c\u0995\u09c7\u09b0 \u09b0\u09be\u0981\u09a7\u09c1\u09a8\u09bf \u0993 \u09ae\u09be\u09b8\u09c7\u09b0 \u09b9\u09bf\u09b8\u09be\u09ac \u09b2\u09c1\u0995\u09be\u09a8\u09cb \u09b9\u09ac\u09c7", "ckMembersWord": "\u09b8\u09a6\u09b8\u09cd\u09af", "ckOffAsk": "\u09a4\u09be\u09b0\u09be \u0986\u09b0 \u09b0\u09be\u0981\u09a7\u09a4\u09c7 \u099a\u09be\u0987\u09a4\u09c7 \u09aa\u09be\u09b0\u09ac\u09c7 \u09a8\u09be", "ckOffRatings": "\u0995\u09c7\u0989 \u09b0\u09c7\u099f\u09bf\u0982 \u09a6\u09bf\u09a4\u09c7 \u09aa\u09be\u09b0\u09ac\u09c7 \u09a8\u09be", "ckOffPendT": "{n}\u099f\u09bf \u0985\u09aa\u09c7\u0995\u09cd\u09b7\u09ae\u09be\u09a3 \u0985\u09a8\u09c1\u09b0\u09cb\u09a7", "ckOffPend": "\u098f\u0997\u09c1\u09b2\u09cb \u09ac\u09be\u09a4\u09bf\u09b2 \u09b9\u09ac\u09c7", "ckOffSafe": "\u0995\u09bf\u099b\u09c1\u0987 \u09ae\u09c1\u099b\u09ac\u09c7 \u09a8\u09be\u0964 \u0986\u09ac\u09be\u09b0 \u099a\u09be\u09b2\u09c1 \u0995\u09b0\u09b2\u09c7 \u09aa\u09be\u09b2\u09be \u0993 \u09b8\u09ac \u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09b0 \u09a6\u09bf\u09a8 \u09ab\u09bf\u09b0\u09c7 \u0986\u09b8\u09ac\u09c7\u0964", "ckOffGo": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be \u09ac\u09a8\u09cd\u09a7 \u0995\u09b0\u09c1\u09a8", "ckKeep": "\u099a\u09be\u09b2\u09c1 \u09b0\u09be\u0996\u09c1\u09a8", "ckOffToast": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be \u09ac\u09a8\u09cd\u09a7", "ckOnToast": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be \u0986\u09ac\u09be\u09b0 \u099a\u09be\u09b2\u09c1", "rtTodayCook": "\u0986\u099c\u0995\u09c7\u09b0 \u09b0\u09be\u0981\u09a7\u09c1\u09a8\u09bf", "rtYesterdayCook": "\u0997\u09a4\u0995\u09be\u09b2\u09c7\u09b0 \u09b0\u09be\u0981\u09a7\u09c1\u09a8\u09bf", "rtCooked": "{n} \u09b0\u09c7\u0981\u09a7\u09c7\u099b\u09c7\u09a8", "rtHow": "\u0996\u09be\u09ac\u09be\u09b0 \u0995\u09c7\u09ae\u09a8 \u099b\u09bf\u09b2?", "rtPrivate": "\u0986\u09aa\u09a8\u09be\u09b0 \u09b0\u09c7\u099f\u09bf\u0982 \u0997\u09cb\u09aa\u09a8\u0964 \u0995\u09c7 \u09a6\u09bf\u09af\u09bc\u09c7\u099b\u09c7 \u09b8\u09a6\u09b8\u09cd\u09af\u09b0\u09be \u09a6\u09c7\u0996\u09a4\u09c7 \u09aa\u09be\u09ac\u09c7 \u09a8\u09be\u0964", "rtRateTitle": "{n}-\u098f\u09b0 \u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09b0 \u09b0\u09c7\u099f\u09bf\u0982", "rtWhatWell": "\u0995\u09c0 \u09ad\u09be\u09b2\u09cb \u099b\u09bf\u09b2?", "rtTasty": "\u09b8\u09c1\u09b8\u09cd\u09ac\u09be\u09a6\u09c1", "rtEnough": "\u09b8\u09ac\u09be\u09b0 \u099c\u09a8\u09cd\u09af \u09af\u09a5\u09c7\u09b7\u09cd\u099f", "rtClean": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be\u0998\u09b0 \u09aa\u09b0\u09bf\u09b7\u09cd\u0995\u09be\u09b0", "rtOnTime": "\u09b8\u09ae\u09af\u09bc\u09ae\u09a4\u09cb", "rtNote": "\u0985\u09cd\u09af\u09be\u09a1\u09ae\u09bf\u09a8\u09c7\u09b0 \u099c\u09a8\u09cd\u09af \u09a8\u09cb\u099f (\u0990\u099a\u09cd\u099b\u09bf\u0995)", "rtNotePh": "\u098f\u0995\u099f\u09c1 \u09ac\u09c7\u09b6\u09bf \u09b2\u09ac\u09a3", "rtSend": "\u09b0\u09c7\u099f\u09bf\u0982 \u09aa\u09be\u09a0\u09be\u09a8", "rtSending": "\u09aa\u09be\u09a0\u09be\u09a8\u09cb \u09b9\u099a\u09cd\u099b\u09c7\u2026", "rtL1": "\u0996\u09be\u09b0\u09be\u09aa", "rtL2": "\u09a4\u09c7\u09ae\u09a8 \u09ad\u09be\u09b2\u09cb \u09a8\u09be", "rtL3": "\u099a\u09b2\u09c7", "rtL4": "\u09ad\u09be\u09b2\u09cb", "rtL5": "\u09a6\u09be\u09b0\u09c1\u09a3", "rtThanks": "\u09a7\u09a8\u09cd\u09af\u09ac\u09be\u09a6, \u09b0\u09c7\u099f\u09bf\u0982 \u09aa\u09cc\u0981\u099b\u09c7\u099b\u09c7", "rtErrAte": "\u09af\u09be\u09b0\u09be \u09b8\u09c7\u09a6\u09bf\u09a8 \u0996\u09c7\u09af\u09bc\u09c7\u099b\u09c7 \u09b6\u09c1\u09a7\u09c1 \u09a4\u09be\u09b0\u09be\u0987 \u09b0\u09c7\u099f\u09bf\u0982 \u09a6\u09bf\u09a4\u09c7 \u09aa\u09be\u09b0\u09ac\u09c7\u0964", "rtErrOwn": "\u09a8\u09bf\u099c\u09c7\u09b0 \u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09af\u09bc \u09b0\u09c7\u099f\u09bf\u0982 \u09a6\u09c7\u0993\u09af\u09bc\u09be \u09af\u09be\u09af\u09bc \u09a8\u09be\u0964", "rtErrClosed": "\u098f\u0987 \u09a6\u09bf\u09a8\u09c7\u09b0 \u09b0\u09c7\u099f\u09bf\u0982 \u09ac\u09a8\u09cd\u09a7 \u09b9\u09af\u09bc\u09c7 \u0997\u09c7\u099b\u09c7\u0964", "rtErrOff": "\u09b0\u09c7\u099f\u09bf\u0982 \u09ac\u09a8\u09cd\u09a7 \u0986\u099b\u09c7\u0964", "rtErrMember": "\u0986\u09aa\u09a8\u09be\u09b0 \u09b8\u09a6\u09b8\u09cd\u09af \u0995\u09cb\u09a1 \u09ac\u09a6\u09b2\u09c7\u099b\u09c7\u0964 \u0985\u09cd\u09af\u09be\u09a1\u09ae\u09bf\u09a8\u09c7\u09b0 \u0995\u09be\u099b\u09c7 \u09a8\u09a4\u09c1\u09a8 \u0995\u09cb\u09a1 \u09a8\u09bf\u09a8\u0964", "rtErrSetup": "\u09b0\u09c7\u099f\u09bf\u0982 \u098f\u0996\u09a8\u09cb \u099a\u09be\u09b2\u09c1 \u09b9\u09af\u09bc\u09a8\u09bf\u0964 \u0985\u09cd\u09af\u09be\u09a1\u09ae\u09bf\u09a8\u0995\u09c7 \u09ac\u09b2\u09c1\u09a8\u0964", "inRota": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09b0 \u09aa\u09be\u09b2\u09be\u09af\u09bc \u0986\u099b\u09c7\u09a8", "notInRota": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09b0 \u09aa\u09be\u09b2\u09be\u09af\u09bc \u09a8\u09c7\u0987", "cookedDays": "{m}-\u098f {n} \u09a6\u09bf\u09a8 \u09b0\u09c7\u0981\u09a7\u09c7\u099b\u09c7\u09a8", "cookedDay": "{m}-\u098f {n} \u09a6\u09bf\u09a8 \u09b0\u09c7\u0981\u09a7\u09c7\u099b\u09c7\u09a8", "sInviteBodyNoCook": "\u09b8\u09a6\u09b8\u09cd\u09af \u09b2\u09bf\u0982\u0995 \u09b6\u09c7\u09af\u09bc\u09be\u09b0 \u0995\u09b0\u09c1\u09a8, \u09af\u09be\u09a4\u09c7 \u09b8\u09ac\u09be\u0987 \u0996\u09be\u09ac\u09be\u09b0 \u0993 \u09b9\u09bf\u09b8\u09be\u09ac \u09a6\u09c7\u0996\u09a4\u09c7 \u09aa\u09be\u09b0\u09c7\u0964", "rtMonthRating": "{m}-\u098f\u09b0 \u09b0\u09c7\u099f\u09bf\u0982", "rtTooFew": "\u098f\u0996\u09a8\u09cb \u09af\u09a5\u09c7\u09b7\u09cd\u099f \u09b0\u09c7\u099f\u09bf\u0982 \u09a8\u09c7\u0987 ({n}/{min})\u0964 {min} \u099c\u09a8 \u09b0\u09c7\u099f\u09bf\u0982 \u09a6\u09bf\u09b2\u09c7 \u0997\u09a1\u09bc \u09a6\u09c7\u0996\u09be\u09ac\u09c7\u0964", "rtNotYet": "\u09b0\u09c7\u099f\u09bf\u0982 \u09b6\u09bf\u0997\u0997\u09bf\u09b0\u0987 \u098f\u0996\u09be\u09a8\u09c7 \u09a6\u09c7\u0996\u09be \u09af\u09be\u09ac\u09c7\u0964", "rtNeedSetupAdmin": "\u09b0\u09c7\u099f\u09bf\u0982 \u098f\u0996\u09a8\u09cb \u099a\u09be\u09b2\u09c1 \u09b9\u09af\u09bc\u09a8\u09bf\u0964 \u09b8\u09c7\u099f\u09bf\u0982\u09b8, \u09b0\u09be\u09a8\u09cd\u09a8\u09be, \u09b0\u09c7\u099f\u09bf\u0982 \u099a\u09be\u09b2\u09c1 \u0995\u09b0\u09c1\u09a8\u0964", "rtCount": "{n}\u099f\u09bf \u09b0\u09c7\u099f\u09bf\u0982", "rtLiked": "\u09b8\u09a6\u09b8\u09cd\u09af\u09a6\u09c7\u09b0 \u09aa\u099b\u09a8\u09cd\u09a6", "rtLastMonth": "\u0997\u09a4 \u09ae\u09be\u09b8: {n}\u099f\u09bf \u09b0\u09c7\u099f\u09bf\u0982\u09af\u09bc\u09c7 {a}\u0964", "rtNoNames": "\u098f\u0996\u09be\u09a8\u09c7 \u0995\u09be\u09b0\u09cb \u09a8\u09be\u09ae \u09a6\u09c7\u0996\u09be\u09a8\u09cb \u09b9\u09af\u09bc \u09a8\u09be\u0964", "rtWhoRated": "\u0995\u09c7 \u09b0\u09c7\u099f\u09bf\u0982 \u09a6\u09bf\u09af\u09bc\u09c7\u099b\u09c7", "rtOnlyYou": "\u09b6\u09c1\u09a7\u09c1 \u0986\u09aa\u09a8\u09bf \u09a6\u09c7\u0996\u099b\u09c7\u09a8\u0964 \u09b8\u09a6\u09b8\u09cd\u09af\u09b0\u09be \u09b6\u09c1\u09a7\u09c1 \u0997\u09a1\u09bc \u09a6\u09c7\u0996\u09c7\u0964", "rtNoDays": "\u098f \u09ae\u09be\u09b8\u09c7 \u098f\u0996\u09a8\u09cb \u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09b0 \u09a6\u09bf\u09a8 \u09a8\u09c7\u0987\u0964", "sOn": "\u099a\u09be\u09b2\u09c1", "sJoined": "\u09af\u09cb\u0997\u09a6\u09be\u09a8", "rtNoRatings": "\u09b0\u09c7\u099f\u09bf\u0982 \u09a8\u09c7\u0987", "rtNotRated": "\u09b0\u09c7\u099f\u09bf\u0982 \u09a6\u09c7\u09af\u09bc\u09a8\u09bf", "done": "\u09a0\u09bf\u0995 \u0986\u099b\u09c7", "cookingProfile": "\u09b0\u09be\u09a8\u09cd\u09a8\u09be\u09b0 \u09aa\u09cd\u09b0\u09cb\u09ab\u09be\u0987\u09b2", "reqCancelled": "\u09ac\u09be\u09a4\u09bf\u09b2"}}; for(var l in S){ STR[l]=STR[l]||{}; for(var k in S[l]) STR[l][k]=S[l][k]; } })();
 
 function t(k){ var L = STR[state.lang]||STR.en; return L[k]||STR.en[k]||k; }
 function uid(p){ return p+Math.random().toString(36).slice(2,9); }
@@ -1771,6 +1888,7 @@ function load(){
         googleClientId: p.googleClientId||"",
         googleConnected: !!p.googleConnected,
         googleSheetId: p.googleSheetId||null,
+        cooking: Object.assign({on:true,requests:true,ratings:true,ratingMin:3,closeHour:12}, p.cooking||{}),
         perms: Object.assign({summary:true,meals:true,money:true,members:true}, p.perms||{}),
         deputyPerms: Object.assign({enabled:true,addMeals:true,addMoney:true,deleteEntries:false,members:false,token:""}, p.deputyPerms||{}),
         lastSheetSync: p.lastSheetSync||null,
@@ -2006,6 +2124,16 @@ function verifyMember(){
   }).catch(function(){});                                                 // offline: keep it
 }
 // "Not you? Leave" asks first, in a pop-up: leaving means typing the code again
+function confirmSignOut(){
+  var em=(adminSession&&adminSession.email)||"";
+  openDialog(t("soQTitle"),
+    '<p style="margin:0 0 16px;font-size:14px;line-height:1.5;color:var(--ink2)">'+esc(t("soQText").replace("{email}",em))+'</p>'+
+    '<button class="b wide" id="soYes" style="background:var(--neg)">'+esc(t("signOut"))+'</button>'+
+    '<button class="b ghost wide" id="soNo" style="margin-top:8px">'+esc(t("cancel"))+'</button>');
+  var close=function(){ var o=document.getElementById("teamOverlay"); if(o) o.style.display="none"; };
+  document.getElementById("soNo").addEventListener("click", close);
+  document.getElementById("soYes").addEventListener("click", function(){ close(); adminSignOut(); });
+}
 function confirmLeaveMember(){
   var nm=(memberSelf&&memberSelf.name)||"";
   openDialog(t("leaveQTitle"),
@@ -2150,7 +2278,7 @@ function fetchCookReqs(){
       if(!r.ok){ window.__reqErr = "HTTP "+r.status; return []; }
       window.__reqErr = null; return r.json();
     })
-    .then(function(rows){ cookReqs=rows||[]; render(); })
+    .then(function(rows){ cookReqs=rows||[]; render(); fetchRatings(); })
     .catch(function(e){ window.__reqErr = (e&&e.message)||"network"; });
 }
 function sendCookReq(dateStr, note){
@@ -2708,11 +2836,13 @@ function viewSummary(){
     '<path d="M34 16c0-4 4-4 4-8" stroke="url(#stm)" stroke-width="3" stroke-linecap="round" fill="none"/>'+
     '</svg>';
 
+  if(cookingOn()){
   h+='<div class="cookcard'+(cookMem?'':' waiting')+'">'+
      '<span class="cook-bar"></span>'+
      '<div class="cook-t">'+
        '<div class="cook-k">'+esc(t("cookingToday"))+'</div>'+
-       '<div class="cook-n'+(cookMem?'':' none')+'">'+esc(cookMem?cookMem.name:t("noCookYet"))+'</div>'+
+       (cookMem?'<button type="button" class="cook-n cook-nb" data-profile="'+cookMem.id+'">'+esc(cookMem.name)+'</button>'
+               :'<div class="cook-n none">'+esc(t("noCookYet"))+'</div>')+
        '<div class="cook-s"><span class="cook-sk">'+esc(t("tomorrow"))+'</span> \u00B7 '+
          '<span class="cook-sv'+(tMem?'':' muted')+'">'+esc(tMem?tMem.name:t("notSetYet"))+'</span></div>'+
      '</div>'+
@@ -2720,11 +2850,13 @@ function viewSummary(){
        ? '<button class="cook-go'+(sug?' solid':'')+'" data-act="'+(sug?'useSuggestedCookToday':'gotoCookRota')+'">'+
          esc(sug?(t("assignTo")+" "+sug.name):t("change"))+'</button>'
        : '<span class="i3dwrap">'+potSvg+'</span>'+
-         '<button class="cook-go" data-act="gotoAsk">'+esc(t("askShort"))+'</button>')+
+         (requestsOn()?'<button class="cook-go" data-act="gotoAsk">'+esc(t("askShort"))+'</button>':''))+
      '</div>';
+  if(!canWrite()) h+=ratePromptHtml();
+  }
 
-  if(canWrite()) h+=pendingCard();
-  h+=upcomingCard();
+  if(canWrite()&&cookingOn()) h+=pendingCard();
+  if(cookingOn()) h+=upcomingCard();
   h+='<div class="hero">'+
      '<div class="hero-label">'+esc(t("presentBalance"))+'</div>'+
      '<div class="hero-line">'+
@@ -2773,7 +2905,7 @@ function viewSummary(){
     var tag = r.closing<-0.01?t("due"):(r.closing>0.01?t("advance"):t("settled"));
     h+='<div class="mrow" style="margin-bottom:10px"><button class="mhead" data-expand="'+r.member.id+'">'+
        '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">'+avatarHtml(r.member)+
-       '<div style="min-width:0"><div class="mname-row"><span class="mname">'+esc(r.member.name)+'</span>'+tally(r.mealCount)+'</div>'+(r.member.leftOn?'<div class="tsub" style="color:var(--brand);font-weight:600">'+esc(t("leftOn"))+' '+esc(r.member.leftOn)+(r.locked?' \u00B7 '+esc(t("billLocked")):'')+'</div>':'')+'<div class="mmeta">'+
+       '<div style="min-width:0"><div class="mname-row"><span class="mname">'+esc(r.member.name)+'</span>'+tally(r.mealCount)+ratingBadge(r.member.id)+'</div>'+(r.member.leftOn?'<div class="tsub" style="color:var(--brand);font-weight:600">'+esc(t("leftOn"))+' '+esc(r.member.leftOn)+(r.locked?' \u00B7 '+esc(t("billLocked")):'')+'</div>':'')+'<div class="mmeta">'+
        '<span>'+esc(t("contribShort"))+' '+money(r.contribution)+'</span><span>\u00B7</span>'+
        '<span>'+esc(t("expenseShort"))+' '+money(r.expense)+'</span>'+
        (r.withdrawal>0?'<span>\u00B7</span><span>'+esc(t("withdrawn"))+' '+money(r.withdrawal)+'</span>':'')+
@@ -2793,6 +2925,7 @@ function viewSummary(){
         '<div class="lrow"><span class="k">'+esc(t("mealCostMonth"))+'</span><span class="num">'+money(r.mealCost)+'</span></div>'+
         '<div class="lrow"><span class="k">'+esc(t("monthChange"))+'</span><span class="num">'+money(r.monthBalance)+'</span></div>'+
         '<div class="lrow bold"><span>'+esc(t("closingBalance"))+'</span><span class="num">'+money(r.closing)+'</span></div></div>'+
+        (cookingOn()?'<button type="button" class="b ghost wide" style="margin-top:12px" data-profile="'+r.member.id+'">'+esc(t("cookingProfile"))+'</button>':'')+
         '<h2 style="margin-top:16px">'+esc(t("entriesMonth"))+'</h2>';
       if(!mtx.length) h+='<div class="hint">'+esc(t("noEntries"))+'</div>';
       mtx.forEach(function(x){
@@ -2834,6 +2967,7 @@ function viewSummary(){
 }
 
 function viewAsk(){
+  if(!requestsOn()){ tab="summary"; return viewSummary(); }
   var h='<div class="stack">';
   h+=askCookCard();
   var mine=cookReqs.filter(function(r){ return r.status!=="pending"; }).slice(-5).reverse();
@@ -2843,7 +2977,7 @@ function viewAsk(){
       h+='<div class="pillrow"><div><div>'+esc(r.member_name)+'</div>'+
          '<div class="tsub">'+esc(niceDate(r.cook_date))+'</div></div>'+
          '<span class="pill-'+(r.status==="approved"?"ok":"no")+'">'+
-         esc(r.status==="approved"?t("approvedShort"):t("declined"))+'</span></div>';
+         esc(r.status==="approved"?t("approvedShort"):r.status==="cancelled"?t("reqCancelled"):t("declined"))+'</span></div>';
     });
     h+='</div>';
   }
@@ -2888,6 +3022,7 @@ function viewMeals(){
   var prevD=new Date(Date.parse(d)-86400000).toISOString().slice(0,10);
   var prevId=cookOn(prevD), prevMem=prevId?state.members.filter(function(m){return m.id===prevId;})[0]:null;
   var dayMem=dayCook?state.members.filter(function(m){return m.id===dayCook;})[0]:null;
+  if(cookingOn()){
   h+='<div><h2>'+esc(t("cookRota"))+'</h2><div class="group" style="padding:14px 16px">'+
      '<div class="rota">'+
        '<div class="rota-cell"><span class="rota-k">'+esc(t("dayBefore"))+'</span>'+
@@ -2908,6 +3043,7 @@ function viewMeals(){
        }).join('')+'</select></div>';
   }
   h+='</div></div>';
+  }
 
   if(canWrite()){
   h+='<div>';
@@ -2927,7 +3063,7 @@ function viewMeals(){
 
   var cc=cookedSoFar(month);
   h+='<div><h2>'+esc(t("monthTotals"))+' \u2014 '+esc(monthLabel(month))+'</h2>'+
-     '<div class="group"><div class="tallyhead">'+
+     '<div class="group'+(cookingOn()?'':' nocook')+'"><div class="tallyhead">'+
        '<span>'+esc(t("member"))+'</span>'+
        '<span>'+esc(t("tabMeals"))+'</span>'+
        '<span>'+esc(t("cookedShort"))+'</span>'+
@@ -2937,7 +3073,7 @@ function viewMeals(){
        '<span class="tname">'+avatarHtml(m)+
          '<span class="tnametxt">'+esc(m.name)+'</span>'+
          (m.leftOn?'<span class="tflag">'+esc(t("leftShort"))+'</span>':
-          (m.cooks===false?'<span class="tflag">'+esc(t("notCooking"))+'</span>':''))+
+          (m.cooks===false&&cookingOn()?'<span class="tflag">'+esc(t("notCooking"))+'</span>':''))+
        '</span>'+
        '<span class="tmeals"><span class="tic">'+ICONS.fork+'</span><span class="num">'+(tot[m.id]||0)+'</span></span>'+
        '<button class="tcook" data-cookdates="'+m.id+'"><span class="tic">'+ICONS.chef+'</span>'+
@@ -2958,7 +3094,7 @@ function viewMeals(){
 }
 
 function viewMoney(){
-  var f = window.__moneyForm || {date:todayISO(),type:"contribution",memberId:(state.members[0]||{}).id||"",vendor:"",amount:"",note:""};
+  var f = window.__moneyForm || {date:todayISO(),type:"contribution",memberId:(state.members.filter(function(m){ return m.active!==false; })[0]||state.members[0]||{}).id||"",vendor:"",amount:"",note:""};
   window.__moneyForm = f;
   var filt = window.__filter || {member:"all",scope:"month"};
   window.__filter = filt;
@@ -3014,10 +3150,12 @@ function viewMoney(){
     var lbl = f.type==="expense"?t("paidBy"):(f.type==="withdrawal"?t("paidTo"):t("member"));
     h+='<label class="f"><span>'+esc(lbl)+'</span><select id="fMember">';
     if(f.type==="expense") h+='<option value="__mess__"'+(f.memberId==="__mess__"?" selected":"")+'>'+esc(t("messGeneral"))+'</option>';
-    state.members.forEach(function(m){
-      h+='<option value="'+m.id+'"'+(f.memberId===m.id?" selected":"")+'>'+esc(m.name)+
-         (m.active===false?" ("+esc(t("inactive"))+")":"")+'</option>';
-    });
+    // people still in the mess first; those who left go in their own group at the bottom
+    var opt=function(m){ return '<option value="'+m.id+'"'+(f.memberId===m.id?" selected":"")+'>'+esc(m.name)+'</option>'; };
+    var liveM=state.members.filter(function(m){ return m.active!==false; });
+    var goneM=state.members.filter(function(m){ return m.active===false; });
+    liveM.forEach(function(m){ h+=opt(m); });
+    if(goneM.length) h+='<optgroup label="'+esc(t("formerMembers"))+'">'+goneM.map(opt).join("")+'</optgroup>';
     h+='</select></label>';
   }
   h+='<div class="grid2">'+
@@ -3405,7 +3543,7 @@ function settingsHome(){
     h+='<div class="sprof">'+(me?avatarHtml({name:memberSelf.name}).replace('circ-ic','circ-ic sav-m'):messAvatar())+
        '<span class="stx"><span class="sprof-n">'+esc(me?memberSelf.name:name)+'</span>'+
        '<span class="ssub">'+esc(me?t("sMemberOf").replace("{m}",name):t("sViewOnly"))+'</span></span></div>';
-    if(cloud&&!me&&!deputyRevoked) h+=spromo(t("sJoinTitle"),t("sJoinBody"),t("sJoinBtn"),"gotoAsk");
+    if(cloud&&!me&&!deputyRevoked&&(requestsOn()||ratingsOn())) h+=spromo(t("sJoinTitle"),t("sJoinBody"),t("sJoinBtn"),"gotoAsk");
     h+=sgroup(
       srow({icon:"moon",label:t("darkMode"),ctrl:sswitch(state.themeMode==="dark",'data-act="toggleTheme"')})+
       srow({icon:"sync",label:t("sCheckUpdates"),act:"refreshTeam",
@@ -3427,12 +3565,13 @@ function settingsHome(){
      '<span class="ssub">'+esc(cloud&&adminSession?adminSession.email:t("sThisPhone"))+'</span></span>'+
      sic("chev","schev")+'</button>';
 
-  h+= cloud ? spromo(t("sInviteTitle"),t("sInviteBody"),t("sInviteBtn"),"memberLink")
+  h+= cloud ? spromo(t("sInviteTitle"),cookingOn()?t("sInviteBody"):t("sInviteBodyNoCook"),t("sInviteBtn"),"memberLink")
             : spromo(t("sShareTitle"),t("sShareBody"),t("sShareBtn"),"cloudSetup");
 
   var shown=["summary","meals","money"].filter(function(k){ return state.perms[k]; }).length;
   h+=sgroup(
     srow({icon:"users",label:t("sMembers"),value:live+" "+t("sActive"),attr:'data-setpage="secPeople"',chev:true})+
+    srow({icon:"chef",label:t("ckRow"),value:cookingOn()?t("sOn"):t("sOff"),attr:'data-setpage="secCooking"',chev:true})+
     (cloud?srow({icon:"eye",label:t("sMemberView"),value:shown+" "+t("sOf")+" 3",attr:'data-setpage="secAccess"',chev:true}):'')+
     srow({icon:"box",label:t("sStock"),value:state.inventoryEnabled?money(Number(state.inventoryValue)||0):t("sOff"),attr:'data-setpage="secMoney"',chev:true})
   );
@@ -3473,7 +3612,8 @@ var SET_PAGES = {
                       '<button type="button" class="sadd-btn" data-act="addMember">'+sic("plus","")+esc(t("add"))+'</button></div>';
     var rows=live.map(function(m){
       var cook=m.cooks!==false;
-      var sub=(cook?t("inCircle"):t("notCooking"))+(m.joinedOn?", "+t("sSince")+" "+niceDate(m.joinedOn):"");
+      var sub=cookingOn()?(cook?t("inCircle"):t("notCooking"))+(m.joinedOn?", "+t("sSince")+" "+niceDate(m.joinedOn):"")
+                         :(m.joinedOn?t("sJoined")+" "+niceDate(m.joinedOn):"");
       var av='<span class="avwrap">'+avatarHtml(m)+(memberCodes[m.id]&&memberCodes[m.id].joined_at?'<i class="joindot"></i>':'')+'</span>';
       return srow({icon:av,label:m.name,sub:sub,cls:"mem"+(cook?"":" nocook"),
                    attr:canWrite()?'data-memmenu="'+m.id+'"':'',chev:canWrite()});
@@ -3585,7 +3725,7 @@ function memberSheetHtml(){
          '<div class="msheet"><div class="msheet-in">'+
            '<div class="msheet-head">'+avatarHtml(sm)+
              '<span class="mrow2-t"><span class="mrow2-name">'+esc(sm.name)+'</span>'+
-             '<span class="mrow2-sub">'+(smIn?esc(t("inCircle")):'<span class="off">'+esc(t("notCooking"))+'</span>')+'</span></span>'+
+             '<span class="mrow2-sub">'+(!cookingOn()?'':smIn?esc(t("inCircle")):'<span class="off">'+esc(t("notCooking"))+'</span>')+'</span></span>'+
            '</div>'+
            (window.__memSheetMode==="code" ? codePanelHtml(sm) : (
            (cloudReady()&&adminSession?'<button class="msheet-act" data-act="memCode">'+ICONS.qr+'<span>'+esc(t("memberCode"))+'</span>'+
@@ -3606,8 +3746,8 @@ function memberSheetHtml(){
                'style="width:100%;font-size:16px;font-weight:600;padding:12px 13px">'+
                '<div class="hint" style="margin:8px 2px 0">'+esc(t("renameHint"))+'</div></div>'
              : '<button class="msheet-act" data-act="memRename">'+ICONS.pencil+'<span>'+esc(t("rename"))+'</span></button>')+
-           '<div class="msheet-act as-row">'+ICONS.chef+'<span>'+esc(t("inCircle"))+'</span>'+
-             '<button class="sw'+(smIn?" on":"")+'" data-cooktoggle="'+sm.id+'"><i></i></button></div>'+
+           (cookingOn()?'<div class="msheet-act as-row">'+ICONS.chef+'<span>'+esc(t("inCircle"))+'</span>'+
+             '<button class="sw'+(smIn?" on":"")+'" data-cooktoggle="'+sm.id+'"><i></i></button></div>':'')+
            '<label class="msheet-act as-row">'+ICONS.calendar+'<span>'+esc(t("started"))+'</span>'+
              '<input type="date" class="joindate" data-joinfor="'+sm.id+'" value="'+esc(sm.joinedOn||"")+'"></label>'+
            '<button class="msheet-act'+(!smInact&&armed["leave"+sm.id]?' dg':'')+'" data-toggle="'+sm.id+'">'+ICONS.archive+
@@ -3627,6 +3767,314 @@ function memberSheetHtml(){
 
 // A phone that is not connected to any mess sees a welcome screen, not an
 // empty ledger it could "edit" (that copy would only ever live on that phone).
+/* ===== Cooking switch + cook ratings (v13.1) =================================
+   state.cooking = {on, requests, ratings, ratingMin, closeHour}; it travels
+   with the ledger so members' phones and the database see the same switch. */
+function cookCfg(){
+  if(!state.cooking) state.cooking={on:true,requests:true,ratings:true,ratingMin:3,closeHour:12};
+  return state.cooking;
+}
+function cookingOn(){ return cookCfg().on!==false; }
+function requestsOn(){ return cookingOn() && cookCfg().requests!==false; }
+function ratingsOn(){ return cookingOn() && cookCfg().ratings!==false; }
+function memberById(id){ return state.members.filter(function(m){ return m.id===id; })[0]||null; }
+function isoShift(iso,days){ return new Date(Date.parse(iso+"T12:00:00Z")+days*86400000).toISOString().slice(0,10); }
+function ateOn(id,d){ return state.meals.some(function(m){ return m.date===d && m.memberId===id && Number(m.count)>0; }); }
+
+var RATE_TAGS=[["tasty","rtTasty"],["enough","rtEnough"],["clean","rtClean"],["ontime","rtOnTime"]];
+var ratingSum={};      // cookId -> "YYYY-MM" -> {n,min,avg,dist,tags}  (avg null below the minimum)
+var myRatings={};      // date -> {stars,tags}   (this member's phone only)
+var adminRatings=[];   // every row, admin only
+var ratingsReady=null; // null = not checked, false = the ratings SQL has not been run
+function ledgerId(){ var c=cloudCfg(); return (c&&c.id)||"mess"; }
+
+function fetchRatings(){
+  if(!cloudReady()||!cookingOn()) return Promise.resolve();
+  var jobs=[rpc("cook_rating_summary",{p_ledger:ledgerId()}).then(function(rows){
+      ratingsReady=true; ratingSum={};
+      (rows||[]).forEach(function(r){ (ratingSum[r.cook]=ratingSum[r.cook]||{})[r.month]=r; });
+    }).catch(function(e){ if(e&&(e.status===404||/cook_rating_summary/.test(e.message||""))) ratingsReady=false; })];
+  if(memberSelf) jobs.push(rpc("my_cook_ratings",{p_token:memberSelf.token,p_ledger:ledgerId()}).then(function(rows){
+      myRatings={}; (rows||[]).forEach(function(r){ myRatings[r.cook_date]=r; });
+    }).catch(function(){}));
+  if(adminSession) jobs.push(adminFetch(normaliseUrl(cloudCfg().url)+"/rest/v1/cook_ratings?select=*&ledger_id=eq."+
+      encodeURIComponent(ledgerId())+"&cook_date=gte."+isoShift(todayISO(),-120)+"&order=cook_date.desc")
+      .then(function(r){ return r.ok?r.json():[]; }).then(function(rows){ adminRatings=rows||[]; }).catch(function(){}));
+  return Promise.all(jobs).then(function(){ render(); });
+}
+
+/* which cooking day this member can rate right now, if any:
+   today's from 14:00, yesterday's until the closing hour */
+function rateTarget(){
+  if(!ratingsOn()||!memberSelf||ratingsReady===false) return null;
+  var today=todayISO(), h=new Date().getHours(), cands=[];
+  if(h>=14) cands.push(today);
+  if(h<(Number(cookCfg().closeHour)||12)) cands.push(isoShift(today,-1));
+  for(var i=0;i<cands.length;i++){
+    var d=cands[i], cid=cookOn(d);
+    if(!cid||cid===memberSelf.id||myRatings[d]||!ateOn(memberSelf.id,d)) continue;
+    if(!memberById(cid)) continue;
+    return {date:d,cookId:cid};
+  }
+  return null;
+}
+
+var STAR_PATH='<path d="M12 3.2l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9L3.4 9.5l6-.8z"/>';
+function starSvg(on,cls){ return '<svg class="'+(cls||"rstar")+(on?" on":"")+'" viewBox="0 0 24 24" aria-hidden="true">'+STAR_PATH+'</svg>'; }
+function starsRow(n,cls){ var s=''; for(var i=1;i<=5;i++) s+=starSvg(i<=Math.round(n),cls); return '<span class="rstars" role="img" aria-label="'+n+' / 5">'+s+'</span>'; }
+var LOCK_SVG='<svg class="rlock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>';
+function dayName(d){ return new Date(d+"T00:00:00").toLocaleDateString(state.lang==="bn"?"bn-BD":"en-GB",{weekday:"long",day:"numeric",month:"long"}); }
+function shortDay(d){ return new Date(d+"T00:00:00").toLocaleDateString(state.lang==="bn"?"bn-BD":"en-GB",{weekday:"short",day:"numeric",month:"short"}); }
+
+function ratePromptHtml(){
+  var tg=rateTarget(); if(!tg) return '';
+  var m=memberById(tg.cookId), s='';
+  for(var i=1;i<=5;i++) s+='<button type="button" class="rc-star" data-rate="'+i+'" aria-label="'+i+' / 5">'+starSvg(false,"rc-svg")+'</button>';
+  return '<div class="rcard">'+
+    '<div class="rc-top">'+avatarHtml(m)+'<div class="rc-tx">'+
+      '<div class="rc-k">'+esc(tg.date===todayISO()?t("rtTodayCook"):t("rtYesterdayCook"))+'</div>'+
+      '<div class="rc-n">'+esc(t("rtCooked").replace("{n}",m.name))+'</div></div></div>'+
+    '<div class="rc-q">'+esc(t("rtHow"))+'</div><div class="rc-stars">'+s+'</div>'+
+    '<div class="rc-priv">'+LOCK_SVG+esc(t("rtPrivate"))+'</div></div>';
+}
+
+function ratingBadge(id){
+  if(!ratingsOn()) return '';
+  var r=(ratingSum[id]||{})[month]; if(!r||r.avg==null) return '';
+  return '<span class="rbadge">'+starSvg(true,"rb-svg")+Number(r.avg).toFixed(1)+'</span>';
+}
+
+/* ---- bottom sheet ---- */
+function ckSheet(html,label){
+  var o=document.getElementById("ckSheet");
+  if(!o){ o=document.createElement("div"); o.id="ckSheet"; document.body.appendChild(o); }
+  o.innerHTML='<div class="cks-bg" data-ck="close"></div><div class="cks" role="dialog" aria-label="'+esc(label||"")+'"><div class="cks-grab"></div>'+html+'</div>';
+  o.style.display="block"; document.documentElement.classList.add("cks-open");
+}
+function ckClose(){
+  var o=document.getElementById("ckSheet"); if(o){ o.style.display="none"; o.innerHTML=""; }
+  document.documentElement.classList.remove("cks-open"); window.__rate=null;
+}
+
+/* ---- rating sheet ---- */
+function rateSheetHtml(){
+  var r=window.__rate, m=memberById(r.cookId), s='';
+  for(var i=1;i<=5;i++) s+='<button type="button" class="rs-star" data-ck="star" data-n="'+i+'" aria-label="'+i+' / 5">'+starSvg(i<=r.stars,"rs-svg")+'</button>';
+  var lab=["","rtL1","rtL2","rtL3","rtL4","rtL5"][r.stars]||"";
+  return '<div class="rs-head">'+avatarHtml(m).replace('circ-ic','circ-ic rs-av')+
+      '<div class="rs-title">'+esc(t("rtRateTitle").replace("{n}",m.name))+'</div>'+
+      '<div class="rs-date">'+esc(dayName(r.date))+'</div></div>'+
+    '<div class="rs-stars">'+s+'</div><div class="rs-lab">'+esc(lab?t(lab):" ")+'</div>'+
+    '<div class="rs-sec">'+esc(t("rtWhatWell"))+'</div><div class="rs-chips">'+
+      RATE_TAGS.map(function(x){ var on=r.tags.indexOf(x[0])>=0;
+        return '<button type="button" class="rs-chip'+(on?" on":"")+'" data-ck="tag" data-tag="'+x[0]+'" aria-pressed="'+on+'">'+esc(t(x[1]))+'</button>'; }).join("")+'</div>'+
+    '<label class="rs-note"><span>'+esc(t("rtNote"))+'</span><input type="text" id="rsNote" maxlength="200" placeholder="'+esc(t("rtNotePh"))+'" value="'+esc(r.note||"")+'"></label>'+
+    '<div class="rc-priv">'+LOCK_SVG+esc(t("rtPrivate"))+'</div>'+
+    (r.err?'<div class="rs-err">'+esc(r.err)+'</div>':'')+
+    '<button type="button" class="rs-send" data-ck="send"'+(r.stars&&!r.busy?'':' disabled')+'>'+esc(r.busy?t("rtSending"):t("rtSend"))+'</button>';
+}
+function openRate(date,cookId,stars){
+  window.__rate={date:date,cookId:cookId,stars:stars||0,tags:[],note:"",busy:false,err:null};
+  ckSheet(rateSheetHtml(), t("rtRateTitle").replace("{n}",(memberById(cookId)||{}).name||""));
+}
+function refreshRate(){
+  var n=document.getElementById("rsNote"); if(n&&window.__rate) window.__rate.note=n.value;
+  var box=document.querySelector("#ckSheet .cks"); if(box) box.innerHTML='<div class="cks-grab"></div>'+rateSheetHtml();
+}
+function rateErr(m){
+  m=m||"";
+  if(/did_not_eat/.test(m)) return t("rtErrAte");
+  if(/own_cooking/.test(m)) return t("rtErrOwn");
+  if(/closed/.test(m)) return t("rtErrClosed");
+  if(/ratings_off/.test(m)) return t("rtErrOff");
+  if(/not_a_member/.test(m)) return t("rtErrMember");
+  if(/rate_cook|404/.test(m)) return t("rtErrSetup");
+  return t("couldNotSend");
+}
+function sendRate(){
+  var r=window.__rate; if(!r||!r.stars||r.busy||!memberSelf) return;
+  var n=document.getElementById("rsNote"); if(n) r.note=n.value;
+  r.busy=true; r.err=null; refreshRate();
+  rpc("rate_cook",{p_token:memberSelf.token,p_ledger:ledgerId(),p_date:r.date,p_stars:r.stars,p_tags:r.tags,p_note:(r.note||"").trim()||null})
+    .then(function(){ myRatings[r.date]={cook_date:r.date,stars:r.stars,tags:r.tags}; ckClose(); toastMsg(t("rtThanks")); render(); fetchRatings(); })
+    .catch(function(e){
+      if(!window.__rate) return;
+      window.__rate.busy=false; window.__rate.err=rateErr(e&&e.message);
+      if(/not_a_member/.test((e&&e.message)||"")){ memberSelf=null; saveMember(); window.__memberKicked=true; }
+      refreshRate();
+    });
+}
+
+/* ---- a cook's profile: everyone sees the month average; the admin also sees who rated ---- */
+function prevMonthKey(mk){ var y=+mk.slice(0,4), m=+mk.slice(5,7)-1; if(m<1){ m=12; y--; } return y+"-"+(m<10?"0":"")+m; }
+function profileHtml(id){
+  var m=memberById(id); if(!m) return '';
+  var cooked=cookedSoFar(month)[id]||0, inRota=m.active!==false&&m.cooks!==false;
+  var h='<div class="pf-head">'+avatarHtml(m).replace('circ-ic','circ-ic pf-av')+
+    '<div class="pf-name">'+esc(m.name)+'</div>'+
+    '<div class="pf-sub">'+esc((inRota?t("inRota"):t("notInRota"))+", "+t(cooked===1?"cookedDay":"cookedDays").replace("{n}",cooked).replace("{m}",monthLabel(month)))+'</div></div>';
+  if(ratingsOn()){
+    var r=(ratingSum[id]||{})[month], pr=(ratingSum[id]||{})[prevMonthKey(month)];
+    h+='<div class="pf-sec">'+esc(t("rtMonthRating").replace("{m}",monthLabel(month)))+'</div>';
+    if(ratingsReady===false){
+      h+='<div class="pf-card pf-empty">'+esc(canWrite()?t("rtNeedSetupAdmin"):t("rtNotYet"))+'</div>';
+    } else if(!r||r.avg==null){
+      var need=(r&&r.min)||Number(cookCfg().ratingMin)||3;
+      h+='<div class="pf-card pf-empty">'+starsRow(0,"pf-es")+'<div>'+esc(t("rtTooFew").replace("{n}",r?r.n:0).replace("{min}",need))+'</div></div>';
+    } else {
+      var dist=r.dist||[0,0,0,0,0], tot=r.n||1, bars='';
+      for(var s=5;s>=1;s--){ var c=dist[s-1]||0;
+        bars+='<div class="pf-bar"><span>'+s+'</span>'+starSvg(true,"pf-bs")+'<i><b style="width:'+Math.round(c/tot*100)+'%"></b></i><span class="pf-bc">'+c+'</span></div>'; }
+      var tags=RATE_TAGS.map(function(x){ return [x, (r.tags||{})[x[0]]||0]; }).filter(function(x){ return x[1]>0; })
+        .sort(function(a,b){ return b[1]-a[1]; });
+      h+='<div class="pf-card"><div class="pf-top"><div class="pf-big"><div class="pf-avg">'+Number(r.avg).toFixed(1)+'</div>'+starsRow(r.avg,"pf-s")+
+          '<div class="pf-n">'+esc(t("rtCount").replace("{n}",r.n))+'</div></div><div class="pf-bars">'+bars+'</div></div>'+
+        (tags.length?'<div class="pf-liked"><div class="pf-lk">'+esc(t("rtLiked"))+'</div><div class="rs-chips">'+
+          tags.map(function(x){ return '<span class="rs-chip static">'+esc(t(x[0][1]))+' <em>'+x[1]+'</em></span>'; }).join("")+'</div></div>':'')+
+      '</div>';
+    }
+    h+='<div class="pf-hint">'+esc((pr&&pr.avg!=null?t("rtLastMonth").replace("{a}",Number(pr.avg).toFixed(1)).replace("{n}",pr.n)+" ":"")+t("rtNoNames"))+'</div>';
+    if(adminSession && ratingsReady) h+=adminDaysHtml(id);
+  }
+  return h;
+}
+function adminDaysHtml(id){
+  var today=todayISO();
+  var days=state.cooks.filter(function(c){ return c.memberId===id && mKey(c.date)===month && c.date<=today; })
+    .map(function(c){ return c.date; }).sort().reverse();
+  var h='<div class="pf-sec">'+esc(t("rtWhoRated"))+'</div><div class="pf-adm">'+LOCK_SVG+esc(t("rtOnlyYou"))+'</div>';
+  if(!days.length) return h+'<div class="pf-card pf-empty">'+esc(t("rtNoDays"))+'</div>';
+  days.forEach(function(d){
+    var rows=adminRatings.filter(function(x){ return x.cook_date===d && x.cook_member_id===id; });
+    var raterIds=rows.map(function(x){ return x.rater_member_id; });
+    var missing=state.meals.filter(function(x){ return x.date===d && Number(x.count)>0 && x.memberId!==id && raterIds.indexOf(x.memberId)<0; })
+      .map(function(x){ var mm=memberById(x.memberId); return mm?mm.name:null; }).filter(Boolean);
+    var avg=rows.length?rows.reduce(function(a,x){ return a+x.stars; },0)/rows.length:null;
+    h+='<div class="pf-card pf-day"><div class="pf-dh"><span>'+esc(shortDay(d))+'</span>'+
+       (avg!=null?'<span class="pf-da">'+starSvg(true,"rb-svg")+avg.toFixed(1)+'</span>':'<span class="pf-dn">'+esc(t("rtNoRatings"))+'</span>')+'</div>'+
+      rows.map(function(x){
+        var tg=(x.tags||[]).map(function(k){ var f=RATE_TAGS.filter(function(z){ return z[0]===k; })[0]; return f?t(f[1]):k; }).join(", ");
+        return '<div class="pf-rr"><div class="pf-rn"><span>'+esc(x.rater_name||"?")+'</span>'+starsRow(x.stars,"pf-rs")+'</div>'+
+          (tg?'<div class="pf-rt">'+esc(tg)+'</div>':'')+(x.note?'<div class="pf-rq">\u201C'+esc(x.note)+'\u201D</div>':'')+'</div>';
+      }).join("")+
+      (missing.length?'<div class="pf-miss">'+esc(t("rtNotRated"))+': '+esc(missing.join(", "))+'</div>':'')+
+    '</div>';
+  });
+  return h;
+}
+function openProfile(id){ var m=memberById(id); if(!m) return; ckSheet(profileHtml(id)+
+  '<button type="button" class="rs-done" data-ck="close">'+esc(t("done"))+'</button>', m.name); }
+
+/* ---- turning cooking off ---- */
+function turnOffSheet(){
+  var pend=pendingReqs().length;
+  function chg(ic,title,sub,warn){ return '<div class="to-row'+(warn?" warn":"")+'"><span class="to-ic">'+sic(ic,"")+'</span><span><b>'+esc(title)+'</b><em>'+esc(sub)+'</em></span></div>'; }
+  ckSheet('<div class="to-h">'+esc(t("ckOffQ"))+'</div><div class="to-p">'+esc(t("ckOffP"))+'</div>'+
+    '<div class="to-list">'+
+      chg("utensils",t("tabMeals"),t("ckOffMeals"))+
+      chg("grid",t("tabSummary"),t("ckOffSummary"))+
+      chg("hand",t("ckMembersWord"),t("ckOffAsk"))+
+      (ratingsOn()?chg("star",t("ckRatings"),t("ckOffRatings")):'')+
+      (pend?chg("inbox",t("ckOffPendT").replace("{n}",pend),t("ckOffPend"),true):'')+
+    '</div>'+
+    '<div class="to-safe">'+sic("shield","")+'<span>'+esc(t("ckOffSafe"))+'</span></div>'+
+    '<button type="button" class="to-go" data-ck="cookOff">'+esc(t("ckOffGo"))+'</button>'+
+    '<button type="button" class="to-keep" data-ck="close">'+esc(t("ckKeep"))+'</button>', t("ckOffQ"));
+}
+function cancelPending(){
+  var c=cloudCfg(), ps=pendingReqs(); if(!c||!c.url||!ps.length||!adminSession) return Promise.resolve();
+  return Promise.all(ps.map(function(r){
+    return adminFetch(normaliseUrl(c.url)+"/rest/v1/cook_requests?id=eq."+r.id,{method:"PATCH",body:JSON.stringify({status:"cancelled"})}).catch(function(){});
+  })).then(function(){ fetchCookReqs(); });
+}
+
+/* ---- the Cooking settings page ---- */
+SIC.chef='<path d="M7 14.5a4 4 0 0 1-.6-7.9 5.6 5.6 0 0 1 11.2 0A4 4 0 0 1 17 14.5"/><path d="M7 14.5V19a1.5 1.5 0 0 0 1.5 1.5h7A1.5 1.5 0 0 0 17 19v-4.5"/><path d="M7 17h10"/>';
+SIC.hand='<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M11 10.5V4a1.5 1.5 0 0 1 3 0v6.5"/><path d="M14 10V5.5a1.5 1.5 0 0 1 3 0V14a6.5 6.5 0 0 1-6.5 6.5h-.3a6 6 0 0 1-4.6-2.2L3.4 15a1.6 1.6 0 0 1 2.4-2.1L8 15"/>';
+SIC.inbox='<path d="M3.5 13.5 6 5.5h12l2.5 8"/><path d="M3.5 13.5V18a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-4.5h-5a3 3 0 0 1-6 0z"/>';
+SIC.star=STAR_PATH;
+SIC.clock='<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>';
+SIC.utensils='<path d="M7 3.5v17"/><path d="M4 3.5V8a3 3 0 0 0 6 0V3.5"/><path d="M17 20.5V3.5c-2.2 1-3.5 3.5-3.5 6.5v3.5H17"/>';
+SIC.grid='<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>';
+
+SET_TITLES.secCooking="ckTitle";
+SET_PAGES.secCooking=function(){
+  var c=cookCfg(), on=cookingOn(), cloud=cloudReady();
+  var h=sgroup(srow({icon:"chef",label:t("ckRota"),sub:on?t("ckRotaSub"):t("ckOffSince").replace("{d}",c.offSince?niceDate(c.offSince):"\u2014"),
+                     ctrl:sswitch(on,'data-ck="masterToggle" aria-label="'+esc(t("ckRota"))+'"')}));
+  if(!on){
+    return h+'<div class="ck-empty">'+sic("chef","")+'<b>'+esc(t("ckHiddenT"))+'</b><span>'+esc(t("ckHiddenP"))+'</span></div>';
+  }
+  if(cloud){
+    var pend=pendingReqs().length;
+    h+=sgroup(
+      srow({icon:"hand",label:t("ckReqs"),sub:t("ckReqsSub"),ctrl:sswitch(c.requests!==false,'data-ck="reqToggle" aria-label="'+esc(t("ckReqs"))+'"')})+
+      (pend?srow({icon:"inbox",label:t("ckWaiting"),value:pend+" "+t(pend===1?"ckReqOne":"ckReqMany"),attr:'data-ck="gotoPending"',chev:true}):''),
+      t("ckReqsLabel"));
+    var rOn=c.ratings!==false;
+    var rows=srow({icon:"star",label:t("ckRateRow"),sub:t("ckRateSub"),ctrl:sswitch(rOn,'data-ck="rateToggle" aria-label="'+esc(t("ckRateRow"))+'"')});
+    if(rOn){
+      rows+=selectRow("clock",t("ckCloses"),"ckCloseHour",[[10,t("ckNextDay")+", 10:00"],[12,t("ckNextDay")+", 12:00"],[15,t("ckNextDay")+", 15:00"],[18,t("ckNextDay")+", 18:00"]].map(function(o){ return [String(o[0]),o[1]]; }),String(c.closeHour||12));
+      rows+=selectRow("eye",t("ckMin"),"ckMin",[1,2,3,4,5].map(function(n){ return [String(n),n+" "+t(n===1?"ckRatingOne":"ckRatingMany")]; }),String(c.ratingMin||3));
+      if(ratingsReady===false) rows+=srow({icon:"db",label:t("ckSetup"),sub:t("ckSetupSub"),attr:'data-ck="ratingsSql"',tone:"brand",chev:true});
+    }
+    h+=sgroup(rows,t("ckRatings"),esc(rOn?t("ckRateHint"):t("ckRateOffHint")));
+  }
+  var inRota=cookCircle().length, act=state.members.filter(function(m){ return m.active!==false; }).length;
+  h+=sgroup(srow({icon:"users",label:t("ckWho"),value:inRota+" "+t("sOf")+" "+act,attr:'data-setpage="secPeople"',chev:true}),t("ckRotaLabel"),esc(t("ckWhoHint")));
+  return h;
+};
+var RATINGS_SQL_TEMPLATE = "-- ============================================================================\n--  MESS LEDGER  -  cook ratings\n--\n--  Supabase  >  SQL Editor  >  New query  >  paste ALL of this  >  Run.\n--  Safe to run more than once.\n--\n--  AFTER THIS:\n--    * a member who ate on a cooking day can give the cook 1-5 stars\n--    * everyone sees each cook's monthly average, never who gave what\n--    * ONLY the admin below can see who rated\n-- ============================================================================\n\n-- 1. the table\ncreate table if not exists public.cook_ratings (\n  id              bigint generated always as identity primary key,\n  ledger_id       text not null default 'mess',\n  cook_date       date not null,\n  cook_member_id  text not null,\n  cook_name       text,\n  rater_member_id text not null,\n  rater_name      text,\n  stars           int  not null check (stars between 1 and 5),\n  tags            text[] not null default '{}',\n  note            text,\n  created_at      timestamptz not null default now(),\n  updated_at      timestamptz not null default now(),\n  unique (ledger_id, cook_date, rater_member_id)\n);\n\n-- 2. nobody reads the table directly except the admin\nalter table public.cook_ratings enable row level security;\nrevoke all on public.cook_ratings from anon, authenticated;\ngrant select, delete on public.cook_ratings to authenticated;\n\ndrop policy if exists \"admin reads ratings\"   on public.cook_ratings;\ndrop policy if exists \"admin deletes ratings\" on public.cook_ratings;\ncreate policy \"admin reads ratings\" on public.cook_ratings for select to authenticated\n  using (lower(auth.jwt() ->> 'email') = lower('__ADMIN_EMAIL__'));\ncreate policy \"admin deletes ratings\" on public.cook_ratings for delete to authenticated\n  using (lower(auth.jwt() ->> 'email') = lower('__ADMIN_EMAIL__'));\n\n\n-- 3. a member sends a rating (checked against the ledger)\ncreate or replace function public.rate_cook(\n  p_token  text,\n  p_ledger text,\n  p_date   date,\n  p_stars  int,\n  p_tags   text[] default '{}',\n  p_note   text   default null)\nreturns json\nlanguage plpgsql\nsecurity definer\nset search_path = ''\nas $fn$\ndeclare\n  v_id      text;\n  v_name    text;\n  v_ledger  text := coalesce(nullif(p_ledger, ''), 'mess');\n  v_data    jsonb;\n  v_cook    text;\n  v_cookname text;\n  v_ate     numeric;\n  v_tag     text;\n  v_tags    text[] := '{}';\n  v_allowed text[] := array['tasty', 'enough', 'clean', 'ontime'];\nbegin\n  select member_id, member_name into v_id, v_name\n  from public.member_codes where token = p_token;\n  if v_id is null then raise exception 'not_a_member'; end if;\n\n  select data into v_data from public.ledger where id = v_ledger;\n  if v_data is null then raise exception 'no_ledger'; end if;\n  if coalesce((v_data -> 'cooking' ->> 'on')::boolean, true) = false\n     or coalesce((v_data -> 'cooking' ->> 'ratings')::boolean, true) = false then\n    raise exception 'ratings_off';\n  end if;\n\n  if p_stars is null or p_stars < 1 or p_stars > 5 then raise exception 'bad_stars'; end if;\n  if p_date is null or p_date < current_date - 2 or p_date > current_date + 1 then\n    raise exception 'closed';\n  end if;\n\n  select c ->> 'memberId' into v_cook\n  from jsonb_array_elements(coalesce(v_data -> 'cooks', '[]'::jsonb)) c\n  where c ->> 'date' = p_date::text\n  limit 1;\n  if v_cook is null then raise exception 'no_cook'; end if;\n  if v_cook = v_id then raise exception 'own_cooking'; end if;\n\n  select coalesce(sum((m ->> 'count')::numeric), 0) into v_ate\n  from jsonb_array_elements(coalesce(v_data -> 'meals', '[]'::jsonb)) m\n  where m ->> 'date' = p_date::text and m ->> 'memberId' = v_id;\n  if v_ate <= 0 then raise exception 'did_not_eat'; end if;\n\n  select x ->> 'name' into v_cookname\n  from jsonb_array_elements(coalesce(v_data -> 'members', '[]'::jsonb)) x\n  where x ->> 'id' = v_cook\n  limit 1;\n\n  foreach v_tag in array coalesce(p_tags, '{}'::text[]) loop\n    if v_tag = any(v_allowed) and not (v_tag = any(v_tags)) then\n      v_tags := v_tags || v_tag;\n    end if;\n  end loop;\n\n  insert into public.cook_ratings\n    (ledger_id, cook_date, cook_member_id, cook_name, rater_member_id, rater_name, stars, tags, note)\n  values\n    (v_ledger, p_date, v_cook, v_cookname, v_id, v_name, p_stars, v_tags,\n     nullif(left(btrim(coalesce(p_note, '')), 200), ''))\n  on conflict (ledger_id, cook_date, rater_member_id) do update\n    set stars = excluded.stars, tags = excluded.tags, note = excluded.note,\n        cook_member_id = excluded.cook_member_id, cook_name = excluded.cook_name,\n        rater_name = excluded.rater_name, updated_at = now();\n\n  return json_build_object('ok', true);\nend\n$fn$;\n\n\n-- 4. a member sees only their own recent ratings (so the app stops asking)\ncreate or replace function public.my_cook_ratings(p_token text, p_ledger text)\nreturns json\nlanguage sql\nsecurity definer\nset search_path = ''\nas $fn$\n  select coalesce(json_agg(json_build_object('cook_date', r.cook_date, 'stars', r.stars, 'tags', r.tags)), '[]'::json)\n  from public.cook_ratings r\n  join public.member_codes mc on mc.member_id = r.rater_member_id and mc.token = p_token\n  where r.ledger_id = coalesce(nullif(p_ledger, ''), 'mess')\n    and r.cook_date >= current_date - 40;\n$fn$;\n\n\n-- 5. everyone: each cook's monthly average, no names, no single days.\n--    The average stays hidden until enough people have rated.\ncreate or replace function public.cook_rating_summary(p_ledger text)\nreturns json\nlanguage plpgsql\nsecurity definer\nset search_path = ''\nas $fn$\ndeclare\n  v_ledger text := coalesce(nullif(p_ledger, ''), 'mess');\n  v_min    int;\n  v_out    json;\nbegin\n  select coalesce((data -> 'cooking' ->> 'ratingMin')::int, 3) into v_min\n  from public.ledger where id = v_ledger;\n  v_min := greatest(coalesce(v_min, 3), 1);\n\n  select coalesce(json_agg(s), '[]'::json) into v_out from (\n    select cook_member_id as cook,\n           to_char(cook_date, 'YYYY-MM') as month,\n           count(*) as n,\n           v_min as min,\n           case when count(*) >= v_min then round(avg(stars)::numeric, 1) end as avg,\n           case when count(*) >= v_min then json_build_array(\n             count(*) filter (where stars = 1), count(*) filter (where stars = 2),\n             count(*) filter (where stars = 3), count(*) filter (where stars = 4),\n             count(*) filter (where stars = 5)) end as dist,\n           case when count(*) >= v_min then json_build_object(\n             'tasty',  count(*) filter (where 'tasty'  = any(tags)),\n             'enough', count(*) filter (where 'enough' = any(tags)),\n             'clean',  count(*) filter (where 'clean'  = any(tags)),\n             'ontime', count(*) filter (where 'ontime' = any(tags))) end as tags\n    from public.cook_ratings\n    where ledger_id = v_ledger and cook_date >= current_date - 400\n    group by cook_member_id, to_char(cook_date, 'YYYY-MM')\n  ) s;\n  return v_out;\nend\n$fn$;\n\nrevoke all on function public.rate_cook(text, text, date, int, text[], text) from public;\nrevoke all on function public.my_cook_ratings(text, text) from public;\nrevoke all on function public.cook_rating_summary(text) from public;\ngrant execute on function public.rate_cook(text, text, date, int, text[], text) to anon, authenticated;\ngrant execute on function public.my_cook_ratings(text, text) to anon, authenticated;\ngrant execute on function public.cook_rating_summary(text) to anon, authenticated;\n\n-- tell the API about the new functions right away\nnotify pgrst, 'reload schema';\n";
+function openRatingsSql(){
+  var email=(adminSession&&adminSession.email)||"you@example.com";
+  var sql=RATINGS_SQL_TEMPLATE.split("__ADMIN_EMAIL__").join(String(email).replace(/'/g,"''"));
+  var pref=projectRef();
+  openDialog(t("ckSetup"),
+    '<p style="margin:0 0 12px;font-size:14px;line-height:1.5;color:var(--ink2)">'+esc(t("ckSetupHow"))+'</p>'+
+    '<button class="b wide" id="rsqlCopy">'+esc(t("ckCopySql"))+'</button>'+
+    (pref?'<a class="b ghost wide" style="margin-top:8px;display:flex;justify-content:center;text-decoration:none" target="_blank" rel="noopener" href="https://supabase.com/dashboard/project/'+esc(pref)+'/sql/new">'+esc(t("openSqlEditor"))+'</a>':'')+
+    '<button class="b ghost wide" id="rsqlCheck" style="margin-top:8px">'+esc(t("ckSetupDone"))+'</button>');
+  document.getElementById("rsqlCopy").addEventListener("click",function(){ copyStr(sql,t("copied")); });
+  document.getElementById("rsqlCheck").addEventListener("click",function(){
+    var o=document.getElementById("teamOverlay"); if(o) o.style.display="none";
+    ratingsReady=null; fetchRatings().then(function(){ toastMsg(ratingsReady?t("ckSetupOk"):t("ckSetupNo")); });
+  });
+}
+
+/* ---- clicks and changes for all of the above (runs before the main handler) ---- */
+document.addEventListener("click",function(ev){
+  var el=ev.target.closest("[data-rate],[data-profile],[data-ck]"); if(!el) return;
+  ev.stopPropagation(); ev.preventDefault();
+  if(el.dataset.rate){ var tg=rateTarget(); if(tg) openRate(tg.date,tg.cookId,Number(el.dataset.rate)); return; }
+  if(el.dataset.profile){ openProfile(el.dataset.profile); return; }
+  var a=el.dataset.ck;
+  if(a==="close"){ ckClose(); return; }
+  if(a==="star"&&window.__rate){ window.__rate.stars=Number(el.dataset.n); window.__rate.err=null; refreshRate(); return; }
+  if(a==="tag"&&window.__rate){ var tg2=window.__rate.tags, k=el.dataset.tag, i=tg2.indexOf(k); if(i>=0) tg2.splice(i,1); else tg2.push(k); refreshRate(); return; }
+  if(a==="send"){ sendRate(); return; }
+  if(!canWrite()||guestMode) return;                    // everything below is the admin's
+  var c=cookCfg();
+  if(a==="masterToggle"){
+    if(cookingOn()){ turnOffSheet(); return; }
+    c.on=true; c.offSince=null; save(); render(); fetchRatings(); toastMsg(t("ckOnToast")); return;
+  }
+  if(a==="cookOff"){ c.on=false; c.offSince=todayISO(); ckClose(); cancelPending(); save(); render(); toastMsg(t("ckOffToast")); return; }
+  if(a==="reqToggle"){ c.requests=c.requests===false; save(); render(); return; }
+  if(a==="rateToggle"){ c.ratings=c.ratings===false; save(); render(); if(c.ratings) fetchRatings(); return; }
+  if(a==="gotoPending"){ window.__setPage=null; tab="summary"; render(); window.scrollTo({top:0}); return; }
+  if(a==="ratingsSql"){ openRatingsSql(); return; }
+},true);
+document.addEventListener("change",function(ev){
+  var id=ev.target&&ev.target.id;
+  if(id!=="ckCloseHour"&&id!=="ckMin") return;
+  ev.stopPropagation();
+  if(!canWrite()) return;
+  if(id==="ckCloseHour") cookCfg().closeHour=Number(ev.target.value)||12;
+  else cookCfg().ratingMin=Number(ev.target.value)||3;
+  save(); render(); if(id==="ckMin") setTimeout(fetchRatings,1500);
+},true);
+document.addEventListener("keydown",function(ev){ if(ev.key==="Escape"&&document.getElementById("ckSheet")&&document.getElementById("ckSheet").style.display==="block") ckClose(); });
+
 function needsWelcome(){
   if(cloudReady()) return false;
   try{ if(localStorage.getItem("mess-local-ok")==="1") return false; }catch(e){}
@@ -3792,7 +4240,7 @@ document.addEventListener("click",function(ev){
     if(!wm){ var we=document.getElementById("wErr"); if(we) we.textContent=t("wBadLink"); return; }
     location.hash=wm[0]; location.reload(); return;
   }
-  if(el.dataset.act==="adminSignOut"){ adminSignOut(); return; }
+  if(el.dataset.act==="adminSignOut"){ confirmSignOut(); return; }
   if(el.dataset.act==="securityCheck"){ runSecurityCheck(); return; }
   if(el.dataset.act==="memberLink"){ showLink(false); return; }
   if(el.dataset.act==="deputyLink"){ showLink(true); return; }
